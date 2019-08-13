@@ -122,6 +122,42 @@
           </ul>
         </li>
 
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-sticky-note"></i> <span>Project</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="/project/add"><i class="fa fa-circle-o"></i> <span>Add Project</span></a></li>
+          </ul>
+        </li>
+
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-sticky-note"></i> <span>Bank</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="/bank/add"><i class="fa fa-circle-o"></i> <span>Add Bank</span></a></li>
+          </ul>
+        </li>
+
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-sticky-note"></i> <span>Supplier</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="/supplier/add"><i class="fa fa-circle-o"></i> <span>Add Supplier</span></a></li>
+          </ul>
+        </li>
+
 <!--         <li class="treeview">
           <a href="#">
             <i class="fa fa-table"></i> <span>Tables</span>
@@ -211,18 +247,6 @@
         </li> -->
 
         <li><a href="/stock"><i class="fa fa-book"></i> <span>Stock</span></a></li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-sticky-note"></i> <span>Project</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="/add"><i class="fa fa-circle-o"></i> <span>Add Project</span></a></li>
-            <li><a href="/estimate"><i class="fa fa-circle-o"></i> <span>Estimate</span></a></li>
-          </ul>
-        </li>
         <li><a href="https://adminlte.io/docs"><i class="fa fa-book"></i> <span>Documentation</span></a></li>
         
         <!-- <li class="header">LABELS</li>
