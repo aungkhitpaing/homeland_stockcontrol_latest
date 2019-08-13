@@ -17,18 +17,6 @@ Route::get('/',function(){
 
 Route::get('/admin_dashboard', 'DashBoardController@index');
 
-Route::prefix('investor')->group(function(){
-	Route::get('/show',function(){
-		return view('investor.show');
-	});
-	Route::get('/add',function(){
-		return view('investor.add');
-	});
-	Route::post('/update',function(){
-		return view('investor.edit');
-	});
-});
-
 Route::prefix('head_quater')->group(function () {
 	Route::post('/login',function(){
 		return view('authentication.login');
@@ -54,12 +42,27 @@ Route::prefix('head_quater')->group(function () {
 	});
 });
 
+/* Investor */
+Route::prefix('investor')->group(function(){
+	Route::get('/show',function(){
+		return view('investor.show');
+	});
+	Route::get('/add',function(){
+		return view('investor.add');
+	});
+	Route::post('/update',function(){
+		return view('investor.edit');
+	});
+});
+
+/* Stock */
 Route::prefix('stock')->group(function(){
 	Route::get('/', 'StockController@index');
 	Route::get('/create', 'StockController@create');
 	Route::get('/edit', 'StockController@edit');
 });
 
+/* Project */
 Route::prefix('project')->group(function(){
 	Route::get('/', 'ProjectController@index');
 	Route::get('/project', 'ProjectController@index');
@@ -70,6 +73,22 @@ Route::prefix('project')->group(function(){
 		return view('project.proj_income_details');
 	});
 });
+
+/* Bank */
+Route::prefix('bank')->group(function(){
+	Route::get('/add',function(){
+		return view('bank.add');
+	});
+});
+
+/* Supplier */
+Route::prefix('supplier')->group(function(){
+	Route::get('/add',function(){
+		return view('supplier.add');
+	});
+});
+
+
 
 
 

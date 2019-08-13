@@ -246,6 +246,7 @@
                                   <th>Bank Name</th>
                                   <th>Loan Amount</th>
                                   <th>Loan Date</th>
+                                  <th>Current Available</th>
                                   <th>Left Amount</th>
                                   <th>Action</th>
                                 </tr>
@@ -257,51 +258,8 @@
                                   </td>
                                   <td>100,000,000</td>
                                   <td>18 Jun 2019</td>
-                                  <td>100,000,000</td>
-                                  <td>
-                                    <button type="button" class="btn btn-block btn-warning btn-sm">Edit</button>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>2</td>
-                                  <td>KBZ BANK
-                                  </td>
-                                  <td>100,000,000</td>
-                                  <td>18 Jun 2019</td>
-                                  <td>100,000,000</td>
-                                  <td>
-                                    <button type="button" class="btn btn-block btn-warning btn-sm">Edit</button>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>3</td>
-                                  <td>CB BANK
-                                  </td>
-                                  <td>100,000,000</td>
-                                  <td>18 Jun 2019</td>
-                                  <td>100,000,000</td>
-                                  <td>
-                                    <button type="button" class="btn btn-block btn-warning btn-sm">Edit</button>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>4</td>
-                                  <td>MOB BANK
-                                  </td>
-                                  <td>100,000,000</td>
-                                  <td>18 Jun 2019</td>
-                                  <td>100,000,000</td>
-                                  <td>
-                                    <button type="button" class="btn btn-block btn-warning btn-sm">Edit</button>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>5</td>
-                                  <td>AGD BANK
-                                  </td>
-                                  <td>100,000,000</td>
-                                  <td>18 Jun 2019</td>
-                                  <td>100,000,000</td>
+                                  <td>50,000,000</td>
+                                  <td>50,000,000</td>
                                   <td>
                                     <button type="button" class="btn btn-block btn-warning btn-sm">Edit</button>
                                   </td>
@@ -310,9 +268,11 @@
                               <tfoot>
                                 <tr>
                                   <th>Id</th>
-                                  <th>Invester Name</th>
-                                  <th>Amount</th>
-                                  <th>Created Date</th>
+                                  <th>Bank Name</th>
+                                  <th>Loan Amount</th>
+                                  <th>Loan Date</th>
+                                  <th>Current Available</th>
+                                  <th>Left Amount</th>
                                   <th>Action</th>
                                 </tr>
                               </tfoot>
