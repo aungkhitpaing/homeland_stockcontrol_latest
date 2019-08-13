@@ -244,22 +244,35 @@
                                 <tr>
                                   <th>Id</th>
                                   <th>Bank Name</th>
-                                  <th>Loan Amount</th>
-                                  <th>Loan Date</th>
-                                  <th>Current Available</th>
+                                  <th>Total Loan Amount</th>
+                                  <th>Current Amount</th>
                                   <th>Left Amount</th>
+                                  <th>Description</th>
+                                  <th>Loan Date</th>
                                   <th>Action</th>
                                 </tr>
                               </thead>
                               <tbody>
-                                <tr>
+                                <tr style="background-color:lightpink;">
                                   <td>1</td>
-                                  <td>AYA Bank
-                                  </td>
+                                  <td><a href="/bank/loan_detail">AYA Bank</a></td>
                                   <td>100,000,000</td>
+                                  <td>50,000,000</td>
+                                  <td>50,000,000</td>
+                                  <td>For Reason something</td>
                                   <td>18 Jun 2019</td>
-                                  <td>50,000,000</td>
-                                  <td>50,000,000</td>
+                                  <td>
+                                    <button type="button" class="btn btn-block btn-warning btn-sm">Edit</button>
+                                  </td>
+                                </tr>
+                                <tr style="background-color:lightgreen;">
+                                  <td>2</td>
+                                  <td><a href="/bank/loan_detail">KBZ Bank</a></td>
+                                  <td>100,000,000</td>
+                                  <td>100,000,000</td>
+                                  <td>0</td>
+                                  <td>For Reason something</td>
+                                  <td>18 Jun 2019</td>
                                   <td>
                                     <button type="button" class="btn btn-block btn-warning btn-sm">Edit</button>
                                   </td>
@@ -269,10 +282,11 @@
                                 <tr>
                                   <th>Id</th>
                                   <th>Bank Name</th>
-                                  <th>Loan Amount</th>
-                                  <th>Loan Date</th>
-                                  <th>Current Available</th>
+                                  <th>Total Loan Amount</th>
+                                  <th>Current Amount</th>
                                   <th>Left Amount</th>
+                                  <th>Description</th>
+                                  <th>Loan Date</th>
                                   <th>Action</th>
                                 </tr>
                               </tfoot>

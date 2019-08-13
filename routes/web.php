@@ -79,6 +79,9 @@ Route::prefix('bank')->group(function(){
 	Route::get('/add',function(){
 		return view('bank.add');
 	});
+	Route::get('/loan_detail',function(){
+		return view('bank.loan_detail');
+	});
 });
 
 /* Supplier */
