@@ -4,7 +4,7 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
   <h1>
-    Invester Transfer Detail
+    Project Expense Transfer Detail
     <small>advanced tables</small>
   </h1>
   <ol class="breadcrumb">
@@ -52,38 +52,30 @@
                 <thead>
                   <tr>
                     <th>Transfer Date</th>
-                    <th>Transfer Income</th>
+                    <th>Transfer Expense</th>
                     <th>Type</th>
                     <th>Description</th>
                     <th>Remark</th>
                   </tr>
                 </thead>
                 <tbody>
-                @foreach($investorDetail as $investorDetailById)
+                @foreach($projectExpenseDetail as $projectExpenseDetailById)
                   <tr>
                     <?php
-                    $created_at = explode(" ", $investorDetailById->created_at);
+                      $created_at = explode(" ", $projectExpenseDetailById->created_at);
                     ?>
                     <td>{{$created_at['0']}}</td>
-                    <td>{{$investorDetailById->amount}} Kyats</td>
-                    <td>{{$investorDetailById->payment_type}}</td>
-                    <td>{{$investorDetailById->description}}</td>
+                    <td>{{$projectExpenseDetailById->amount}} Kyats</td>
+                    <td>{{$projectExpenseDetailById->payment_type}}</td>
+                    <td>{{$projectExpenseDetailById->description}}</td>
                     <td></td>
                   </tr>
                 @endforeach
-<!--                   <tr style="background-color: lightpink;">
-                    <td>3</td>
-                    <td>18 Jun 2019</td>
-                    <td>100,000</td>
-                    <td>Bank</td>
-                    <td>Adding 100,000</td>
-                    <td>Fixing amount for issue 2</td>
-                  </tr> -->
                 </tbody>
                 <tfoot>
                   <tr>
                     <th>Transfer Date</th>
-                    <th>Transfer Income</th>
+                    <th>Transfer Expense</th>
                     <th>Type</th>
                     <th>Description</th>
                     <th>Remark</th>

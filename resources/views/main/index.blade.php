@@ -18,8 +18,8 @@
 <section class="content">
 <!-- Small boxes (Stat box) -->	
 	<div class="row">
-		<div class="col-lg-3 col-xs-6">
-			<!-- small box -->
+		<!-- <div class="col-lg-3 col-xs-6">
+
 			<div class="small-box bg-aqua">
 				<div class="inner">
 					<h3>150</h3>
@@ -31,10 +31,10 @@
 				<a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
 			</div>
 		</div>
-		<!-- ./col -->
+
 
 		<div class="col-lg-3 col-xs-6">
-			<!-- small box -->
+
 			<div class="small-box bg-green">
 				<div class="inner">
 					<h3>53<sup style="font-size: 20px">%</sup></h3>
@@ -46,11 +46,10 @@
 				<a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
 			</div>
 		</div>			
-		<!-- ./col -->
 
 
 		<div class="col-lg-3 col-xs-6">
-			<!-- small box -->
+
 			<div class="small-box bg-yellow">
 				<div class="inner">
 					<h3>44</h3>
@@ -62,10 +61,9 @@
 				<a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
 			</div>
 		</div>
-		<!-- ./col -->
+
 
 		<div class="col-lg-3 col-xs-6">
-			<!-- small box -->
 			<div class="small-box bg-red">
 				<div class="inner">
 					<h3>65</h3>
@@ -78,9 +76,8 @@
 				<a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
 			</div>
 		</div>
-			<!-- ./col -->
-	</div>
-<!-- /.row -->
+	</div> -->
+
 
 <!-- Alert boxes (Stat box) -->	
 	<div class="row">
@@ -88,11 +85,11 @@
 		  	<div class="box box-default">
 	            <div class="box-header with-border">
 	              <i class="fa fa-bullhorn"></i>
-	              <h3 class="box-title">Total Cash Amount</h3>
+	              <h3 class="box-title">Total Income Cash Amount</h3>
 	            </div>
 	            <div class="box-body">
-	            	<div class="callout callout-info">
-			    		<h4> <span>Total Cash Amount is</span> <b>200,000,000</b> <span>Kyats</span></h4>
+	            	<div class="callout callout-success">
+			    		<h4> <span>Total Cash Amount is</span> <b>{{$getTotalIncomeCash}}</b> <span>Kyats</span></h4>
 			    		<p>This is currently amount of cash</p>
 			  		</div>
 	            </div>
@@ -102,11 +99,11 @@
 			<div class="box box-default">
 	            <div class="box-header with-border">
 	              <i class="fa fa-bullhorn"></i>
-	              <h3 class="box-title">Total Bank Amount</h3>
+	              <h3 class="box-title">Total Income Bank Amount</h3>
 	            </div>
 	            <div class="box-body">
 	            	<div class="callout callout-success">
-			    		<h4> <span>Total Bank Amount is</span> <b>200,000,000</b> <span>Kyats</span></h4>
+			    		<h4> <span>Total Bank Amount is</span> <b>{{$getTotalIncomeBank}}</b> <span>Kyats</span></h4>
 			    		<p>This is currently amount of bank</p>
 			  		</div>
 	            </div>
@@ -114,6 +111,52 @@
 		</div>
 	</div>
 <!-- /.row -->
+
+
+<!-- Alert boxes (Stat box) -->	
+	<div class="row">
+		<div class="col-md-6">			
+		  	<div class="box box-default">
+	            <div class="box-header with-border">
+	              <i class="fa fa-bullhorn"></i>
+	              <h3 class="box-title">Total Expend Cash Amount</h3>
+	            </div>
+	            <div class="box-body">
+	            	<div class="callout callout-danger">
+			    		<h4> <span>Total Cash Amount is</span> <b> ( -{{$getTotalExpendCash}} )</b> <span>Kyats</span></h4>
+			    		<p>This is currently amount of cash</p>
+			  		</div>
+	            </div>
+          	</div>
+		</div>
+		<div class="col-md-6">
+			<div class="box box-default">
+	            <div class="box-header with-border">
+	              <i class="fa fa-bullhorn"></i>
+	              <h3 class="box-title">Total Expend Bank Amount</h3>
+	            </div>
+	            <div class="box-body">
+	            	<div class="callout callout-danger">
+			    		<h4> <span>Total Bank Amount is</span> <b> ( -{{$getTotalExpendBank}} )</b> <span>Kyats</span></h4>
+			    		<p>This is currently amount of bank</p>
+			  		</div>
+	            </div>
+          	</div>
+		</div>
+	</div>
+<!-- /.row -->
+
+
+
+	<div class="row">
+		<div class="col-md-12">			
+        	<div class="callout callout-warning">
+	    		<h4> <span>Total Balance Amount is</span> <b>{{$balance}}</b> <span>Kyats</span></h4>
+	    		<p>This is currently amount of cash</p>
+	  		</div>
+		</div>
+	</div>
+
 
 <!-- Main row -->
 <div class="row">

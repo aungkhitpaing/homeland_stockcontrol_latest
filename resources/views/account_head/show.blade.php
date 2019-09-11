@@ -8,8 +8,8 @@
 	      <!-- Horizontal Form -->
 	      <div class="box box-info">
 	        <div class="box-header with-border">
-	          <h3 class="box-title">Show Investor Lists</h3>
-            <a href="/investor/create" class="btn btn-primary btn-sm pull-right">Add Investor</a>
+	          <h3 class="box-title">Show Account Head Lists</h3>
+            <a href="/accounthead/create" class="btn btn-primary btn-sm pull-right">Add Data</a>
 
 	        </div>
           <div class="box" style="border: none;">
@@ -20,30 +20,27 @@
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                   <tr>
-                    <th>Id</th>
-                    <th>Investor Code</th>
-                    <th>Investor Name</th>
+                    <th>AccountHead Code</th>
+                    <th>Account Name</th>
                     <th>Action</th>                  
                   </tr>
                 </thead>
                 <tbody>
-                @foreach ($investors as $investor)
+                @foreach ($accountHeads as $accountHead)
                   <tr>
-                    <td>{{$investor->id}}</td>
-                    <td>{{$investor->code}}</td>
-                    <td>{{$investor->name}}</td>
+                    <td>{{$accountHead->account_head_code}}</td>
+                    <td>{{$accountHead->account_head_type}}</td>
                     <td>
-                      <a href="/investor/{{$investor->id}}/edit" class="btn btn-warning btn-sm">Edit</a> <a href="/investor/{{$investor->id}}/delete" class="btn btn-danger btn-sm">Delete</a>
+                      <a href="/accounthead/{{$accountHead->id}}/edit" class="btn btn-warning btn-sm">Edit</a> <a href="/accounthead/{{$accountHead->id}}/delete" class="btn btn-danger btn-sm">Delete</a>
                     </td>
                   </tr>
                 @endforeach             
                 </tbody>
                 <tfoot>
                   <tr>
-                    <th>Id</th>
-                    <th>Investor Code</th>
-                    <th>Investor Name</th>
-                    <th>Action</th>
+                    <th>AccountHead Code</th>
+                    <th>Account Name</th>
+                    <th>Action</th>   
                   </tr>
                 </tfoot>
               </table>

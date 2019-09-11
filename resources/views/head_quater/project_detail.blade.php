@@ -4,7 +4,7 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
   <h1>
-    Invester Transfer Detail
+    Project Transfer Detail
     <small>advanced tables</small>
   </h1>
   <ol class="breadcrumb">
@@ -59,20 +59,19 @@
                   </tr>
                 </thead>
                 <tbody>
-                @foreach($investorDetail as $investorDetailById)
+                @foreach($projectDetail as $projectDetailById)
                   <tr>
                     <?php
-                    $created_at = explode(" ", $investorDetailById->created_at);
+                      $created_at = explode(" ", $projectDetailById->created_at);
                     ?>
                     <td>{{$created_at['0']}}</td>
-                    <td>{{$investorDetailById->amount}} Kyats</td>
-                    <td>{{$investorDetailById->payment_type}}</td>
-                    <td>{{$investorDetailById->description}}</td>
+                    <td>{{$projectDetailById->amount}} Kyats</td>
+                    <td>{{$projectDetailById->payment_type}}</td>
+                    <td>{{$projectDetailById->description}}</td>
                     <td></td>
                   </tr>
                 @endforeach
-<!--                   <tr style="background-color: lightpink;">
-                    <td>3</td>
+                  <!-- <tr style="background-color: lightpink;">
                     <td>18 Jun 2019</td>
                     <td>100,000</td>
                     <td>Bank</td>

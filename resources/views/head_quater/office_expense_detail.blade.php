@@ -4,13 +4,13 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
   <h1>
-    Loan Transfer Detail
+    Office Expenses Detail
     <small>advanced tables</small>
   </h1>
   <ol class="breadcrumb">
     <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
     <li><a href="#">Tables</a></li>
-    <li class="active">Loan tables</li>
+    <li class="active">Data tables</li>
   </ol>
 </section>
 
@@ -51,28 +51,33 @@
               <table id="example3" class="table table-bordered table-striped">
                 <thead>
                   <tr>
-                    <th>Id</th>
-                    <th>Loan Id</th>
-                    <th>Loan Amount</th>
-                    <th>Loan Date</th>
+                    <th>Transfer Date</th>
+                    <th>Transfer Expense</th>
+                    <th>Type</th>
+                    <th>Description</th>
                     <th>Remark</th>
                   </tr>
                 </thead>
                 <tbody>
+                @foreach($officeExpenseDetail as $officeExpenseDetailbyId)
                   <tr>
-                    <td>1</td>
-                    <td>L_001</td>
-                    <td>50,000,000</td>
-                    <td>18 Jun 2019</td>
-                    <td>For issue one</td>
+                    <?php
+                      $created_at = explode(" ", $officeExpenseDetailbyId->created_at);
+                    ?>
+                    <td>{{$created_at['0']}}</td>
+                    <td>{{$officeExpenseDetailbyId->amount}} Kyats</td>
+                    <td>{{$officeExpenseDetailbyId->payment_type}}</td>
+                    <td>{{$officeExpenseDetailbyId->description}}</td>
+                    <td></td>
                   </tr>
+                @endforeach
                 </tbody>
                 <tfoot>
                   <tr>
-                    <th>Id</th>
-                    <th>Loan Id</th>
-                    <th>Loan Amount</th>
-                    <th>Loan Date</th>
+                    <th>Transfer Date</th>
+                    <th>Transfer Expense</th>
+                    <th>Type</th>
+                    <th>Description</th>
                     <th>Remark</th>
                   </tr>
                 </tfoot>
@@ -82,14 +87,20 @@
           </div>
         </div>
       </div>
-      <div class="row">        
-        <!-- /.col -->
+      <div class="row">
         <div class="col-md-6">
-          <div class="callout" style="background-color:lightpink">
-            <h4> <span>Total investor Transfer amount is</span> <b>200,000,000</b> <span>Kyats</span></h4>
+          <div class="callout callout-danger">
+            <h4> <span>Total investor Transfer amount is</span> <b>{{$totalBalance}}</b> <span>Kyats</span></h4>
             <p>This is all calculation amount of total investor income</p>
           </div>
         </div>        
+        <!-- /.col -->
+<!--         <div class="col-md-6">
+          <div class="callout callout-danger">
+            <h4> <span>Total investor Transfer amount is</span> <b>200,000,000</b> <span>Kyats</span></h4>
+            <p>This is all calculation amount of total investor income</p>
+          </div>
+        </div>  -->       
         <!-- /.col -->
 
       </div>

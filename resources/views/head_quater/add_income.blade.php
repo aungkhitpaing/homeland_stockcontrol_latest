@@ -24,7 +24,7 @@
 		                  	<li><a href="#tab_3" data-toggle="tab">Bank Loan</a></li>
 		                  	<li><a href="#tab_4" data-toggle="tab">PO</a></li>
 		                  	<li><a href="#tab_6" data-toggle="tab">PG</a></li>
-		                  	<li><a href="#tab_7" data-toggle="tab">Interest Receive</a></li>		                  	
+		                  	<!-- <li><a href="#tab_7" data-toggle="tab">Interest Receive</a></li>		                  	 -->
 					      	<li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>
 					    </ul>
 
@@ -40,27 +40,29 @@
 						    						<h3 class="box-title">Amount Form Investor</h3>
 									            </div>
 									            <!-- form start -->
-									            <form class="form-horizontal">
+									            <form class="form-horizontal" method="POST" action="/head_quater/storeInvestorIncome">
+									            	{{ csrf_field() }}
 									              	<div class="box-body">
+									              		<input type="hidden" name="accountHead" value="1" >
 									                	<div class="form-group">
 									                  		<label for="investor_name" class="col-sm-2 control-label">Investor Name</label>
 									                  		<div class="col-sm-10">
 										                  		<!-- select -->
-										                  		<select class="form-control">
-										                  			<option value="#">Investor 1</option>
-												                    <option value="#">Investor 2</option>
-												                    <option value="#">Investor 3</option>
-												                    <option value="#">Investor 4</option>
+										                  		<select class="form-control" name="investor" required>
+										                  			<option>-----select investor-----</option>
+										                  			@foreach($investors as $investor)
+										                  				<option value="{{$investor->id}}">{{$investor->name}}</option>
+											                  		@endforeach
 											                  	</select>
 									                  		</div>
 									                	</div>
 									                  	<div class="radio">
 									                    	<label style="margin-left: 17%;">
-									                    		<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+									                    		<input type="radio" name="optionsRadios" id="optionsRadios1" value="Cash" required>
 									                    		Cash
 									                    	</label>
 									                    	<label style="margin-left: 2%;">
-									                      		<input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+									                      		<input type="radio" name="optionsRadios" id="optionsRadios2" value="Bank" required>
 									                      		Bank
 									                    	</label>
 									                  	</div>
@@ -70,19 +72,16 @@
 										                	<div class="col-sm-10">
 										                		<div class="input-group">
 										                			<span class="input-group-addon">$</span>
-										                			<input type="text" id="inputamount" class="form-control" required>
-										                			<span class="input-group-addon">.00</span>
+										                			<input type="number" name="amount" id="inputamount" class="form-control" required>
+										                			<span class="input-group-addon">Kyats</span>
 										                		</div>
 										                	</div>
 										                </div>
-
 										                <div class="form-group">
 										                	<label for="inputamount" class="col-sm-2 control-label">Description</label>
 										                	<div class="col-sm-10">
 										                		<div class="input-group">
-										                			<span class="input-group-addon"></span>
-										                			<input type="text" id="inputamount" class="form-control" required>
-										                			<span class="input-group-addon"></span>
+										                			  <textarea class="form-control" name="description" id="exampleFormControlTextarea5" rows="3" cols="200"></textarea>
 										                		</div>
 										                	</div>
 										                </div>
@@ -90,8 +89,8 @@
 									            	<!-- /.box-body -->
 
 									            	<div class="box-footer">
-									            		<button type="submit" class="btn btn-default">Cancel</button>
-									                	<a href="/head_quater/income_cashbook" class="btn btn-info pull-right">Add Amount</a>
+									            		<a href="/head_quater" class="btn btn-default">Cancel</a>
+									                	<input type="submit" class="btn btn-info pull-right" value="Add Amount">
 									              	</div>
 									              	<!-- /.box-footer -->
 									            </form>
@@ -112,26 +111,28 @@
 														<h3 class="box-title">Amount Form Project</h3>
 										            </div>
 										            <!-- form start -->
-										            <form class="form-horizontal">
+										            <form class="form-horizontal" method="POST" action="/head_quater/storeProjectIncome">
+										            {{ csrf_field() }}
+										            <input type="hidden" name="accountHead" value="2" >
 										              	<div class="box-body">
 										                	<div class="form-group">
 										                  		<label for="investor_name" class="col-sm-2 control-label">Project Name</label>
 										                  		<div class="col-sm-10">
-											                  		<!-- select -->
-											                  		<select class="form-control">
-											                  			<option>Project 1</option>
-													                    <option>Project 2</option>
-													                    <option>Project 3</option>
+											                  		<select class="form-control" name="project" required>
+																		<option>-----select project-----</option>
+										                  			@foreach($projects as $project)
+										                  				<option value="{{$project->id}}">{{$project->name}}</option>
+											                  		@endforeach
 												                  	</select>
 										                  		</div>
 										                	</div>
 										                	<div class="radio">
 										                    	<label style="margin-left: 17%;">
-										                    		<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+										                    		<input type="radio" name="optionsRadios" id="optionsRadios1" value="cash" required>
 										                    		Cash
 										                    	</label>
 										                    	<label style="margin-left: 2%;">
-										                      		<input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+										                      		<input type="radio" name="optionsRadios" id="optionsRadios2" value="bank" required>
 										                      		Bank
 										                    	</label>
 									                  		</div>
@@ -141,17 +142,25 @@
 											                	<div class="col-sm-10">
 											                		<div class="input-group">
 											                			<span class="input-group-addon">$</span>
-											                			<input type="text" id="inputamount" class="form-control">
-											                			<span class="input-group-addon">.00</span>
+											                			<input type="text" id="inputamount" class="form-control" name="amount">
+											                			<span class="input-group-addon">Kyats</span>
 											                		</div>
 											                	</div>
 											                </div>
+											                <div class="form-group">
+											                	<label for="inputamount" class="col-sm-2 control-label">Description</label>
+											                	<div class="col-sm-10">
+											                		<div class="input-group">
+										                			  <textarea class="form-control" name="description" id="exampleFormControlTextarea5" rows="3" cols="200"></textarea>
+										                			</div>
+										                		</div>
+										                	</div>
 										            	</div>
 										            	<!-- /.box-body -->
 
 										            	<div class="box-footer">
-										            		<button type="submit" class="btn btn-default">Cancel</button>
-										                	<a href="/head_quater/income_cashbook" class="btn btn-info pull-right">Add Amount</a>
+										            		<a href="/head_quater" class="btn btn-default">Cancel</a>
+										                	<input type="submit" class="btn btn-info pull-right" value="Add Amount">
 										              	</div>
 										              	<!-- /.box-footer -->
 										            </form>
@@ -172,42 +181,40 @@
 														<h3 class="box-title">Amount Form Bank Loan</h3>
 										            </div>
 										            <!-- form start -->
-										            <form class="form-horizontal">
+										            <form class="form-horizontal" method="POST" action="/head_quater/storeBankIncome">
+										            	{{ csrf_field() }}
+										            	<input type="hidden" name="accountHead" value="3" >
 										              	<div class="box-body">
 										                	<div class="form-group">
 										                  		<label for="investor_name" class="col-sm-2 control-label">Bank Name</label>
 										                  		<div class="col-sm-10">
-											                  		<!-- select -->
-											                  		<select class="form-control">
-											                  			<option>AYA Bank</option>
-													                    <option>KBZ Bank</option>
-													                    <option>CB Bank</option>
-													                    <option>MOB Bank</option>
-													                    <option>AGD Bank</option>
+											                  		<select class="form-control" name="bank" required>
+											                  			<option>-----select bank-----</option>
+											                  		@foreach($banks as $bank)
+											                  			<option value="{{$bank->id}}">{{$bank->name}}</option>
+											                  		@endforeach
 												                  	</select>
 										                  		</div>
 										                	</div>
-											                
+											                <div class="radio">
+										                    	<label style="margin-left: 17%;">
+										                    		<input type="radio" name="optionsRadios" id="optionsRadios1" value="cash" required>
+										                    		Cash
+										                    	</label>
+										                    	<label style="margin-left: 2%;">
+										                      		<input type="radio" name="optionsRadios" id="optionsRadios2" value="bank" required>
+										                      		Bank
+										                    	</label>
+									                  		</div>
+									                		<br>
 											                <!-- Total loan amount -->
 											                <div class="form-group">
 											                	<label for="inputamount" class="col-sm-2 control-label">Total Loan Amount</label>
 											                	<div class="col-sm-10">
 											                		<div class="input-group">
 											                			<span class="input-group-addon">$</span>
-											                			<input type="text" id="inputamount" class="form-control">
-											                			<span class="input-group-addon">.00</span>
-											                		</div>
-											                	</div>
-											                </div>
-
-											                <!-- Current Amount -->
-											                <div class="form-group">
-											                	<label for="inputamount" class="col-sm-2 control-label">Currently Amount</label>
-											                	<div class="col-sm-10">
-											                		<div class="input-group">
-											                			<span class="input-group-addon">$</span>
-											                			<input type="text" id="inputamount" class="form-control">
-											                			<span class="input-group-addon">.00</span>
+											                			<input type="text" id="inputamount" class="form-control" name="amount">
+											                			<span class="input-group-addon">Kyats</span>
 											                		</div>
 											                	</div>
 											                </div>
@@ -220,15 +227,24 @@
 																		<div class="input-group-addon">
 																			<i class="fa fa-calendar"></i>
 																		</div>
-																		<input type="text" class="form-control pull-right" id="load_date">
+																		<input type="text" class="form-control pull-right" id="load_date" name="loan_date">
 																	</div>
 																</div>
 															</div>
+
+											                <div class="form-group">
+											                	<label for="inputamount" class="col-sm-2 control-label">Description</label>
+											                	<div class="col-sm-10">
+											                		<div class="input-group">
+										                			  <textarea class="form-control" name="description" id="exampleFormControlTextarea5" rows="3" cols="200"></textarea>
+										                			</div>
+										                		</div>
+										                	</div>
 										            	</div>
 										            	<!-- /.box-body -->
 
 										            	<div class="box-footer">
-										            		<button type="submit" class="btn btn-default">Cancel</button>
+										            		<a href="/bank/" class="btn btn-default">Cancel</a>
 										                	<button type="submit" class="btn btn-info pull-right">Add Amount</button>
 										              	</div>
 										              	<!-- /.box-footer -->
@@ -247,32 +263,47 @@
 											<div class="col-md-12">
 												<!-- <div class="box box-info"> -->
 													<div class="box-header with-border">
-														<h3 class="box-title">Amount Form Project</h3>
+														<h3 class="box-title">Amount Form Payment Order</h3>
 										            </div>
 										            <!-- form start -->
-										            <form class="form-horizontal">
+										            <form class="form-horizontal" method="POST" action="/head_quater/storePaymentOrderIncome">
+										            	{{ csrf_field() }}
+										            	<input type="hidden" name="accountHead" value="4" >
 										              	<div class="box-body">
 										                	<div class="form-group">
-										                  		<label for="investor_name" class="col-sm-2 control-label">Project Name</label>
+										                  		<label for="investor_name" class="col-sm-2 control-label">Payment Order Name</label>
 										                  		<div class="col-sm-10">
-											                  		<!-- select -->
-											                  		<select class="form-control">
-											                  			<option>Project 1</option>
-													                    <option>Project 2</option>
-													                    <option>Project 3</option>
-													                    <option>Project 4</option>
-													                    <option>Project 5</option>
+											                  		<select class="form-control" name="paymentorder" required>
+											                  			<option>-----select payment order-----</option>
+											                  		@foreach($paymentOrders as $paymentOrder)
+											                  			<option value="{{$paymentOrder->id}}">{{$paymentOrder->name}}</option>
+											                  		@endforeach
 												                  	</select>
 										                  		</div>
 										                	</div>
 											                
+
+
+											                <div class="radio">
+										                    	<label style="margin-left: 17%;">
+										                    		<input type="radio" name="optionsRadios" id="optionsRadios1" value="Cash" required>
+										                    		Cash
+										                    	</label>
+										                    	<label style="margin-left: 2%;">
+										                      		<input type="radio" name="optionsRadios" id="optionsRadios2" value="Bank" required>
+										                      		Bank
+										                    	</label>
+										                  	</div>
+										                	<br>
+
+
 											                <div class="form-group">
 											                	<label for="inputamount" class="col-sm-2 control-label">Amount</label>
 											                	<div class="col-sm-10">
 											                		<div class="input-group">
 											                			<span class="input-group-addon">$</span>
-											                			<input type="text" id="inputamount" class="form-control">
-											                			<span class="input-group-addon">.00</span>
+											                			<input type="text" id="inputamount" class="form-control" name="amount">
+											                			<span class="input-group-addon">Kyats</span>
 											                		</div>
 											                	</div>
 											                </div>
@@ -284,10 +315,18 @@
 																		<div class="input-group-addon">
 																			<i class="fa fa-calendar"></i>
 																		</div>
-																		<input type="text" class="form-control pull-right" id="with_draw">
+																		<input type="text" class="form-control pull-right" id="with_draw" name="receive_date">
 																	</div>
 																</div>
 											                </div>
+											                <div class="form-group">
+											                	<label for="inputamount" class="col-sm-2 control-label">Description</label>
+											                	<div class="col-sm-10">
+											                		<div class="input-group">
+										                			  <textarea class="form-control" name="description" id="exampleFormControlTextarea5" rows="3" cols="200"></textarea>
+										                			</div>
+										                		</div>
+										                	</div>
 										            	</div>
 										            	<!-- /.box-body -->
 
@@ -302,7 +341,94 @@
 										</div>
 								</section>
 							</div>
-					      <!-- /. PO tab-pane -->
+					      	<!-- /. PO tab-pane -->
+
+					      	<!-- PG tab-pane -->
+					      	<div class="tab-pane" id="tab_6">
+								<section class="content">
+										<div class="row">
+											<div class="col-md-12">
+												<!-- <div class="box box-info"> -->
+													<div class="box-header with-border">
+														<h3 class="box-title">Amount Form Purchase Guarantee</h3>
+										            </div>
+										            <!-- form start -->
+										            <form class="form-horizontal" method="POST" action="/head_quater/storePurchaseGuaranteeIncome">
+										            	{{ csrf_field() }}
+										            	<input type="hidden" name="accountHead" value="5" >
+										              	<div class="box-body">
+										                	<div class="form-group">
+										                  		<label for="purchase_guarantee" class="col-sm-2 control-label">Purchase Guarantee Name</label>
+										                  		<div class="col-sm-10">
+											                  		<select class="form-control" name="purchaseguarantee" required>
+											                  			<option>----- select purchase guarantee -----</option>
+											                  		@foreach($purchaseGuarantees as $purchaseguarantee)
+											                  			<option value="{{$purchaseguarantee->id}}">{{$purchaseguarantee->name}}</option>
+											                  		@endforeach
+												                  	</select>
+										                  		</div>
+										                	</div>
+											                
+
+
+											                <div class="radio">
+										                    	<label style="margin-left: 17%;">
+										                    		<input type="radio" name="optionsRadios" id="optionsRadios1" value="Cash" required>
+										                    		Cash
+										                    	</label>
+										                    	<label style="margin-left: 2%;">
+										                      		<input type="radio" name="optionsRadios" id="optionsRadios2" value="Bank" required>
+										                      		Bank
+										                    	</label>
+										                  	</div>
+										                	<br>
+
+
+											                <div class="form-group">
+											                	<label for="inputamount" class="col-sm-2 control-label">Amount</label>
+											                	<div class="col-sm-10">
+											                		<div class="input-group">
+											                			<span class="input-group-addon">$</span>
+											                			<input type="text" id="inputamount" class="form-control" name="amount">
+											                			<span class="input-group-addon">Kyats</span>
+											                		</div>
+											                	</div>
+											                </div>
+
+											                <div class="form-group">
+											                	<label for="inputamount" class="col-sm-2 control-label">With Draw</label>
+											                	<div class="col-sm-10">
+																	<div class="input-group date">
+																		<div class="input-group-addon">
+																			<i class="fa fa-calendar"></i>
+																		</div>
+																		<input type="text" class="form-control pull-right" id="pg_with_draw" name="receive_date">
+																	</div>
+																</div>
+											                </div>
+											                <div class="form-group">
+											                	<label for="inputamount" class="col-sm-2 control-label">Description</label>
+											                	<div class="col-sm-10">
+											                		<div class="input-group">
+										                			  <textarea class="form-control" name="description" id="exampleFormControlTextarea5" rows="3" cols="200"></textarea>
+										                			</div>
+										                		</div>
+										                	</div>
+										            	</div>
+										            	<!-- /.box-body -->
+
+										            	<div class="box-footer">
+										            		<a href="/purchase_guarantee" class="btn btn-default">Cancel</a>
+										                	<button type="submit" class="btn btn-info pull-right">Add Amount</button>
+										              	</div>
+										              	<!-- /.box-footer -->
+										            </form>
+										        <!-- </div> -->
+										    </div>
+										</div>
+								</section>
+							</div>
+					      	<!-- /. PG tab-pane -->
 					    </div>
 				    	<!-- /.tab-content -->
 				  	</div>
@@ -319,6 +445,9 @@
       autoclose: true
     })
     $('#with_draw').datepicker({
+    	autoclose:true
+    })
+    $('#pg_with_draw').datepicker({
     	autoclose:true
     })
 </script>

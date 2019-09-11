@@ -4,7 +4,7 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
   <h1>
-    Invester Transfer Detail
+    Office Expenses Detail
     <small>advanced tables</small>
   </h1>
   <ol class="breadcrumb">
@@ -51,39 +51,34 @@
               <table id="example3" class="table table-bordered table-striped">
                 <thead>
                   <tr>
+                    <th>Expense For</th>
                     <th>Transfer Date</th>
-                    <th>Transfer Income</th>
+                    <th>Transfer Expense</th>
                     <th>Type</th>
                     <th>Description</th>
                     <th>Remark</th>
                   </tr>
                 </thead>
                 <tbody>
-                @foreach($investorDetail as $investorDetailById)
+                @foreach($officeExpenseDetailByProjectId as $officeExpenseDetailbyId)
                   <tr>
+                    <td>{{$officeExpenseDetailbyId->expense_category_name}}</td>
                     <?php
-                    $created_at = explode(" ", $investorDetailById->created_at);
+                      $created_at = explode(" ", $officeExpenseDetailbyId->created_at);
                     ?>
                     <td>{{$created_at['0']}}</td>
-                    <td>{{$investorDetailById->amount}} Kyats</td>
-                    <td>{{$investorDetailById->payment_type}}</td>
-                    <td>{{$investorDetailById->description}}</td>
+                    <td>{{$officeExpenseDetailbyId->amount}} Kyats</td>
+                    <td>{{$officeExpenseDetailbyId->payment_type}}</td>
+                    <td>{{$officeExpenseDetailbyId->description}}</td>
                     <td></td>
                   </tr>
                 @endforeach
-<!--                   <tr style="background-color: lightpink;">
-                    <td>3</td>
-                    <td>18 Jun 2019</td>
-                    <td>100,000</td>
-                    <td>Bank</td>
-                    <td>Adding 100,000</td>
-                    <td>Fixing amount for issue 2</td>
-                  </tr> -->
                 </tbody>
                 <tfoot>
                   <tr>
+                    <th>Expense For</th>
                     <th>Transfer Date</th>
-                    <th>Transfer Income</th>
+                    <th>Transfer Expense</th>
                     <th>Type</th>
                     <th>Description</th>
                     <th>Remark</th>
@@ -97,7 +92,7 @@
       </div>
       <div class="row">
         <div class="col-md-6">
-          <div class="callout" style="background-color:#C0C0C0; border-left: 5px solid #A9A9A9">
+          <div class="callout callout-danger">
             <h4> <span>Total investor Transfer amount is</span> <b>{{$totalBalance}}</b> <span>Kyats</span></h4>
             <p>This is all calculation amount of total investor income</p>
           </div>

@@ -26,7 +26,7 @@
                   <li><a href="#tab_3" data-toggle="tab">Bank Loan</a></li>
                   <li><a href="#tab_4" data-toggle="tab">PO</a></li>
                   <li><a href="#tab_6" data-toggle="tab">PG</a></li>
-                  <li><a href="#tab_7" data-toggle="tab">Interest Receive</a></li>
+                  <!-- <li><a href="#tab_7" data-toggle="tab">Interest Receive</a></li> -->
                   <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>
               </ul>
             
@@ -36,7 +36,7 @@
                   <section class="content">
                     <div class="row">
                       <div class="col-md-2 pull-right">
-                        <a href="/head_quater/add_income" class="btn btn-block btn-primary btn-sm">Add</a>
+                        <a href="/head_quater/create" class="btn btn-block btn-primary btn-sm">Add</a>
                       </div>
                       <div class="col-md-12">
                         <div class="box" style="border: none;">
@@ -47,35 +47,28 @@
                             <table id="example1" class="table table-bordered table-striped">
                               <thead>
                                 <tr>
-                                  <th>Id</th>
                                   <th>Investor Name</th>
                                   <th>Balance</th>
                                   <th>Updated Date</th>
                                 </tr>
                               </thead>
                               <tbody>
+                              @foreach($getAllInvestorIncome as $getInvestorIncome)
                                 <tr>
-                                  <td>1</td>
-                                  <td><a href="/head_quater/invester_detail/1">Investor01</a></td>
-                                  <td>100,000,000</td>
-                                  <td>18 Jun 2019</td>
-                                  <!-- <td>
-                                    <button type="button" class="btn btn-block btn-warning btn-sm">Edit</button>
-                                  </td> -->
+                                  <td>
+                                    <a href="/head_quater/invester_detail/{{$getInvestorIncome->investor_id}}"> {{$getInvestorIncome->name}}
+                                    </a>
+                                  </td>
+                                  <td>{{$getInvestorIncome->total_income_balance}} Kyats</td>
+                                  <?php
+                                    $updated_at = explode(" ", $getInvestorIncome->updated_at);
+                                  ?>
+                                  <td>{{$updated_at[0]}}</td>
                                 </tr>
-                                <tr>
-                                  <td>2</td>
-                                  <td><a href="/head_quater/invester_detail/1">Investor02</a></td>
-                                  <td>100,000,000</td>
-                                  <td>18 Jun 2019</td>
-                                  <!-- <td>
-                                    <button type="button" class="btn btn-block btn-warning btn-sm">Edit</button>
-                                  </td> -->
-                                </tr>
+                              @endforeach
                               </tbody>
                               <tfoot>
                                 <tr>
-                                  <th>Id</th>
                                   <th>Investor Name</th>
                                   <th>Balance</th>
                                   <th>Updated Date</th>
@@ -93,13 +86,13 @@
                         <div class="box box-default" style="border: none;">
                           
                           <!-- /.box-header -->
-                          <div class="box-body">
+                          <!-- <div class="box-body">
                             <div class="callout">
-                              <h4> <span>Total investor income amount is</span> <b>200,000,000</b> <span>Kyats</span></h4>
+                              <h4> <span>Total investor income amount is</span> <b> Not available</b> <span>Kyats</span></h4>
 
                               <p>This is all calculation amount of total investor income</p>
                             </div>
-                          </div>
+                          </div> -->
                           <!-- /.box-body -->
                         </div>
                         <!-- /.box -->
@@ -124,7 +117,7 @@
                   <section class="content">
                     <div class="row">
                       <div class="col-md-2 pull-right">
-                        <a href="/head_quater/add_income">
+                        <a href="/head_quater/create">
                           <button type="button" class="btn btn-block btn-primary btn-sm">Add</button>
                         </a>
                       </div>
@@ -138,79 +131,31 @@
                             <table id="example2" class="table table-bordered table-striped">
                               <thead>
                               <tr>
-                                <th>Id</th>
                                 <th>Project Name</th>
                                 <th>Amount</th>
-                                <th>Created Date</th>
                                 <th>Updated Date</th>
-                                <th>Action</th>
+                                <!-- <th>Action</th> -->
                               </tr>
                               </thead>
                               <tbody>
+                              @foreach($getAllProjectIncome as $getProjectIncome)
                               <tr>
-                                <td>1</td>
-                                <td><a href="/project/project_income_details">Project 01</a>
+                                <td><a href="/head_quater/project_detail/{{$getProjectIncome->project_id}}">{{$getProjectIncome->name}}</a>
                                 </td>
-                                <td>100,000,000</td>
-                                <td>18 Jun 2019</td>
-                                <td>18 Jun 2019</td>
-                                <td>
-                                  <button type="button" class="btn btn-block btn-warning btn-sm">Edit</button>
-                                </td>
+                                <td>{{$getProjectIncome->total_income_balance}} Kyats</td>
+                                <?php
+                                  $created_at = explode(" ", $getProjectIncome->created_at);
+                                ?>
+                                <td>{{$created_at[0]}}</td>
                               </tr>
-                              <tr>
-                                <td>2</td>
-                                <td><a href="/project/project_income_details">Project 02</a>
-                                </td>
-                                <td>100,000,000</td>
-                                <td>18 Jun 2019</td>
-                                <td>18 Jun 2019</td>
-                                <td>
-                                  <button type="button" class="btn btn-block btn-warning btn-sm">Edit</button>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>3</td>
-                                <td><a href="">Project 03</a>
-                                </td>
-                                <td>100,000,000</td>
-                                <td>18 Jun 2019</td>
-                                <td>18 Jun 2019</td>
-                                <td>
-                                  <button type="button" class="btn btn-block btn-warning btn-sm">Edit</button>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>4</td>
-                                <td><a href="">Project 04</a>
-                                </td>
-                                <td>100,000,000</td>
-                                <td>18 Jun 2019</td>
-                                <td>18 Jun 2019</td>
-                                <td>
-                                  <button type="button" class="btn btn-block btn-warning btn-sm">Edit</button>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>5</td>
-                                <td><a href="">Project 05</a>
-                                </td>
-                                <td>100,000,000</td>
-                                <td>18 Jun 2019</td>
-                                <td>18 Jun 2019</td>
-                                <td>
-                                  <button type="button" class="btn btn-block btn-warning btn-sm">Edit</button>
-                                </td>
-                              </tr>                              
+                              @endforeach
                               </tbody>
                               <tfoot>
                               <tr>
-                                <th>Id</th>
                                 <th>Project Name</th>
                                 <th>Amount</th>
-                                <th>Created Date</th>
                                 <th>Updated Date</th>
-                                <th>Action</th>
+                                <!-- <th>Action</th> -->
                               </tr>
                               </tfoot>
                             </table>
@@ -229,7 +174,7 @@
                 <section class="content">
                     <div class="row">
                       <div class="col-md-2 pull-right">
-                        <a href="/head_quater/add_income">
+                        <a href="/head_quater/create">
                           <button type="button" class="btn btn-block btn-primary btn-sm">Add</button>
                         </a>
                       </div>
@@ -242,52 +187,39 @@
                             <table id="example3" class="table table-bordered table-striped">
                               <thead>
                                 <tr>
-                                  <th>Id</th>
                                   <th>Bank Name</th>
                                   <th>Total Loan Amount</th>
-                                  <th>Current Amount</th>
-                                  <th>Left Amount</th>
+                                  <!-- <th>Left Amount</th> -->
                                   <th>Description</th>
                                   <th>Loan Date</th>
-                                  <th>Action</th>
+<!--                                   <th>Action</th> -->
                                 </tr>
                               </thead>
                               <tbody>
+                              @foreach($getAllBankIncome as $getBankIncome)
                                 <tr style="background-color:lightpink;">
-                                  <td>1</td>
-                                  <td><a href="/bank/loan_detail">AYA Bank</a></td>
-                                  <td>100,000,000</td>
-                                  <td>50,000,000</td>
-                                  <td>50,000,000</td>
-                                  <td>For Reason something</td>
-                                  <td>18 Jun 2019</td>
-                                  <td>
-                                    <button type="button" class="btn btn-block btn-warning btn-sm">Edit</button>
-                                  </td>
+                                  <td><a href="/head_quater/bank_detail/{{$getBankIncome->bank_id}}">{{$getBankIncome->name}}</a></td>
+                                  <td>{{$getBankIncome->total_loan_amount}} Kyats</td>
+                                  <!-- <td>{{$getBankIncome->left_amount}}</td> -->
+                                  <td>{{$getBankIncome->description}}</td>
+                                  <?php
+                                    $updated_at = explode(" ", $getBankIncome->updated_at);
+                                  ?>                                  
+                                  <td>{{$updated_at[0]}}</td>
+                                  <!-- <td>
+                                    <a href="" class="btn btn-block btn-warning btn-sm">Edit</a>
+                                  </td> -->
                                 </tr>
-                                <tr style="background-color:lightgreen;">
-                                  <td>2</td>
-                                  <td><a href="/bank/loan_detail">KBZ Bank</a></td>
-                                  <td>100,000,000</td>
-                                  <td>100,000,000</td>
-                                  <td>0</td>
-                                  <td>For Reason something</td>
-                                  <td>18 Jun 2019</td>
-                                  <td>
-                                    <button type="button" class="btn btn-block btn-warning btn-sm">Edit</button>
-                                  </td>
-                                </tr>
+                              @endforeach
                               </tbody>
                               <tfoot>
                                 <tr>
-                                  <th>Id</th>
                                   <th>Bank Name</th>
                                   <th>Total Loan Amount</th>
-                                  <th>Current Amount</th>
-                                  <th>Left Amount</th>
+                                  <!-- <th>Left Amount</th> -->
                                   <th>Description</th>
                                   <th>Loan Date</th>
-                                  <th>Action</th>
+<!--                                   <th>Action</th> -->
                                 </tr>
                               </tfoot>
                             </table>
@@ -306,7 +238,7 @@
                 <section class="content">
                     <div class="row">
                       <div class="col-md-2 pull-right">
-                        <a href="/head_quater/add_income">
+                        <a href="/head_quater/create">
                           <button type="button" class="btn btn-block btn-primary btn-sm">Add</button>
                         </a>
                       </div>
@@ -319,49 +251,34 @@
                             <table id="example4" class="table table-bordered table-striped">
                               <thead>
                                 <tr>
-                                  <th>Id</th>
-                                  <th>Project Name</th>
-                                  <th>Amount</th>
+                                  <th>PO Name</th>
+                                  <th>Total Amount</th>
                                   <th>With Draw</th>
-                                  <th>Action</th>
+                                  <th>Description</th>
                                 </tr>
                               </thead>
                               <tbody>
+                              @foreach($getAllPaymentOrderIncome as $getPaymentOrderIncomeById)
                                 <tr>
-                                  <td>1</td>
-                                  <td>Project A</td>
-                                  <td>100,000,000</td>
-                                  <td>18 Jun 2019</td>
-                                  <td>
+                                  <td><a href="/head_quater/payment_order_detail/{{$getPaymentOrderIncomeById->payment_order_id}}">{{$getPaymentOrderIncomeById->name}}</a></td>
+                                  <td>{{$getPaymentOrderIncomeById->total_income_balance}} Kyats</td>
+                                  <?php
+                                    $updated_at = explode(" ", $getPaymentOrderIncomeById->updated_at);
+                                  ?>                                  
+                                  <td>{{$updated_at[0]}}</td>
+                                  <td>{{$getPaymentOrderIncomeById->description}}</td>
+                            <!--  <td>
                                     <button type="button" class="btn btn-block btn-warning btn-sm">Edit</button>
-                                  </td>
+                                  </td> -->
                                 </tr>
-                                <tr>
-                                  <td>2</td>
-                                  <td>Project B</td>
-                                  <td>100,000,000</td>
-                                  <td>18 Jun 2019</td>
-                                  <td>
-                                    <button type="button" class="btn btn-block btn-warning btn-sm">Edit</button>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>3</td>
-                                  <td>Project C</td>
-                                  <td>100,000,000</td>
-                                  <td>18 Jun 2019</td>
-                                  <td>
-                                    <button type="button" class="btn btn-block btn-warning btn-sm">Edit</button>
-                                  </td>
-                                </tr>
+                              @endforeach
                               </tbody>
                               <tfoot>
                                 <tr>
-                                  <th>Id</th>
-                                  <th>Invester Name</th>
-                                  <th>Amount</th>
-                                  <th>Created Date</th>
-                                  <th>Action</th>
+                                  <th>PO Name</th>
+                                  <th>Total Amount</th>
+                                  <th>With Draw</th>
+                                  <th>Description</th>
                                 </tr>
                               </tfoot>
                             </table>
@@ -379,9 +296,7 @@
                 <section class="content">
                     <div class="row">
                       <div class="col-md-2 pull-right">
-                        <a href="/head_quater/add_income">
-                          <button type="button" class="btn btn-block btn-primary btn-sm">Add</button>
-                        </a>
+                        <a href="/head_quater/create" class="btn btn-block btn-primary btn-sm">Add</a>
                       </div>
                       <div class="col-md-12">
                         <div class="box" style="border: none;">
@@ -389,52 +304,37 @@
                           </div>
                           <!-- /.box-header -->
                           <div class="box-body">
-                            <table id="example4" class="table table-bordered table-striped">
+                            <table id="example6" class="table table-bordered table-striped">
                               <thead>
                                 <tr>
-                                  <th>Id</th>
-                                  <th>Project Name</th>
-                                  <th>Amount</th>
+                                  <th>PG Name</th>
+                                  <th>Total Amount</th>
                                   <th>With Draw</th>
-                                  <th>Action</th>
+                                  <th>Description</th>
+                                  <th>Updated at</th>
                                 </tr>
                               </thead>
                               <tbody>
+                              @foreach($getAllPurchaseGauranteeIncome as $getAllPurchaseGauranteeIncomeById)
                                 <tr>
-                                  <td>1</td>
-                                  <td>Project A</td>
-                                  <td>100,000,000</td>
-                                  <td>18 Jun 2019</td>
-                                  <td>
-                                    <button type="button" class="btn btn-block btn-warning btn-sm">Edit</button>
-                                  </td>
+                                  <td><a href="/head_quater/purchase_guarantee_detail/{{$getAllPurchaseGauranteeIncomeById->purchase_guarantee_id}}">{{$getAllPurchaseGauranteeIncomeById->name}}</a></td>
+                                  <td>{{$getAllPurchaseGauranteeIncomeById->total_income_balance}} Kyats</td>
+                                  <td>{{$getAllPurchaseGauranteeIncomeById->with_draw}}</td>
+                                  <td>{{$getAllPurchaseGauranteeIncomeById->description}}</td>
+                                  <?php
+                                    $updated_at = explode(" ", $getAllPurchaseGauranteeIncomeById->updated_at);
+                                  ?>                                  
+                                  <td>{{$updated_at[0]}}</td>
                                 </tr>
-                                <tr>
-                                  <td>2</td>
-                                  <td>Project B</td>
-                                  <td>100,000,000</td>
-                                  <td>18 Jun 2019</td>
-                                  <td>
-                                    <button type="button" class="btn btn-block btn-warning btn-sm">Edit</button>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>3</td>
-                                  <td>Project C</td>
-                                  <td>100,000,000</td>
-                                  <td>18 Jun 2019</td>
-                                  <td>
-                                    <button type="button" class="btn btn-block btn-warning btn-sm">Edit</button>
-                                  </td>
-                                </tr>
+                              @endforeach
                               </tbody>
                               <tfoot>
                                 <tr>
-                                  <th>Id</th>
-                                  <th>Invester Name</th>
-                                  <th>Amount</th>
-                                  <th>Created Date</th>
-                                  <th>Action</th>
+                                  <th>PG Name</th>
+                                  <th>Total Amount</th>
+                                  <th>With Draw</th>
+                                  <th>Description</th>
+                                  <th>Updated at</th>
                                 </tr>
                               </tfoot>
                             </table>
@@ -462,7 +362,7 @@
                           </div>
                           <!-- /.box-header -->
                           <div class="box-body">
-                            <table id="example4" class="table table-bordered table-striped">
+                            <table id="example7" class="table table-bordered table-striped">
                               <thead>
                                 <tr>
                                   <th>Id</th>
@@ -539,7 +439,7 @@
             <!-- /.box-header -->
             <div class="box-body">
               <div class="callout callout-success">
-                <h4>Total income amount is <b>100,000,000</b> <span>Kyats</span></h4>
+                <h4>Total income amount is <b>Not Define Yet !</b></h4>
 
                 <p>This is all calculation amount of total income</p>
               </div>
@@ -562,6 +462,8 @@
     $('#example2').DataTable()
     $('#example3').DataTable()
     $('#example4').DataTable()
+    $('#example6').DataTable()
+    $('#example7').DataTable()
   })
 </script>
 @endsection

@@ -8,8 +8,8 @@
 	      <!-- Horizontal Form -->
 	      <div class="box box-info">
 	        <div class="box-header with-border">
-	          <h3 class="box-title">Show Investor Lists</h3>
-            <a href="/investor/create" class="btn btn-primary btn-sm pull-right">Add Investor</a>
+	          <h3 class="box-title">Show Payment Order Lists</h3>
+            <a href="/purchase_guarantee/create" class="btn btn-primary btn-sm pull-right">Add PG</a>
 
 	        </div>
           <div class="box" style="border: none;">
@@ -20,29 +20,26 @@
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                   <tr>
-                    <th>Id</th>
-                    <th>Investor Code</th>
-                    <th>Investor Name</th>
+                    <th>PG Code</th>
+                    <th>PG Name</th>
                     <th>Action</th>                  
                   </tr>
                 </thead>
                 <tbody>
-                @foreach ($investors as $investor)
+                @foreach ($purchase_guarantees as $purchase_guarantee)
                   <tr>
-                    <td>{{$investor->id}}</td>
-                    <td>{{$investor->code}}</td>
-                    <td>{{$investor->name}}</td>
+                    <td>{{$purchase_guarantee->code}}</td>
+                    <td>{{$purchase_guarantee->name}}</td>
                     <td>
-                      <a href="/investor/{{$investor->id}}/edit" class="btn btn-warning btn-sm">Edit</a> <a href="/investor/{{$investor->id}}/delete" class="btn btn-danger btn-sm">Delete</a>
+                      <a href="/purchase_guarantee/{{$purchase_guarantee->id}}/edit" class="btn btn-warning btn-sm">Edit</a> <a href="/purchase_guarantee/{{$purchase_guarantee->id}}/delete" class="btn btn-danger btn-sm">Delete</a>
                     </td>
                   </tr>
                 @endforeach             
                 </tbody>
                 <tfoot>
                   <tr>
-                    <th>Id</th>
-                    <th>Investor Code</th>
-                    <th>Investor Name</th>
+                    <th>PG Code</th>
+                    <th>PG Name</th>
                     <th>Action</th>
                   </tr>
                 </tfoot>

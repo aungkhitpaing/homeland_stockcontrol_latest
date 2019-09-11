@@ -105,6 +105,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
+            <li><a href="/head_quater/all_transactions"><i class="fa fa-circle-o"></i>All</a></li>
             <li><a href="/head_quater/income_cashbook"><i class="fa fa-circle-o"></i>Income Cashbook</a></li>
             <li><a href="/head_quater/expend_cashbook"><i class="fa fa-circle-o"></i>Expand Cashbook</a></li>
           </ul>

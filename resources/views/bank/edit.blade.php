@@ -8,37 +8,42 @@
 	      <!-- Horizontal Form -->
 	      <div class="box box-info">
 	        <div class="box-header with-border">
-	          <h3 class="box-title">Register Investor Form</h3>
+	          <h3 class="box-title">Edit Bank Form</h3>
 	        </div>
 	        <!-- /.box-header -->
 	        <!-- form start -->
-	        <form class="form-horizontal" method="POST" action="/investor/store">
+	        @foreach($editBank as $bank)
+	        <form class="form-horizontal" method="POST" action="/bank/{{$bank->id}}/update">
             {{ csrf_field() }}
+            {{ method_field('PATCH') }}
 	          <div class="box-body">
               <!-- investor name -->
 	            <div class="form-group">
-	              <label for="Investorname" class="col-sm-2 control-label">Investor Name</label>
+	              <label for="bankname" class="col-sm-2 control-label">Bank Name</label>
 	              <div class="col-sm-10">
-	                <input type="text" class="form-control" id="Investorname" name="investor_name" placeholder="Enter the investor name" required>
+	                <input type="text" class="form-control" id="bankname" name="bank_name" value="{{$bank->name}}" placeholder="Enter the bank name" required>
 	              </div>
 	            </div>
 
               <!-- investor code  -->
               <div class="form-group">
-                <label for="Investorname" class="col-sm-2 control-label">Investor Code</label>
+                <label for="bankcode" class="col-sm-2 control-label">Bank Code</label>
                 <div class="col-sm-10">
-                  <input type="number" class="form-control" id="investorcode" name="investor_code" placeholder="Enter the investor code" required>
+                <?php
+                	$code = explode("_",$bank->code)                	 
+                ?>
+                  <input type="number" class="form-control" id="investorcode" value="{{$code[1]}}" name="bank_code" placeholder="Enter the bank code" required>
                 </div>
               </div>
 	          </div>
-
 	          <!-- /.box-body -->
 	          <div class="box-footer">
-	            <a href="/investor/" class="btn btn-default">Back</a>
-              <input type="submit" class="btn btn-info pull-right" name="store_investor" value="Add">
+	            <a href="/bank/" class="btn btn-default">Back</a>
+              <input type="submit" class="btn btn-info pull-right" name="store_investor" value="Update">
 	          </div>
 	          <!-- /.box-footer -->
 	        </form>
+	        @endforeach  
 	      </div>
 	      <!-- /.box -->
 	    </div>

@@ -2,60 +2,78 @@
 
 namespace App\Http\Controllers;
 
-use App\Estimate;
-use App\Supplier;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
+    /**
+     * Show a list of all of the invester.
+     *
+     * @return invester
+     */
     public function index()
     {
-        return view('project.index');
+        $projects = DB::table('project_tb')->where('delete_flag',0)->get();
+        return view('project.show',compact('projects'));
     }
 
-    public function estimate()
+    public function create()
     {
-        $estimates = Estimate::paginate(5);
-        return view('project.estimate', compact('estimates'));
+        return view('project.create');
     }
 
-    public function estimateCreate()
-    {
-        return view('project.estimate_create');
+    /**
+     * create store project
+     *
+     * @return Response
+     */
+    public function store(Request $request) {
+    
+    if($request)
+        try {
+            $storeProject = DB::table('project_tb')->insert([
+                'code' => "P_".$request->project_code, 
+                'name' => $request->project_name,
+            ]);
+            return redirect('/project');      
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
     }
 
-    public function estimateEdit()
+
+    /**
+     * retrieve edit project
+     *
+     * @return Response
+     */
+    public function edit($id)
     {
-        return view('project.estimate_edit');
+        $editProject = DB::table('project_tb')->where('id',$id)->get();
+        return view('project.edit',compact('editProject'));
     }
 
-    public function DailyExpense()
+    /**
+     * retrieve update project
+     *
+     * @return Response
+     */
+    public function update($id, Request $request)
     {
-        return view('project.daily_expense');
-    }
-    public function getAllDailyExpense()
-    {
-        return view('project.get_all_daily_expense');
-    }
-
-    public function Supplier()
-    {
-        $suppliers = Supplier::paginate(15);
-        return view('project.supplier', compact('suppliers'));
-    }
-
-    public function supplierCreate()
-    {
-        return view('project.supplier_create');
+        $editProject = DB::table('project_tb')->where('id',$id)->update([
+            'code' => "P_".$request->project_code, 
+            'name' => $request->project_name
+        ]);
+        return redirect('/project');
     }
 
-    public function supplierEdit()
+    public function delete($id)
     {
-        return view('project.supplier_edit');
+        $deleteInvestor = DB::table('project_tb')->where('id',$id)->update([
+            'delete_flag' => 1
+        ]);
+        return redirect('/project');
     }
 
-    public function stockControl()
-    {
-        dd('hello');
-    }
 }
