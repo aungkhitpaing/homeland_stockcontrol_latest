@@ -112,6 +112,7 @@
                   {{ csrf_field() }}
                   <div class="col-md-2">
                     <div class="form-group">
+                      <label for="">Account Head Type</label>
                       <select class="form-control" id="" name="account_head_type">
                         <option selected="true" disabled="disabled">Choose Account Head Type</option> 
                         @foreach($account_head_types as $account_head)
@@ -124,6 +125,7 @@
                   </div>
                   <div class="col-md-2">
                     <div class="form-group">
+                      <label for="">Payment Type</label>
                       <select class="form-control" id="" name="payment_type">
                         <option selected="true" disabled="disabled">Choose Payment Type</option> 
                          <option value="Cash">Cash</option>
@@ -132,6 +134,19 @@
                     </div>
                   </div>
                   <div class="col-md-2">
+                    <div class="form-group">
+                      <label for="">From Date</label>
+                      <input type="date" class="form-control datepicker" id="datepicker" name="from_date">
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <label for="">To Date</label>
+                      <input type="date" class="form-control datepicker" id="datepicker" name="to_date">
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <label for="">Download</label>
                     <button type="submit" class="btn btn-success">Excel Export</button>
                   </div>     
                 </form>                 
