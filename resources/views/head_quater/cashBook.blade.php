@@ -113,11 +113,21 @@
                   <div class="col-md-2">
                     <div class="form-group">
                       <select class="form-control" id="" name="account_head_type">
+                        <option selected="true" disabled="disabled">Choose Account Head Type</option> 
                         @foreach($account_head_types as $account_head)
                           <option value="{{ $account_head->account_head_type }}">
                             {{$account_head->account_head_type}}
                           </option>
                         @endforeach
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <select class="form-control" id="" name="payment_type">
+                        <option selected="true" disabled="disabled">Choose Payment Type</option> 
+                         <option value="Cash">Cash</option>
+                         <option value="Bank">Bank</option>
                       </select>
                     </div>
                   </div>
