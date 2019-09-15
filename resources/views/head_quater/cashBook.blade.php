@@ -136,13 +136,15 @@
                   <div class="col-md-2">
                     <div class="form-group">
                       <label for="">From Date</label>
-                      <input type="date" class="form-control datepicker" id="datepicker" name="from_date">
+                      <input type="date" class="form-control datepicker" id="datepicker" name="from_date"
+                      required>
                     </div>
                   </div>
                   <div class="col-md-2">
                     <div class="form-group">
                       <label for="">To Date</label>
-                      <input type="date" class="form-control datepicker" id="datepicker" name="to_date">
+                      <input type="date" class="form-control datepicker" id="datepicker" name="to_date"
+                      required>
                     </div>
                   </div>
                   <div class="col-md-2">

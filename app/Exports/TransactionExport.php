@@ -36,6 +36,7 @@ class TransactionExport implements FromCollection, WithHeadings, ShouldAutoSize
                 ->where('payment_type', '=', request()->payment_type)
                 ->select('cash_book_tb.*', 'account_head_tb.account_head_type')
                 ->where('deleted_flag', 0)
+                ->whereBetween('cash_book_tb.created_at', [request()->from_date, request()->to_date])
                 ->get()
                 ->toArray();
 
@@ -48,6 +49,7 @@ class TransactionExport implements FromCollection, WithHeadings, ShouldAutoSize
                 ->join('account_head_tb', 'account_head_tb.id', '=', 'cash_book_tb.account_head_id')
                 ->where('account_head_type', '=', request()->account_head_type)
                 ->where('payment_type', '=', request()->payment_type)
+                ->whereBetween('cash_book_tb.created_at', [request()->from_date, request()->to_date])
                 ->select('cash_book_tb.*', 'account_head_tb.account_head_type')
                 ->where('deleted_flag', 0)
                 ->get()
