@@ -32,6 +32,26 @@ class TransactionExport implements FromCollection, WithHeadings, ShouldAutoSize
             ->whereBetween('cash_book_tb.created_at', [request()->from_date, request()->to_date])
             ->get()
             ->toArray();
+        
+            $open_amount = $datas[0]->income;
+            
+            $datas[0]->balance = $open_amount;
+
+        for ($i=1; $i < sizeof($datas); $i++) {
+            
+            $x = $i - 1;
+
+            if($datas[$i]->income > 0) {
+            
+                $updateBalance =  $datas[$x]->balance + $datas[$i]->income;
+            }
+
+            if ($datas[$i]->expend > 0 ) {
+                $updateBalance = $datas[$x]->balance - $datas[$i]->expend;
+            }
+
+            $datas[$i]->balance = $updateBalance;
+        }
 
         return $this->selectCustomColumns($datas);
     }
@@ -49,20 +69,22 @@ class TransactionExport implements FromCollection, WithHeadings, ShouldAutoSize
         $dump = $datas->map(function ($data) {
             return collect($data)
                 ->only([
-                    'specification_id',
+                    'created_at',
+                    'account_head_type',
+                    'description',
                     'payment_type',
                     'income',
                     'expend',
                     'balance',
-                    'description',
-                    'created_at',
-                    'account_head_type'
                 ])
                 ->all();
         });
 
         return $dump;
     }
+
+                    
+
 
     /**
      * headings
@@ -72,14 +94,13 @@ class TransactionExport implements FromCollection, WithHeadings, ShouldAutoSize
     public function headings(): array
     {
         return [
-            'Specification Name',
-            'Payment Type',
-            'Income',
-            'Expend',
-            'Balance',
-            'Created Date',
+            'Create Date',
+            'Account Head',
             'Description',
-            'Account Head Type',
+            'Payment Type',
+            'Credit',
+            'Debit',
+            'Balance',
         ];
     }
 }
