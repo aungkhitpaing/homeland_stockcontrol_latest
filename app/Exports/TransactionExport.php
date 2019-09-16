@@ -15,48 +15,25 @@ class TransactionExport implements FromCollection, WithHeadings, ShouldAutoSize
      */
     public function collection()
     {
-        if (!request()->payment_type) {
-            $datas = DB::table('cash_book_tb')
-                ->orderby('id', 'asc')
-                ->join('account_head_tb', 'account_head_tb.id', '=', 'cash_book_tb.account_head_id')
-                ->where('account_head_type', '=', request()->account_head_type)
-                ->select('cash_book_tb.*', 'account_head_tb.account_head_type')
-                ->where('deleted_flag', 0)
-                ->whereBetween('cash_book_tb.created_at', [request()->from_date, request()->to_date])
-                ->get()
-                ->toArray();
+        $query = DB::table('cash_book_tb')
+            ->orderby('id', 'asc')
+            ->join('account_head_tb', 'account_head_tb.id', '=', 'cash_book_tb.account_head_id');
 
-            return $this->selectCustomColumns($datas);
+        if (request()->account_head_type) {
+            $query = $query->where('account_head_type', '=', request()->account_head_type);
         }
 
-        if (!request()->account_head_type) {
-            $datas = DB::table('cash_book_tb')
-                ->orderby('id', 'asc')
-                ->join('account_head_tb', 'account_head_tb.id', '=', 'cash_book_tb.account_head_id')
-                ->where('payment_type', '=', request()->payment_type)
-                ->select('cash_book_tb.*', 'account_head_tb.account_head_type')
-                ->where('deleted_flag', 0)
-                ->whereBetween('cash_book_tb.created_at', [request()->from_date, request()->to_date])
-                ->get()
-                ->toArray();
-
-            return $this->selectCustomColumns($datas);
+        if (request()->payment_type) {
+            $query = $query->where('payment_type', '=', request()->payment_type);
         }
 
-        if (request()->payment_type && request()->account_head_type) {
-            $datas = DB::table('cash_book_tb')
-                ->orderby('id', 'asc')
-                ->join('account_head_tb', 'account_head_tb.id', '=', 'cash_book_tb.account_head_id')
-                ->where('account_head_type', '=', request()->account_head_type)
-                ->where('payment_type', '=', request()->payment_type)
-                ->whereBetween('cash_book_tb.created_at', [request()->from_date, request()->to_date])
-                ->select('cash_book_tb.*', 'account_head_tb.account_head_type')
-                ->where('deleted_flag', 0)
-                ->get()
-                ->toArray();
+        $datas = $query->select('cash_book_tb.*', 'account_head_tb.account_head_type')
+            ->where('deleted_flag', 0)
+            ->whereBetween('cash_book_tb.created_at', [request()->from_date, request()->to_date])
+            ->get()
+            ->toArray();
 
-            return $this->selectCustomColumns($datas);
-        }
+        return $this->selectCustomColumns($datas);
     }
 
     /**
