@@ -82,6 +82,16 @@ Route::prefix('project')->group(function () {
 	Route::get('{id}/delete', 'ProjectController@delete');
 });
 
+/* ExchangeController */
+Route::prefix('exchange_transfer')->group(function () {
+	Route::get('/', 'ExchangeController@index');
+	Route::get('/create', 'ExchangeController@create');
+	Route::post('/store', 'ExchangeController@store');
+	Route::get('/{id}/edit', 'ExchangeController@edit');
+	Route::patch('{id}/update', 'ExchangeController@update');
+	Route::get('{id}/delete', 'ExchangeController@delete');
+});
+
 /* Bank */
 
 Route::prefix('bank')->group(function () {
