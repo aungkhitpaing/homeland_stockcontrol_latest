@@ -32,25 +32,31 @@ class TransactionExport implements FromCollection, WithHeadings, ShouldAutoSize
             ->whereBetween('cash_book_tb.created_at', [request()->from_date, request()->to_date])
             ->get()
             ->toArray();
-        
-            $open_amount = $datas[0]->income;
-            
-            $datas[0]->balance = $open_amount;
 
-        for ($i=1; $i < sizeof($datas); $i++) {
-            
+        $open_amount = $datas[0]->income;
+
+        $datas[0]->balance = $open_amount;
+
+        for ($i = 1; $i < sizeof($datas); $i++) {
+
             $x = $i - 1;
 
-            if($datas[$i]->income > 0) {
-            
+            if ($datas[$i]->income > 0) {
+
                 $updateBalance =  $datas[$x]->balance + $datas[$i]->income;
             }
 
-            if ($datas[$i]->expend > 0 ) {
+            if ($datas[$i]->expend > 0) {
                 $updateBalance = $datas[$x]->balance - $datas[$i]->expend;
             }
 
             $datas[$i]->balance = $updateBalance;
+        }
+
+        foreach ($datas as $data) {
+            $data->id = $data->created_at;
+            $data->specification_id = $data->account_head_type;
+            $data->account_head_id = $data->description;
         }
 
         return $this->selectCustomColumns($datas);
@@ -65,13 +71,12 @@ class TransactionExport implements FromCollection, WithHeadings, ShouldAutoSize
     public function selectCustomColumns($datas)
     {
         $datas = collect($datas);
-
         $dump = $datas->map(function ($data) {
             return collect($data)
                 ->only([
-                    'created_at',
-                    'account_head_type',
-                    'description',
+                    'id',
+                    'specification_id',
+                    'account_head_id',
                     'payment_type',
                     'income',
                     'expend',
@@ -82,9 +87,6 @@ class TransactionExport implements FromCollection, WithHeadings, ShouldAutoSize
 
         return $dump;
     }
-
-                    
-
 
     /**
      * headings
@@ -101,6 +103,7 @@ class TransactionExport implements FromCollection, WithHeadings, ShouldAutoSize
             'Credit',
             'Debit',
             'Balance',
+
         ];
     }
 }
