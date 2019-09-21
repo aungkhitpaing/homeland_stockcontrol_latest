@@ -56,6 +56,7 @@
                     <th>Type</th>
                     <th>Description</th>
                     <th>Remark</th>
+                    <th>Option</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -69,6 +70,7 @@
                     <td>{{$investorDetailById->payment_type}}</td>
                     <td>{{$investorDetailById->description}}</td>
                     <td></td>
+                    <td><a href="/head_quater/invester_detail/{{$investorDetailById->investor_id}}/edit" class="btn btn-primary btn-sm">Edit</a></td>
                   </tr>
                 @endforeach
 <!--                   <tr style="background-color: lightpink;">
