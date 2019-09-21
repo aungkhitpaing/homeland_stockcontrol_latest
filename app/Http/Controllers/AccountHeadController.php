@@ -35,7 +35,7 @@ class AccountHeadController extends Controller
                 'account_head_code' => $request->accounthead_code, 
                 'account_head_type' => $request->accounthead_name,
             ]);
-            return redirect('/bank');      
+            return redirect('/accounthead');
         } catch (Exception $e) {
             return $e->getMessage();
         }

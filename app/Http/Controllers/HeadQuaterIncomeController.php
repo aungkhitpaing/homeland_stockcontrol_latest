@@ -320,30 +320,7 @@ class HeadQuaterIncomeController extends Controller
             'specification_id' => $specification_id
 		];
 
-    	// if($accoundhead_id == 1) {
-
-    	// 	$cashBookInfo['specification_id'] = $request->investor;
-
-    	// } elseif ($accoundhead_id == 2) {
-
-    	// 	$cashBookInfo['specification_id'] = $request->project;
-
-    	// } elseif ($accoundhead_id == 3) {
-
-    	// 	$cashBookInfo['specification_id'] = $request->bank;
-    	// 	$cashBookInfo['payment_type'] = 'Bank';
-    	
-    	// } elseif ($accoundhead_id == 4) {
-    		
-    	// 	$cashBookInfo['specification_id'] = $request->paymentorder;
-    	
-    	// } elseif ($accoundhead_id == 5) {
-
-    	// 	$cashBookInfo['specification_id'] = $request->purchaseguarantee;
-    	// }
-
     	$getRowCountFromCashBook = $this->getRowCountFromCashBook();
-
     	if(sizeof($getRowCountFromCashBook) > 0) {
     		$getBalanceAmount = DB::table('cash_book_tb')->latest('id')->first();
     		$cashBookInfo['balance'] = (int)$request->amount + $getBalanceAmount->balance;

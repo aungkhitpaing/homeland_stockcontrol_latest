@@ -30,25 +30,35 @@
                   </tr>
                 </thead>
                 <tbody>
+                @foreach($getAllExchangeData as $getExchangeData)
                   <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                      <?php
+                        $created_at = explode(" ", $getExchangeData->created_at);
+                      ?>
+                    <td>{{$created_at[0]}}</td>
+                    <td>{{$getExchangeData->description}}</td>
+                    <td>{{$getExchangeData->exchange_rate}} Kyats</td>
+                    <td>{{$getExchangeData->payment_type}}</td>
+                    @if($getExchangeData->exchange_type == 0)
+                      <td>Cash</td>
+                      <td>Bank</td>
+                    @else
+                      <td>Bank</td>
+                      <td>Cash</td>
+                    @endif
                     <td><a href="" class="btn btn-warning btn-sm">Edit</a></td>
                   </tr>
+                @endforeach
                 </tbody>
                 <tfoot>
                   <tr>
                     <th>Date</th>
-                    <th>Description</th>                  
+                    <th>Description</th>
                     <th>Transfer Amount</th>
                     <th>Payment Type</th>
                     <th>From</th>
                     <th>To</th>
-                    <th>Action</th>   
+                    <th>Action</th>
                   </tr>
                 </tfoot>
               </table>

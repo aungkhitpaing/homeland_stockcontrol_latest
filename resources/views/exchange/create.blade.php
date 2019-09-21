@@ -12,7 +12,7 @@
           </div>
           <!-- /.box-header -->
           <!-- form start -->
-          <form class="form-horizontal" method="POST" action="/exchange/store">
+          <form class="form-horizontal" method="POST" action="/exchange_transfer/store">
             {{ csrf_field() }}
             <div class="box-body">
                 

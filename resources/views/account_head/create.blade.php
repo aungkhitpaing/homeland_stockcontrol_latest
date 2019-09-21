@@ -27,7 +27,7 @@
               <div class="form-group">
                 <label for="accounthead_code" class="col-sm-2 control-label">Account Head Code</label>
                 <div class="col-sm-10">
-                  <input type="number" class="form-control" id="accounthead_code" name="accounthead_code" placeholder="Enter the account head code" required>
+                  <input type="text" class="form-control" id="accounthead_code" name="accounthead_code" placeholder="Enter the account head code" required>
                 </div>
               </div>
             </div>

@@ -41,8 +41,8 @@ class DashBoardController extends Controller
     			$income  += $data->income;		
     		}
     	}
-        $cash = $income - $expend;
 
+        $cash = $income - $expend;
     	return $cash;	
     }
 
