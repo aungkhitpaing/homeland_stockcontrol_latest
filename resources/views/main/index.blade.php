@@ -149,11 +149,13 @@
 
 
 	<div class="row">
-		<div class="col-md-12">			
-        	<div class="callout callout-warning">
-	    		<h4> <span>Total Balance Amount is</span> <b>{{$balance}}</b> <span>Kyats</span></h4>
-	    		<p>This is currently amount of balance</p>
-	  		</div>
+		<div class="col-md-12">
+			<div class="box-body">
+				<div class="callout callout-warning">
+					<h4> <span>Total Balance Amount is</span> <b>{{$balance}}</b> <span>Kyats</span></h4>
+					<p>This is currently amount of balance</p>
+				</div>
+			</div>
 		</div>
 	</div>
 

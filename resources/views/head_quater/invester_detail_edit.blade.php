@@ -18,15 +18,17 @@
 <section class="content">
     <div class="row">
         <div class="col-md-8">
-            <form method="POST" action="/head_quater/invester_detail/2/update">
+            <form method="POST" action="/head_quater/{{$investor_id}}/invester_detail/{{$investorDetailId->investor_detail_id}}">
                 {{ csrf_field() }}
+                {{ method_field('PATCH') }}
                 <div class="form-group">
                     <label for="email">Transfer Income</label>
                     <input type="number" class="form-control" name="amount"
-                    value="{{$investorDetail->amount}}">
+                    value="{{$investorDetailId->amount}}">
                 </div>
+                {{--<p>/{{$investor_id}}/invester_detail/{{$investorDetailId->investor_detail_id}}</p>--}}
                 <button type="submit" class="btn btn-success">Change</button>
-                <a href="/head_quater/invester_detail/2/" class="btn btn-default">Cancel</a>
+                {{--<a href="/head_quater/invester_detail/{{$investorDetailId->investor_detail_id}}/" class="btn btn-default">Cancel</a>--}}
             </form>
         </div>
     </div>

@@ -27,8 +27,8 @@ Route::prefix('head_quater')->group(function () {
 	Route::get('/create', 'HeadQuaterIncomeController@create');
 
 	Route::get('/invester_detail/{id}', 'HeadQuaterIncomeController@getAllInvestorIncomeById');
-	Route::get('/invester_detail/{id}/edit', 'HeadQuaterIncomeController@EditInvestorIncomeById');
-	Route::post('/invester_detail/{id}/update', 'HeadQuaterIncomeController@UpdateInvestorIncomeById');
+	Route::get('{invester_id}/invester_detail/{id}/edit', 'HeadQuaterIncomeController@EditInvestorIncomeById');
+	Route::patch('{invester_id}/invester_detail/{id}', 'HeadQuaterIncomeController@UpdateInvestorIncomeById');
 
 	Route::get('/project_detail/{id}', 'HeadQuaterIncomeController@getAllProjectIncomeById');
 	Route::get('/bank_detail/{id}', 'HeadQuaterIncomeController@getAllBankIncomeById');

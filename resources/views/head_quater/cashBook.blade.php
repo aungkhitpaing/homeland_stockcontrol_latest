@@ -149,7 +149,8 @@
                   </div>
                   <div class="col-md-2">
                     <div class="form-group">
-                      <label for="">Download</label>
+                      <label for="">Export</label>
+                      <br>
                       <button type="submit" class="btn btn-success" >Excel Export</button>
                     </div>
                   </div>     

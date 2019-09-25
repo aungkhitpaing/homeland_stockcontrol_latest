@@ -260,6 +260,7 @@ class HeadQuaterIncomeController extends Controller
 		}
 	}
 
+
 	public function storePurchaseGuaranteeIncome(Request $request)
 	{
 
@@ -330,8 +331,6 @@ class HeadQuaterIncomeController extends Controller
 		}
 		return $cashBookInfo;
 	}
-
-
 
 
 	/**
@@ -517,13 +516,12 @@ class HeadQuaterIncomeController extends Controller
 	 * @param $investor_id
 	 * @return void
 	 */
-	public function EditInvestorIncomeById($investor_id)
+	public function EditInvestorIncomeById($investor_id,$investor_detail_id)
 	{
-		$investorDetail = DB::table('invester_detail_tb')
-			->where('investor_id', $investor_id)
+		$investorDetailId = DB::table('invester_detail_tb')
+			->where('investor_detail_id', $investor_detail_id)
 			->first();
-
-		return view('head_quater.invester_detail_edit', compact('investorDetail'));
+		return view('head_quater.invester_detail_edit', compact('investorDetailId','investor_id'));
 	}
 
 	/**
@@ -532,12 +530,63 @@ class HeadQuaterIncomeController extends Controller
 	 * @param $investor_id
 	 * @return void
 	 */
-	public function UpdateInvestorIncomeById($investor_id)
+	public function UpdateInvestorIncomeById($invester_id,$investor_detail_id)
 	{
-		$investorDetail = DB::table('invester_detail_tb')
-			->where('investor_id', $investor_id)
-			->update(['amount' => request()->amount]);
+        $invester_detail = DB::table('invester_detail_tb')->select('amount','account_head_id')->where('delete_flag',0)->where('investor_detail_id',$investor_detail_id)->first();
 
-		return redirect('/head_quater/invester_detail/' . $investor_id);
+        $updateInvestorDetail = $this->updateTransactionbyId($investor_detail_id,'invester_detail_tb','investor_detail_id');
+        if($updateInvestorDetail) {
+            $getUpdateAmount = DB::table('invester_detail_tb')
+                ->select('amount')
+                ->where('investor_detail_id',$investor_detail_id)
+                ->where('delete_flag',0)->first();
+            $getTotalIncomeamountById = DB::table('investor_income_tb')->select('total_income_balance')->where('delete_flag',0)->where('investor_id',$invester_id)->first();
+
+            if($getTotalIncomeamountById->total_income_balance > 0)
+            {
+                $diff = $getUpdateAmount->amount - $invester_detail->amount;
+
+                if($getUpdateAmount->amount > $invester_detail->amount) {
+
+                    $updateTotalIncome = $getTotalIncomeamountById->total_income_balance + $diff;
+                    $change_status = "increase";
+                } else {
+
+                    $updateTotalIncome = $getTotalIncomeamountById->total_income_balance - $diff;
+                    $change_status = "decrease";
+                }
+                $updateTotalIncomeResult = DB::table('investor_income_tb')->where('investor_id', $invester_id)->update(['total_income_balance' => $updateTotalIncome]);
+
+                if ($updateTotalIncomeResult == 1) {
+                    try {
+                        /* Income Update Amount In CashBook */
+                        $updateAmountInCashbook =  DB::table('cash_book_tb')->where('deleted_flag',0)
+                                                    ->where('investor_income_detail_id', $investor_detail_id)
+                                                    ->update(['income' => $getUpdateAmount->amount ]);
+
+                        if ($updateAmountInCashbook) {
+                            /* Add Record Histories into record table*/
+                            DB::table('record_histroies_tb')->insert(['invester_detail_id' => $investor_detail_id,
+                                'account_head_type' => $invester_detail->account_head_id,
+                                'transaction_update_amount' => $getUpdateAmount->amount,
+                                'transaction_original_amount' => $invester_detail->amount,
+                                'change_status' => $change_status,
+                                'diff_amount' => $diff,
+                            ]);
+                        }
+                    }catch (Exception $e) {
+                        return $e->getMessage();
+                    }
+                }
+            }
+        }
+        return redirect("/head_quater/invester_detail/$invester_id");
 	}
+
+
+    public function updateTransactionbyId($id,$tablename,$column_name)
+    {
+        return DB::table($tablename)->where($column_name, $id)->update(['amount' => request()->amount]);
+    }
+
 }
