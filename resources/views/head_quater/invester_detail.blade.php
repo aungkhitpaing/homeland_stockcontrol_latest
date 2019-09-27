@@ -89,6 +89,7 @@
                     <th>Type</th>
                     <th>Description</th>
                     <th>Remark</th>
+                    <th>Option</th>
                   </tr>
                 </tfoot>
               </table>

@@ -30,15 +30,27 @@ Route::prefix('head_quater')->group(function () {
 	Route::get('{invester_id}/invester_detail/{id}/edit', 'HeadQuaterIncomeController@EditInvestorIncomeById');
 	Route::patch('{invester_id}/invester_detail/{id}', 'HeadQuaterIncomeController@UpdateInvestorIncomeById');
 
-	Route::get('/project_detail/{id}', 'HeadQuaterIncomeController@getAllProjectIncomeById');
-	Route::get('/bank_detail/{id}', 'HeadQuaterIncomeController@getAllBankIncomeById');
-	Route::get('/payment_order_detail/{id}', 'HeadQuaterIncomeController@getAllPaymentOrderIncomeById');
-	Route::get('/purchase_guarantee_detail/{id}', 'HeadQuaterIncomeController@getAllPurchaseGuaranteeIncomeById');
 
+	Route::get('/project_detail/{id}', 'HeadQuaterIncomeController@getAllProjectIncomeById');
+    Route::get('{project_id}/project_detail/{id}/edit', 'HeadQuaterIncomeController@EditProjectIncomeById');
+    Route::patch('{project_id}/project_detail/{id}', 'HeadQuaterIncomeController@UpdateProjectIncomeById');
+
+
+	Route::get('/bank_detail/{id}', 'HeadQuaterIncomeController@getAllBankIncomeById');
+    Route::get('{bank_id}/loan_detail/{id}/edit', 'HeadQuaterIncomeController@EditBankIncomeById');
+    Route::patch('{bank_id}/loan_detail/{id}', 'HeadQuaterIncomeController@UpdateBankIncomeById');
+
+
+	Route::get('/payment_order_detail/{id}', 'HeadQuaterIncomeController@getAllPaymentOrderIncomeById');
+    Route::get('{payment_order_id}/payment_order_detail/{id}/edit', 'HeadQuaterIncomeController@EditPOIncomeById');
+    Route::patch('{payment_order_id}/payment_order_detail/{id}', 'HeadQuaterIncomeController@UpdatePOIncomeById');
+
+	Route::get('/purchase_guarantee_detail/{id}', 'HeadQuaterIncomeController@getAllPurchaseGuaranteeIncomeById');
+    Route::get('{purchase_guarantee_id}/purchase_guarantee_detail/{id}/edit', 'HeadQuaterIncomeController@EditPGIncomeById');
+    Route::patch('{purchase_guarantee_id}/purchase_guarantee_detail/{id}', 'HeadQuaterIncomeController@UpdatePGIncomeById');
 
 
 	Route::get('/income_cashbook', 'HeadQuaterIncomeController@index');
-
 	Route::post('/storeInvestorIncome', 'HeadQuaterIncomeController@storeInvestorIncome');
 	Route::post('/storeProjectIncome', 'HeadQuaterIncomeController@storeProjectIncome');
 	Route::post('/storeBankIncome', 'HeadQuaterIncomeController@storeBankIncome');
