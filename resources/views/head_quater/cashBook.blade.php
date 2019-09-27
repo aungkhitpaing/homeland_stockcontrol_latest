@@ -46,7 +46,6 @@
                             <th>Payment Type</th>
                             <th>Credit</th>
                             <th>Debit</th>
-                            <th>Balance</th>
                             <th>Created_at</th>
                           </tr>
                         </thead>
@@ -60,7 +59,6 @@
                             <td>{{$getTransaction->payment_type}}</td>
                             <td>{{$getTransaction->income}} </td>
                             <td>{{$getTransaction->expend}} </td>
-                            <td>{{$getTransaction->balance}} Kyats</td>
                             <?php
                             $updated_at = explode(" ", $getTransaction->updated_at);
                             ?>
@@ -77,7 +75,6 @@
                             <th>Payment Type</th>
                             <th>Credit</th>
                             <th>Debit</th>
-                            <th>Balance</th>
                             <th>Created_at</th>
                           </tr>
                         </tfoot>

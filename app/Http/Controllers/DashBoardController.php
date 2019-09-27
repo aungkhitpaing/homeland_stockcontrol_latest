@@ -14,8 +14,8 @@ class DashBoardController extends Controller
     	$getTotalIncomeBank = $this->getTotalIncomeBank();
     	$getTotalExpendCash = $this->getTotalExpendCash();
     	$getTotalExpendBank = $this->getTotalExpendBank();
-    	$getTotalBalance = $this->getTotalBalance();
-    	$balance = $getTotalBalance->balance;
+    	$balance = $this->getTotalBalance();
+//    	$balance = $getTotalBalance->balance;
         return view('main.index',compact('getAlltransactions','getTotalIncomeCash','getTotalIncomeBank',
         	'getTotalExpendCash','getTotalExpendBank','balance'));
     }
@@ -95,8 +95,23 @@ class DashBoardController extends Controller
     }
 
     public function getTotalBalance(){
-    	return DB::table('cash_book_tb')->select('balance')->where('deleted_flag',0)->latest('id')->first();
+        $increaseDiffAmount = DB::table('record_histroies_tb')->select('diff_amount')->where('change_status','increase')->get();
+        $totalIncrease = 0;
+        if (sizeof($increaseDiffAmount) > 0) {
+            foreach($increaseDiffAmount as $diffAmount ) {
+                $totalIncrease += $diffAmount->diff_amount;
+            }
+        }
+
+        $decreaseDiffAmount = DB::table('record_histroies_tb')->select('diff_amount')->where('change_status','decrease')->get();
+        $totalDecrease = 0;
+        if (sizeof($decreaseDiffAmount) > 0 ) {
+            foreach($decreaseDiffAmount as $diffAmount) {
+                $totalDecrease += $diffAmount->diff_amount;
+            }
+        }
+        $result = $totalIncrease + $totalDecrease;
+        $originalTotalBalance = DB::table('cash_book_tb')->select('balance')->where('deleted_flag',0)->latest('id')->first();
+    	return (int)$originalTotalBalance->balance + $result;
     }
-
-
 }

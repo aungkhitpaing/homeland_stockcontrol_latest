@@ -81,11 +81,8 @@ class HeadQuaterIncomeController extends Controller
 			'amount' => $request->amount,
 			'description' => $request->description
 		];
-
 		$specification_id = $request->investor;
-
 		$getCashbookInfo = $this->getCashbookInfo($request, $request->accountHead, $specification_id);
-
 		try {
 
 			$investorDetail = DB::table('invester_detail_tb')->orderby('created_at', 'desc')
@@ -100,14 +97,18 @@ class HeadQuaterIncomeController extends Controller
 				]);
 			} else {
 				$totalBalance = DB::table('investor_income_tb')->where('investor_id', $request->investor)->first();
-				$updateTotalBalance = DB::table('investor_income_tb')->where('investor_id', $request->investor)->update(['total_income_balance' => $totalBalance->total_income_balance + $request->amount]);
+				if($totalBalance) {
+                    $updateTotalBalance = DB::table('investor_income_tb')->where('investor_id', $request->investor)->update(['total_income_balance' => $totalBalance->total_income_balance + $request->amount]);
+                }
 			}
 
 			$insertInvestorIncome = DB::table('invester_detail_tb')->insert($investorIncomeReq);
 
-			$insertInvestorIncomeIntoCashBook = DB::table('cash_book_tb')->insert($getCashbookInfo);
-
+			if ($insertInvestorIncome) {
+			    DB::table('cash_book_tb')->insert($getCashbookInfo);
+            }
 			return redirect('/head_quater/income_cashbook');
+
 		} catch (Exception $e) {
 
 			return $e->getMessage();
