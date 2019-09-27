@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5fe932ee-01a7-43c7-a708-886e475b4487" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/HeadQuaterIncomeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/HeadQuaterIncomeController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/head_quater/invester_detail.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/head_quater/invester_detail.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/head_quater/project_detail.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/head_quater/project_detail.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
-    </list>
+    <list default="true" id="5fe932ee-01a7-43c7-a708-886e475b4487" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,8 +62,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/HeadQuaterIncomeController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="364">
-              <caret line="602" column="5" lean-forward="true" selection-start-line="551" selection-start-column="4" selection-end-line="602" selection-end-column="5" />
+            <state relative-caret-position="405">
+              <caret line="582" column="83" lean-forward="true" selection-start-line="582" selection-start-column="83" selection-end-line="582" selection-end-column="83" />
               <folding>
                 <element signature="e#40#68#0#PHP" expanded="true" />
                 <element signature="e#227#1813#0#PHP" />
@@ -91,7 +85,6 @@
                 <element signature="e#15029#15208#0#PHP" />
                 <element signature="e#16052#18835#0#PHP" />
                 <element signature="e#18884#19186#0#PHP" />
-                <element signature="e#19202#19286#0#PHP" />
                 <element signature="e#18598#18781#0#PHP" />
               </folding>
             </state>
@@ -436,12 +429,12 @@
       <updated>1568991930406</updated>
       <workItem from="1568991931593" duration="1634000" />
       <workItem from="1569016768936" duration="19897000" />
-      <workItem from="1569209729914" duration="22326000" />
+      <workItem from="1569209729914" duration="22677000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="43857000" />
+    <option name="totallyTimeSpent" value="44208000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="790" extended-state="0" />
@@ -626,8 +619,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/HeadQuaterIncomeController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="364">
-          <caret line="602" column="5" lean-forward="true" selection-start-line="551" selection-start-column="4" selection-end-line="602" selection-end-column="5" />
+        <state relative-caret-position="405">
+          <caret line="582" column="83" lean-forward="true" selection-start-line="582" selection-start-column="83" selection-end-line="582" selection-end-column="83" />
           <folding>
             <element signature="e#40#68#0#PHP" expanded="true" />
             <element signature="e#227#1813#0#PHP" />
@@ -649,7 +642,6 @@
             <element signature="e#15029#15208#0#PHP" />
             <element signature="e#16052#18835#0#PHP" />
             <element signature="e#18884#19186#0#PHP" />
-            <element signature="e#19202#19286#0#PHP" />
             <element signature="e#18598#18781#0#PHP" />
           </folding>
         </state>
