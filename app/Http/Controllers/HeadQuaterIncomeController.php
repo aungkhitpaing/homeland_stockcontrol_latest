@@ -77,6 +77,7 @@ class HeadQuaterIncomeController extends Controller
 
 		$investorIncomeReq = [
 			'investor_id' => $request->investor,
+            'account_head_id' => $request->accountHead,
 			'payment_type' => $request->optionsRadios,
 			'amount' => $request->amount,
 			'description' => $request->description
@@ -103,8 +104,9 @@ class HeadQuaterIncomeController extends Controller
 			}
 
 			$insertInvestorIncome = DB::table('invester_detail_tb')->insert($investorIncomeReq);
-
 			if ($insertInvestorIncome) {
+                $getLastId = DB::getPdo()->lastInsertId(); //get Last Id for Investor Income Detail
+                $getCashbookInfo['investor_income_detail_id'] = $getLastId; 
 			    DB::table('cash_book_tb')->insert($getCashbookInfo);
             }
 			return redirect('/head_quater/income_cashbook');
@@ -213,7 +215,7 @@ class HeadQuaterIncomeController extends Controller
 	}
 
 	/**
-	 * storeBankIncome
+	 * storePaymentOrderIncome
 	 *
 	 * @return Response
 	 */
@@ -261,6 +263,11 @@ class HeadQuaterIncomeController extends Controller
 		}
 	}
 
+    /**
+     * storePurchaseGuaranteeIncome
+     *
+     * @return Response
+     */
 
 	public function storePurchaseGuaranteeIncome(Request $request)
 	{
@@ -318,7 +325,8 @@ class HeadQuaterIncomeController extends Controller
 			'payment_type' => $request->optionsRadios,
 			'income' => (int)$request->amount,
 			'description' => $request->description,
-			'specification_id' => $specification_id
+			'specification_id' => $specification_id,
+//            'investor_income_detail_id' =>
 		];
 
 
@@ -346,23 +354,11 @@ class HeadQuaterIncomeController extends Controller
 		return $rowCounts;
 	}
 
-	/**
-	 * get all investor Income
-	 *
-	 * @return Response
-	 */
-
 	public function getAllInvestor()
 	{
 		$investors = DB::table('invester_tb')->orderby('created_at', 'desc')->where('delete_flag', 0)->get();
 		return $investors;
 	}
-
-	/**
-	 * get all investor Income
-	 *
-	 * @return Response
-	 */
 
 	public function getAllProject()
 	{
@@ -370,18 +366,11 @@ class HeadQuaterIncomeController extends Controller
 		return $projects;
 	}
 
-	/**
-	 * get all bank Income
-	 *
-	 * @return Response
-	 */
-
 	public function getAllBank()
 	{
 		$banks = DB::table('bank_tb')->orderby('created_at', 'desc')->where('delete_flag', 0)->get();
 		return $banks;
 	}
-
 
 	public function getAllPaymentOrder()
 	{
@@ -389,17 +378,11 @@ class HeadQuaterIncomeController extends Controller
 		return $payment_orders;
 	}
 
-
 	public function getAllPurchaseGuarantee()
 	{
 		$purchase_guarantees = DB::table('purchase_guarantee_tb')->orderby('created_at', 'desc')->where('delete_flag', 0)->get();
 		return $purchase_guarantees;
 	}
-	/**
-	 * get all investor income by Id
-	 *
-	 * @return Response
-	 */
 
 	public function getAllInvestorIncomeById($investor_id)
 	{
@@ -415,7 +398,6 @@ class HeadQuaterIncomeController extends Controller
 		}
 		return view('head_quater.invester_detail', compact('investorDetail', 'totalBalance'));
 	}
-
 
 	public function getAllProjectIncomeById($project_id)
 	{
@@ -433,7 +415,6 @@ class HeadQuaterIncomeController extends Controller
 
 		return view('head_quater.project_detail', compact('projectDetail', 'totalBalance'));
 	}
-
 
 	public function getAllBankIncomeById($bank_detail_id)
 	{
@@ -495,13 +476,6 @@ class HeadQuaterIncomeController extends Controller
 		return view('head_quater.purchase_guarantee_detail', compact('purchaseGuaranteeDetail', 'totalBalance'));
 	}
 
-
-	/**
-	 * calculation of total balance
-	 *
-	 * @return Response
-	 */
-
 	public function calculateTotalBalance($total_amount)
 	{
 		$totalBalance = 0;
@@ -511,12 +485,6 @@ class HeadQuaterIncomeController extends Controller
 		return $totalBalance;
 	}
 
-	/**
-	 * Edit Investor Income Amount
-	 *
-	 * @param $investor_id
-	 * @return void
-	 */
 	public function EditInvestorIncomeById($investor_id,$investor_detail_id)
 	{
 		$investorDetailId = DB::table('invester_detail_tb')
@@ -525,12 +493,6 @@ class HeadQuaterIncomeController extends Controller
 		return view('head_quater.invester_detail_edit', compact('investorDetailId','investor_id'));
 	}
 
-	/**
-	 * Update Investor Income Amount
-	 *
-	 * @param $investor_id
-	 * @return void
-	 */
 	public function UpdateInvestorIncomeById($invester_id,$investor_detail_id)
 	{
         $invester_detail = DB::table('invester_detail_tb')->select('amount','account_head_id')->where('delete_flag',0)->where('investor_detail_id',$investor_detail_id)->first();
@@ -538,22 +500,23 @@ class HeadQuaterIncomeController extends Controller
         $updateInvestorDetail = $this->updateTransactionbyId($investor_detail_id,'invester_detail_tb','investor_detail_id');
         if($updateInvestorDetail) {
             $getUpdateAmount = DB::table('invester_detail_tb')
-                ->select('amount')
-                ->where('investor_detail_id',$investor_detail_id)
-                ->where('delete_flag',0)->first();
+                                ->select('amount')
+                                ->where('investor_detail_id',$investor_detail_id)
+                                ->where('delete_flag',0)->first();
+
             $getTotalIncomeamountById = DB::table('investor_income_tb')->select('total_income_balance')->where('delete_flag',0)->where('investor_id',$invester_id)->first();
 
             if($getTotalIncomeamountById->total_income_balance > 0)
             {
                 $diff = $getUpdateAmount->amount - $invester_detail->amount;
 
-                if($getUpdateAmount->amount > $invester_detail->amount) {
+                if($getUpdateAmount->amount > $invester_detail->amount) { // eg. update amount = 7001 is greater than original amount 7000
 
                     $updateTotalIncome = $getTotalIncomeamountById->total_income_balance + $diff;
                     $change_status = "increase";
-                } else {
 
-                    $updateTotalIncome = $getTotalIncomeamountById->total_income_balance - $diff;
+                } else {
+                    $updateTotalIncome = $getTotalIncomeamountById->total_income_balance + $diff; //  Out put of $diff value come with "-" sign ( eg. -1)  that why we should add "+" operator
                     $change_status = "decrease";
                 }
                 $updateTotalIncomeResult = DB::table('investor_income_tb')->where('investor_id', $invester_id)->update(['total_income_balance' => $updateTotalIncome]);
@@ -583,7 +546,6 @@ class HeadQuaterIncomeController extends Controller
         }
         return redirect("/head_quater/invester_detail/$invester_id");
 	}
-
 
     public function updateTransactionbyId($id,$tablename,$column_name)
     {
