@@ -24,8 +24,8 @@
                   <li class="active"><a href="#tab_1" data-toggle="tab">Investor</a></li>
                   <li><a href="#tab_2" data-toggle="tab">Project</a></li>
                   <li><a href="#tab_3" data-toggle="tab">Bank Loan</a></li>
-                  <li><a href="#tab_4" data-toggle="tab">PO</a></li>
-                  <li><a href="#tab_6" data-toggle="tab">PG</a></li>
+                  {{--<li><a href="#tab_4" data-toggle="tab">PO</a></li>--}}
+                  {{--<li><a href="#tab_6" data-toggle="tab">PG</a></li>--}}
                   <!-- <li><a href="#tab_7" data-toggle="tab">Interest Receive</a></li> -->
                   <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>
               </ul>
@@ -182,49 +182,59 @@
                         <div class="box" style="border: none;">
                           <div class="box-header">
                           </div>
-                          <!-- /.box-header -->
                           <div class="box-body">
                             <table id="example3" class="table table-bordered table-striped">
                               <thead>
-                                <tr>
-                                  <th>Bank Name</th>
-                                  <th>Total Loan Amount</th>
-                                  <!-- <th>Left Amount</th> -->
-                                  <th>Description</th>
-                                  <th>Loan Date</th>
-<!--                                   <th>Action</th> -->
-                                </tr>
+                              <tr>
+                                <th>Title</th>
+                                <th>Loan Amount</th>
+                                <th>Loan Date</th>
+                                <th>Payback Amount</th>
+                                <th>Left to Paid</th>
+                                <th>Option</th>
+                              </tr>
                               </thead>
                               <tbody>
-                              @foreach($getAllBankIncome as $getBankIncome)
-                                <tr style="background-color:lightpink;">
-                                  <td><a href="/head_quater/bank_detail/{{$getBankIncome->bank_id}}">{{$getBankIncome->name}}</a></td>
-                                  <td>{{$getBankIncome->total_loan_amount}} Kyats</td>
-                                  <!-- <td>{{$getBankIncome->left_amount}}</td> -->
-                                  <td>{{$getBankIncome->description}}</td>
-                                  <?php
-                                    $updated_at = explode(" ", $getBankIncome->updated_at);
-                                  ?>                                  
-                                  <td>{{$updated_at[0]}}</td>
-                                  <!-- <td>
-                                    <a href="" class="btn btn-block btn-warning btn-sm">Edit</a>
-                                  </td> -->
+                              @foreach($loanDetail as $loanDetailById)
+                                <tr>
+                                  <td>{{$loanDetailById->description}}</td>
+                                  @if ($loanDetailById->loan_amount == null)
+                                    <td>0 Kyats</td>
+                                  @else
+                                    <td>{{$loanDetailById->loan_amount}} Kyats</td>
+                                  @endif
+                                  <td>{{$loanDetailById->loan_date}}</td>
+                                  @if ($loanDetailById->payback_amount == null)
+                                    <td>0 Kyats</td>
+                                  @else
+                                    <td>{{$loanDetailById->payback_amount}} Kyats</td>
+                                  @endif
+
+                                  @if ( $loanDetailById->payback_amount == null)
+                                    <td>
+                                      {{$loanDetailById->loan_amount - 0 }} Kyats
+                                    </td>
+                                  @else
+                                    <td>
+                                      {{$loanDetailById->loan_amount - $loanDetailById->payback_amount}} Kyats
+                                    </td>
+                                  @endif
+                                  <td><a href="/head_quater/loan_detail/{{$loanDetailById->id}}/edit" class="btn btn-primary btn-sm">Edit</a></td>
                                 </tr>
                               @endforeach
                               </tbody>
                               <tfoot>
-                                <tr>
-                                  <th>Bank Name</th>
-                                  <th>Total Loan Amount</th>
-                                  <!-- <th>Left Amount</th> -->
-                                  <th>Description</th>
-                                  <th>Loan Date</th>
-<!--                                   <th>Action</th> -->
-                                </tr>
+                              <tr>
+                                <th>Title</th>
+                                <th>Loan Amount</th>
+                                <th>Loan Date</th>
+                                <th>Payback Amount</th>
+                                <th>Left to Paid</th>
+                                <th>Option</th>
+                              </tr>
                               </tfoot>
                             </table>
                           </div>
-
                           <!-- /.box-body -->
                         </div>
                       </div>
@@ -428,29 +438,29 @@
         </div>
       <!-- /.col -->
       </div>
-      <div class="row">
-        <div class="col-md-12">
-          <div class="box box-default">
-            <div class="box-header with-border">
-              <i class="fa fa-bullhorn"></i>
+      {{--<div class="row">--}}
+        {{--<div class="col-md-12">--}}
+          {{--<div class="box box-default">--}}
+            {{--<div class="box-header with-border">--}}
+              {{--<i class="fa fa-bullhorn"></i>--}}
 
-              <h3 class="box-title">Total Income Amount</h3>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <div class="callout callout-success">
-                <h4>Total income amount is <b>Not Define Yet !</b></h4>
+              {{--<h3 class="box-title">Total Income Amount</h3>--}}
+            {{--</div>--}}
+            {{--<!-- /.box-header -->--}}
+            {{--<div class="box-body">--}}
+              {{--<div class="callout callout-success">--}}
+                {{--<h4>Total income amount is <b>Not Define Yet !</b></h4>--}}
 
-                <p>This is all calculation amount of total income</p>
-              </div>
-            </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
-        </div>
-        <!-- /.col -->
-      </div>
-      </div>
+                {{--<p>This is all calculation amount of total income</p>--}}
+              {{--</div>--}}
+            {{--</div>--}}
+            {{--<!-- /.box-body -->--}}
+          {{--</div>--}}
+          {{--<!-- /.box -->--}}
+        {{--</div>--}}
+        {{--<!-- /.col -->--}}
+      {{--</div>--}}
+      {{--</div>--}}
     </section>
 <!-- /.content -->
 @endsection

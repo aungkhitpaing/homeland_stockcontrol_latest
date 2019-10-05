@@ -1,90 +1,72 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use function foo\func;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Collection;
+/**
+ * Class Head Quater ExpandController
+ * Author : Aung Khit Paing
+ * @package App\Http\Controllers
+ */
 class HeadQuaterExpandController extends Controller
 {
 
+    /**
+     * Index file
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
 	public function index() {
-        
-        $getAllOfficeExpense = $this->getAllOfficeExpense();
-        $getAllProjectExpense = $this->getAllProjectExpense();
-        $getAllBankExpense = $this->getAllBankExpense();
 
-        return view('head_quater.expend_cashbook',compact('getAllOfficeExpense','getAllProjectExpense','getAllBankExpense'));
+	    $getAllOfficeExpense = $this->getAllOfficeExpense();
+
+	    $getTotalOfficeExpense = 0;
+        foreach ($getAllOfficeExpense as $data) {
+            $getTotalOfficeExpense += $data->amount;
+        }
+
+	    $getAllProjectExpense = $this->getAllProjectExpense();
+        $getAllBankExpense = $this->getAllBankExpense();
+        return view('head_quater.expend_cashbook',compact('getAllOfficeExpense','getTotalOfficeExpense','getAllProjectExpense','getAllBankExpense'));
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function create() {
-
         $accountHeads = $this->getAllAccountHead();
-        
         $getAllExpenseCategories = $this->showExpenseCategory();
-    	
         $getAllProjects = $this->getAllProject();
-
         $banks = $this->getAllBank();
-
         $getAllLoanTransfer = $this->getAllLoanTransfer();
-
         return view ('head_quater.add_expend', compact('accountHeads','getAllExpenseCategories','getAllProjects','banks','getAllLoanTransfer'));
     }
 
-
-
-// store
-    
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|string
+     */
     public function storeDailyExpend(Request $request) {
-    	
-        $officeExpenseReq = [
-            'project_id' => $request->project,
-            'expense_category' => $request->dailyexpend,
-            'payment_type' => $request->optionsRadios,
-            'amount' => $request->amount,
-            'description' => $request->description
-        ];
+        try {
+                DB::transaction(function() use ($request){
+                    $inputs = [
+                        'expense_category' => $request->dailyexpend,
+                        'payment_type' => $request->optionsRadios,
+                        'amount' => $request->amount,
+                        'description' => $request->description,
+                        'account_head_id' => $request->accountHead,
+                    ];
+                    $getCashbookInfo = $this->getCashbookInfo($request,$request->accountHead);
 
-        $specification_id = $request->project;
-        $getCashbookInfo = $this->getCashbookInfo($request,$request->accountHead,$specification_id);
-    	
-        try { 
+                    DB::table('office_expense_detail_tb')->insert($inputs);
+                    $getCashbookInfo['office_expense_detail_id'] = DB::getPdo()->lastInsertId();
 
-            // check row count of  detail 
-            $expenseDetailByProject = DB::table('office_expense_detail_tb')->orderby('created_at','desc')
-                             ->where('delete_flag',0)
-                             ->where('project_id',$request->project)
-                             ->get();
-
-
-            if (sizeof($expenseDetailByProject) == 0 ) {
-                
-                $insertOfficeExpense = DB::table('office_expense_detail_tb')->insert([
-                    'project_id' => $request->project,
-                    'expense_category' => $request->dailyexpend,
-                    'payment_type' => $request->optionsRadios,
-                    'amount' => $request->amount,
-                    'description' =>$request->description,
-                ]);
-            } else {
-
-                $totalBalance = DB::table('office_expense_tb')->where('project_id',$request->project)->first();
-                
-                $updateTotalBalance = DB::table('office_expense_tb')->where('project_id',$request->project)->update(['total_expense_balance' => $totalBalance->total_expense_balance + $request->amount]);
-                
-            }
-
-            $insertOfficeExpense = DB::table('office_expense_detail_tb')->insert($officeExpenseReq);
-
-    		$insertDailyExpendIntoCashBook = DB::table('cash_book_tb')->insert($getCashbookInfo);
-
+                    DB::table('cash_book_tb')->insert($getCashbookInfo);
+            });
     		return redirect('/head_quater/alltransaction');
-
     	} catch (Exception $e) {
-
     		return $e->getMessage();
-
     	}
     }
 
@@ -97,13 +79,13 @@ class HeadQuaterExpandController extends Controller
             'transfer_type' => 'expense',
             'amount' => $request->amount,
             'description' => $request->description,
+            'account_head_id' => $request->accountHead,
         ];
 
         $specification_id = $request->project;
         $getCashbookInfo = $this->getCashbookInfo($request,$request->accountHead,$specification_id);
         
-        try { 
-
+        try {
             // check row count of  detail 
             $projectExpenseDetail = DB::table('project_expense_detail_tb')->orderby('created_at','desc')
                              ->where('delete_flag',0)
@@ -113,7 +95,7 @@ class HeadQuaterExpandController extends Controller
 
             if (sizeof($projectExpenseDetail) == 0 ) {
                 
-                $insertProjectExpense = DB::table('project_expense_tb')->insert([
+                DB::table('project_expense_tb')->insert([
                     'project_id' => $request->project,
                     'total_expense_balance' => $request->amount,
                 ]);
@@ -122,13 +104,14 @@ class HeadQuaterExpandController extends Controller
 
                 $totalBalance = DB::table('project_expense_tb')->where('project_id',$request->project)->first();
                 
-                $updateTotalBalance = DB::table('project_expense_tb')->where('project_id',$request->project)->update(['total_expense_balance' => $totalBalance->total_expense_balance + $request->amount]);
+                DB::table('project_expense_tb')->where('project_id',$request->project)->update(['total_expense_balance' => $totalBalance->total_expense_balance + $request->amount]);
                 
             }
 
-            $insertProjectExpense = DB::table('project_expense_detail_tb')->insert($projectExpenseReq);
+            DB::table('project_expense_detail_tb')->insert($projectExpenseReq);
+            $getCashbookInfo['project_expense_detail_id'] = DB::getPdo()->lastInsertId();
 
-            $insertDailyExpendIntoCashBook = DB::table('cash_book_tb')->insert($getCashbookInfo);
+            DB::table('cash_book_tb')->insert($getCashbookInfo);
 
             return redirect('/head_quater/alltransaction');
 
@@ -140,64 +123,40 @@ class HeadQuaterExpandController extends Controller
     }
 
     public function storeBankExpense(Request $request) {
-
         $specification_id = $request->loan_transfer_id;
-
         $getCashBookInfo = $this->getCashBookInfo($request,$request->accountHead,$specification_id);
 
         try {
-
             $checkLoanTransferById = DB::table('loan_detail_tb')->orderby('created_at','desc')
                              ->where('delete_flag',0)
                              ->where('id',$request->loan_transfer_id)
                              ->get();
-
             if(!empty($checkLoanTransferById)) {
-            
                 foreach ($checkLoanTransferById as $checkLoanTransfer) {
                     $update_amount = $checkLoanTransfer->payback_amount + $request->amount;    
                 }
-                
                 $setExpense = DB::update('update loan_detail_tb set payback_amount = ?  where id = ?',[$update_amount,$request->loan_transfer_id]);
-
                 if ($setExpense) {
-
-                    $insertBankExpense = DB::table('bank_expense_tb')->insert([
-                        'account_head_type' => $request->accountHead ,
+                    DB::table('bank_expense_tb')->insert([
+                        'account_head_type' => $request->accountHead,
                         'loan_transfer_id' => $request->loan_transfer_id,
                         'payment_type' => $request->optionsRadios,
                         'payback_amount' => $request->amount,
                         'description' => $request->description,
                     ]);
-
-
-                    $insertBankExpenseIntoCashBook = DB::table('cash_book_tb')->insert($getCashBookInfo);
-
+                    $getCashBookInfo['bank_expense_detail_id'] = DB::getPdo()->lastInsertId();
+                    DB::table('cash_book_tb')->insert($getCashBookInfo);
                     return redirect('/head_quater/income_cashbook/');
-                
                 } else {
-
                     return redirect('/head_quater/add_expend');
                 }   
-            }           
-        
+            }
         } catch (Exception $e) {
-
             return $e->getMessage();
         }
     }
 
-
-
-    public function getRowCountFromCashBook() {
-    	
-        $rowCounts = DB::table('cash_book_tb')->get();
-    	
-        return $rowCounts;
-    }
-
     public function getCashbookInfo(Request $request, $accoundhead_id, $specification_id = null) {
-    	
     	$cashBookInfo = [
 			'account_head_id' => $accoundhead_id,
 			'payment_type' => $request->optionsRadios,
@@ -205,11 +164,9 @@ class HeadQuaterExpandController extends Controller
 			'description' => $request->description,
             'specification_id' => $specification_id,
 		];
-
-    	$getRowCountFromCashBook = $this->getRowCountFromCashBook();
-
-    	if(sizeof($getRowCountFromCashBook) > 0) {
-    		$getBalanceAmount = DB::table('cash_book_tb')->latest('id')->first();
+    	$getRowCountFromCashBook = DB::table('cash_book_tb')->count();
+    	if($getRowCountFromCashBook > 0) {
+    		$getBalanceAmount = DB::table('cash_book_tb')->select('balance')->latest('id')->first();
     		$cashBookInfo['balance'] = $getBalanceAmount->balance - (int)$request->amount;
     	} else {
     		$cashBookInfo['balance'] = $request->amount - 0;
@@ -226,13 +183,12 @@ class HeadQuaterExpandController extends Controller
     }
 
     public function getAllOfficeExpense() {
-        $getAllOfficeExpense = DB::table('office_expense_tb')
-        ->join('office_expense_category', 'office_expense_tb.id', '=', 'office_expense_category.id')
-        ->join('project_tb','project_tb.id','=','office_expense_tb.project_id')
-        ->select('office_expense_tb.*', 'office_expense_category.expense_category_name','project_tb.name')
-        ->where('office_expense_tb.delete_flag',0)
-        ->get();
-        return $getAllOfficeExpense;
+        return  DB::table('office_expense_detail_tb')
+                ->join('office_expense_category', 'office_expense_detail_tb.expense_category', '=', 'office_expense_category.id')
+                ->join('account_head_tb','account_head_tb.id', '=','office_expense_detail_tb.account_head_id')
+                ->select('office_expense_detail_tb.*', 'office_expense_category.expense_category_name','account_head_tb.account_head_type')
+                ->where('office_expense_detail_tb.delete_flag',0)
+                ->get();
     }
 
     public function getAllProjectExpense() {
@@ -317,8 +273,6 @@ class HeadQuaterExpandController extends Controller
         return view('head_quater.project_expense_detail',compact('projectExpenseDetail','totalBalance'));   
     }
 
-
-
     public function calculateTotalBalance($total_amount) {
         $totalBalance = 0;
         foreach ($total_amount as $data) {
@@ -341,6 +295,153 @@ class HeadQuaterExpandController extends Controller
     }
 
 
+    // Common Function For Edit
+
+    /**
+     * Common Edit Function for Expense
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function EditExpenseById(Request $request,$id){
+        $getEditData = [];
+        $url = $request->path();
+        $explodeUrl = explode("/",$url);
+
+        // Expense
+        if ( $explodeUrl[1] == "office_expense_detail") {
+
+            $tableName = "office_expense_detail_tb";
+            $idAttrName = "office_expense_detail_id";
+            $getEditData['table_name']  = $tableName;
+        }
+        // Project
+        else if ($explodeUrl[1] == "project_expense_detail") {
+                    $tableName = "project_expense_detail_tb";
+            $idAttrName = "project_expense_detail_id";
+            $getEditData['table_name']  = $tableName;
+        }
+        // Bank
+        else if ($explodeUrl[1] == "bank_expense_detail") {
+            $tableName = "bank_expense_tb";
+            $idAttrName = "id";
+            $getEditData['table_name']  = $tableName;
+        }
+
+        // PO
 
 
+        // PG
+        $getEditData[] = DB::table($tableName)->select("*")
+                            ->where($idAttrName,$id)
+                            ->where('delete_flag',0)
+                            ->get();
+        return view ('head_quater.edit_expense_detail',compact('getEditData'));
+    }
+
+    /**
+     * Common Update
+     */
+    public function UpdateExpendById(Request $request,$id)
+    {
+        $url = $request->path();
+        $explodeUrl = explode("/", $url);
+
+        // update records from request
+        $updateRecords = [
+            'account_head_type' => $request->accountHead,
+            'transaction_update_amount' => $request->amount,
+            'change_status' => null,
+            'remark' => $request->description,
+        ];
+
+        if ($explodeUrl[1] == 'office_expense_detail') {
+            $transactionOrginalAmount = DB::table('office_expense_detail_tb')->select('amount')->where('office_expense_detail_id', $id)->first();
+            $originalAmount = $transactionOrginalAmount->amount;
+            $updateRecords['transaction_original_amount'] = $originalAmount;
+            $updateRecords['office_expend_detail_id'] = $id;
+
+            $tableName = 'office_expense_detail_tb';
+            $idAttrName = 'office_expense_detail_id';
+            $totalAmountFieldName = 'amount';
+        }
+        elseif ($explodeUrl[1] == 'project_expense_detail') {
+
+            $transactionOrginalAmount = DB::table('project_expense_detail_tb')->select('amount')->where('project_expense_detail_id', $id)->first();
+            $originalAmount = $transactionOrginalAmount->amount;
+            $updateRecords['transaction_original_amount'] = $originalAmount;
+            $updateRecords['office_expend_detail_id'] = $id;
+
+            $tableName = 'project_expense_detail_tb';
+            $idAttrName = 'project_expense_detail_id';
+            $totalAmountFieldName = 'amount';
+        }
+        elseif ($explodeUrl[1] == 'bank_expense_detail') {
+            $transactionOrginalAmount = DB::table('bank_expense_tb')->select('payback_amount')->where('id', $id)->first();
+            $originalAmount = $transactionOrginalAmount->payback_amount;
+            $updateRecords['transaction_original_amount'] = $originalAmount;
+            $updateRecords['bank_expend_detail_id'] = $id;
+
+            $tableName = 'bank_expense_tb';
+            $idAttrName = 'id';
+            $totalAmountFieldName = 'payback_amount';
+
+            //update into bank_detail_tb income
+            DB::update('update loan_detail_tb set payback_amount = ?  where id = ?',[$updateRecords['transaction_update_amount'],$request->loan_transfer_id]);
+        }
+
+
+        // Calculate Different Amount and Define Change Status
+        $updateAmount = $request->amount;
+        $diffAmount = $this->calculateDiffAmount($originalAmount, $updateAmount);
+        $updateRecords['diff_amount'] = $diffAmount['diff_amount'];
+        $updateRecords['change_status'] = $diffAmount['change_status'];
+
+        // Updated data by detail Id
+        $updateDetail = DB::table($tableName)->where($idAttrName, $id)
+            ->where('delete_flag',0)
+            ->update([$totalAmountFieldName => $updateAmount, 'description' => $updateRecords['remark']]);
+
+        if($updateDetail == 1 ) {
+                // temporary code .... fixing soon in field "id" into bank_expense_tb
+                if($explodeUrl[1] == 'bank_expense_detail') {
+                    $idAttrName = "bank_expense_detail_id";
+                }
+                // end
+
+            // Insert Into record histories
+            $insertRecord = DB::table('record_histroies_tb')->insert([$idAttrName => $id,
+                                'account_head_type' => $updateRecords['account_head_type'],
+                                'transaction_update_amount' => $updateAmount,
+                                'transaction_original_amount' => $originalAmount,
+                                'change_status' => $updateRecords['change_status'],
+                                'diff_amount' => $updateRecords['diff_amount'],
+                                'remark' => $updateRecords['remark']
+            ]);
+
+            if ($insertRecord == 1) {
+                // Insert Into Cashbook
+                DB::table('cash_book_tb')->where('deleted_flag',0)
+                    ->where($idAttrName, $id)->where('deleted_flag',0)
+                    ->update(['expend' => $updateAmount, 'description' => $updateRecords['remark']]);
+            }
+        }
+        return redirect("/head_quater/expend_cashbook");
+    }
+
+
+    public function calculateDiffAmount($originalAmount,$updateAmount) {
+        $updateRecords= [];
+        if ($updateAmount > $originalAmount) {
+            $updateRecords['diff_amount'] = $updateAmount - $originalAmount;
+            $updateRecords['change_status'] = "increase";
+        } else if ($originalAmount > $updateAmount ){
+            $updateRecords['diff_amount'] = $originalAmount - $updateAmount;
+            $updateRecords['change_status'] = "decrease";
+        } else {
+            $updateRecords['diff_amount'] = 0;
+            $updateRecords['change_status'] = null;
+        }
+        return $updateRecords;
+    }
 }

@@ -40,7 +40,6 @@
                         <thead>
                           <tr>
                             <th >Id</th>
-                            <!-- <th>Specification Name</th> -->
                             <th>Account Head</th>
                             <th>Description</th>
                             <th>Payment Type</th>
@@ -53,7 +52,6 @@
                           @foreach($getTransactions as $getTransaction)
                           <tr>
                             <td>{{$getTransaction->id}}</td>
-                            <!-- <td>{{$getTransaction->specification_id}}</td> -->
                             <td>{{$getTransaction->account_head_type}}</td>
                             <td>{{$getTransaction->description}}</td>
                             <td>{{$getTransaction->payment_type}}</td>
@@ -69,7 +67,6 @@
                         <tfoot>
                           <tr>
                             <th>Id</th>
-                            <!-- <th>Specifincation Name</th> -->
                             <th>Account Head</th>
                             <th>Description</th>
                             <th>Payment Type</th>

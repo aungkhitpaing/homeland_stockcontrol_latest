@@ -16,28 +16,29 @@
 
 <!-- Main content -->
 <section class="content">
-  <div class="row">
-    <div class="col-md-12">
-        <div class="box">
-        <div class="box-header">
-          <h3 class="box-title">Search with Date Range</h3>
-        </div>
-        <div class="box-body">
-          <div class="form-group">
-            <label>Date range:</label>
 
-            <div class="input-group">
-              <div class="input-group-addon">
-                <i class="fa fa-calendar"></i>
-              </div>
-              <input type="text" class="form-control pull-right" id="reservation">
-            </div>
-            <!-- /.input group -->
-          </div>
-        </div>    
-        </div> 
-    </div>
-  </div>
+  {{--<div class="row">--}}
+    {{--<div class="col-md-12">--}}
+        {{--<div class="box">--}}
+        {{--<div class="box-header">--}}
+          {{--<h3 class="box-title">Search with Date Range</h3>--}}
+        {{--</div>--}}
+        {{--<div class="box-body">--}}
+          {{--<div class="form-group">--}}
+            {{--<label>Date range:</label>--}}
+
+            {{--<div class="input-group">--}}
+              {{--<div class="input-group-addon">--}}
+                {{--<i class="fa fa-calendar"></i>--}}
+              {{--</div>--}}
+              {{--<input type="text" class="form-control pull-right" id="reservation">--}}
+            {{--</div>--}}
+            {{--<!-- /.input group -->--}}
+          {{--</div>--}}
+        {{--</div>    --}}
+        {{--</div> --}}
+    {{--</div>--}}
+  {{--</div>--}}
 
   <div class="row">
     <div class="col-md-12">
@@ -46,7 +47,6 @@
           <div class="box" style="border: none;">
             <div class="box-header">
             </div>
-            <!-- /.box-header -->
             <div class="box-body">
               <table id="example3" class="table table-bordered table-striped">
                 <thead>
@@ -56,6 +56,7 @@
                     <th>Loan Date</th>
                     <th>Payback Amount</th>
                     <th>Left to Paid</th>
+                    <th>Option</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -83,6 +84,7 @@
                         {{$loanDetailById->loan_amount - $loanDetailById->payback_amount}} Kyats
                       </td>
                     @endif
+                      <td><a href="/head_quater/loan_detail/{{$loanDetailById->id}}/edit" class="btn btn-primary btn-sm">Edit</a></td>
                   </tr>
                 @endforeach
                 </tbody>
@@ -93,6 +95,7 @@
                     <th>Loan Date</th>
                     <th>Payback Amount</th>
                     <th>Left to Paid</th>
+                    <th>Option</th>
                   </tr>
                 </tfoot>
               </table>

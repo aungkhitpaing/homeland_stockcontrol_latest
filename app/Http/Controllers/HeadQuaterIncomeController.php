@@ -32,6 +32,9 @@ class HeadQuaterIncomeController extends Controller
 			->select('bank_detail_tb.*', 'bank_tb.name')
 			->where('bank_detail_tb.delete_flag', 0)
 			->get();
+        $loanDetail = DB::table('loan_detail_tb')->orderby('created_at', 'desc')
+            ->where('delete_flag', 0)
+            ->get();
 
 
 		$getAllPaymentOrderIncome = DB::table('payment_order_income_tb')
@@ -46,7 +49,7 @@ class HeadQuaterIncomeController extends Controller
 			->where('purchase_guarantee_income_tb.delete_flag', 0)
 			->get();
 
-		return view('head_quater.income_cashbook', compact('getAllInvestorIncome', 'getAllProjectIncome', 'getAllBankIncome', 'getAllPaymentOrderIncome', 'getAllPurchaseGauranteeIncome'));
+		return view('head_quater.income_cashbook', compact('getAllInvestorIncome', 'getAllProjectIncome', 'getAllBankIncome', 'getAllPaymentOrderIncome', 'getAllPurchaseGauranteeIncome','loanDetail'));
 	}
 
 
@@ -74,7 +77,6 @@ class HeadQuaterIncomeController extends Controller
 
 	public function storeInvestorIncome(Request $request)
 	{
-
 		$investorIncomeReq = [
 			'investor_id' => $request->investor,
             'account_head_id' => $request->accountHead,
@@ -92,14 +94,14 @@ class HeadQuaterIncomeController extends Controller
 				->get();
 
 			if (sizeof($investorDetail) == 0) {
-				$insertInvestorIncome = DB::table('investor_income_tb')->insert([
+				DB::table('investor_income_tb')->insert([
 					'investor_id' => $request->investor,
 					'total_income_balance' => $request->amount,
 				]);
 			} else {
 				$totalBalance = DB::table('investor_income_tb')->where('investor_id', $request->investor)->first();
 				if($totalBalance) {
-                    $updateTotalBalance = DB::table('investor_income_tb')->where('investor_id', $request->investor)->update(['total_income_balance' => $totalBalance->total_income_balance + $request->amount]);
+                    DB::table('investor_income_tb')->where('investor_id', $request->investor)->update(['total_income_balance' => $totalBalance->total_income_balance + $request->amount]);
                 }
 			}
 
@@ -179,6 +181,7 @@ class HeadQuaterIncomeController extends Controller
 			'loan_date' => $request->loan_date,
 			'payment_type' => $request->optionsRadios,
 			'description' => $request->description,
+            'account_head_id' => $request->accountHead,
 		];
 
 		$specification_id = $request->bank;
@@ -191,7 +194,6 @@ class HeadQuaterIncomeController extends Controller
 				->where('delete_flag', 0)
 				->where('bank_detail_id', $request->bank)
 				->get();
-
 			if (sizeof($loanDetail) == 0) {
 
 				$insertBankLoanIncome = DB::table('bank_detail_tb')->insert([
@@ -200,14 +202,19 @@ class HeadQuaterIncomeController extends Controller
 					'loan_date' => $request->loan_date,
 					'description' => $request->description,
 				]);
+
 			} else {
 				// calculate total balance
 				$totalBalance = DB::table('bank_detail_tb')->where('bank_id', $request->bank)->first();
+
 				$updateTotalBalance = DB::table('bank_detail_tb')->where('bank_id', $request->bank)->update(['total_loan_amount' => $totalBalance->total_loan_amount + $request->amount]);
 			}
 			$insertBankIncome = DB::table('loan_detail_tb')->insert($bankLoanReq);
-			$insertBankIncomeIntoCashBook = DB::table('cash_book_tb')->insert($getCashBookInfo);
-
+			if($insertBankIncome) {
+                $getLastId = DB::getPdo()->lastInsertId(); //get Last Id for project Income Detail
+                $getCashBookInfo['bank_income_detail_id'] = $getLastId;
+                $insertBankIncomeIntoCashBook = DB::table('cash_book_tb')->insert($getCashBookInfo);
+            }
 			return redirect('/head_quater/income_cashbook');
 		} catch (Exception $e) {
 			return $e->getMessage();
@@ -235,7 +242,7 @@ class HeadQuaterIncomeController extends Controller
 
 		try {
 
-			// check row count of project detail 
+			// check row count of project detail
 			$paymentOrderDetail = DB::table('payment_order_detail_tb')->orderby('created_at', 'desc')
 				->where('delete_flag', 0)
 				->where('payment_order_id', $request->paymentorder)
@@ -252,11 +259,10 @@ class HeadQuaterIncomeController extends Controller
 
 				// calculate total balance
 				$totalBalance = DB::table('payment_order_income_tb')->where('payment_order_id', $request->paymentorder)->first();
-				$updateTotalBalance = DB::table('payment_order_income_tb')->where('payment_order_id', $request->paymentorder)->update(['total_income_balance' => $totalBalance->total_income_balance + $request->amount]);
+				 DB::table('payment_order_income_tb')->where('payment_order_id', $request->paymentorder)->update(['total_income_balance' => $totalBalance->total_income_balance + $request->amount]);
 			}
-			$insertPaymentOrderIncome = DB::table('payment_order_detail_tb')->insert($POIncomeReq);
-			$insertPaymentOrderIncomeIntoCashBook = DB::table('cash_book_tb')->insert($getCashBookInfo);
-
+			DB::table('payment_order_detail_tb')->insert($POIncomeReq);
+			DB::table('cash_book_tb')->insert($getCashBookInfo);
 			return redirect('/head_quater/income_cashbook');
 		} catch (Exception $e) {
 			return $e->getMessage();
@@ -381,6 +387,7 @@ class HeadQuaterIncomeController extends Controller
 
 	public function getAllInvestorIncomeById($investor_id)
 	{
+        $totalBalance=0;
 		$investorDetail = DB::table('invester_detail_tb')->orderby('created_at', 'desc')
 			->where('delete_flag', 0)
 			->where('investor_id', $investor_id)
@@ -389,7 +396,10 @@ class HeadQuaterIncomeController extends Controller
 		$countInvestorDetail = sizeof($investorDetail);
 
 		if ($countInvestorDetail > 0) {
-			$totalBalance = $this->calculateTotalBalance($investorDetail);
+
+		    if (!empty($this->calculateTotalBalance($investorDetail))) {
+                $totalBalance = $this->calculateTotalBalance($investorDetail);
+            }
 		}
 		return view('head_quater.invester_detail', compact('investorDetail', 'totalBalance'));
 	}
@@ -480,6 +490,9 @@ class HeadQuaterIncomeController extends Controller
 		return $totalBalance;
 	}
 
+
+
+
 	public function EditInvestorIncomeById($investor_id,$investor_detail_id)
 	{
 		$investorDetailId = DB::table('invester_detail_tb')
@@ -490,7 +503,7 @@ class HeadQuaterIncomeController extends Controller
 
 	public function UpdateInvestorIncomeById($invester_id,$investor_detail_id)
 	{
-        $invester_detail = DB::table('invester_detail_tb')->select('amount','account_head_id')->where('delete_flag',0)->where('investor_detail_id',$investor_detail_id)->first();
+        $invester_detail = DB::table('invester_detail_tb')->select('amount','account_head_id','description','investor_detail_id')->where('delete_flag',0)->where('investor_detail_id',$investor_detail_id)->first();
 
         $updateInvestorDetail = $this->updateTransactionbyId($investor_detail_id,'invester_detail_tb','investor_detail_id');
         if($updateInvestorDetail) {
@@ -531,6 +544,8 @@ class HeadQuaterIncomeController extends Controller
                                 'transaction_original_amount' => $invester_detail->amount,
                                 'change_status' => $change_status,
                                 'diff_amount' => $diff,
+                                'remark' => $invester_detail->description,
+                                'invester_detail_id' => $invester_detail->investor_detail_id ,
                             ]);
                         }
                     }catch (Exception $e) {
@@ -602,6 +617,70 @@ class HeadQuaterIncomeController extends Controller
         return redirect("/head_quater/project_detail/$project_id");
     }
 
+    public function EditBankIncomeById($loan_id){
+        $loanDetailId = DB::table('loan_detail_tb')->where('id', $loan_id)->first();
+        return view('head_quater.loan_detail_edit', compact('loanDetailId'));
+//        return view('head_quater.loan_detail_edit', compact('loanDetailId','bank_detail_id'));
+    }
+
+    public function UpdateBankIncomeById(Request $request,$loan_id){
+
+        $updateRecords = [
+            'account_head_type' => $request->accountHead,
+            'transaction_update_amount' => $request->amount,
+            'change_status' => null,
+            'payment_type' => $request->payment_type,
+            'remark' => "edited for ".$loan_id,
+        ];
+
+        $transactionOrginalAmount = DB::table('loan_detail_tb')->select('loan_amount')->where('id', $loan_id)->first();
+        $originalAmount = $transactionOrginalAmount->loan_amount;
+
+        $updateRecords['transaction_original_amount'] = $originalAmount;
+        $updateRecords['bank_income_detail_id'] = $loan_id;
+
+
+        DB::update('update loan_detail_tb set loan_amount = ?  where id = ?',[$updateRecords['transaction_update_amount'],$loan_id]);
+
+        // Calculate Different Amount and Define Change Status
+        $updateAmount = $request->amount;
+        $diffAmount = $this->calculateDiffAmount($originalAmount, $updateAmount);
+        $updateRecords['diff_amount'] = $diffAmount['diff_amount'];
+        $updateRecords['change_status'] = $diffAmount['change_status'];
+
+        // Insert Into record histories
+        $insertRecord = DB::table('record_histroies_tb')->insert(['bank_detail_id' => $loan_id,
+            'account_head_type' => $updateRecords['account_head_type'],
+            'transaction_update_amount' => $updateAmount,
+            'transaction_original_amount' => $originalAmount,
+            'change_status' => $updateRecords['change_status'],
+            'diff_amount' => $updateRecords['diff_amount'],
+        ]);
+
+        if ($insertRecord == 1) {
+            // Insert Into Cashbook
+            DB::table('cash_book_tb')->where('deleted_flag',0)
+                ->where('bank_income_detail_id', $loan_id)->where('deleted_flag',0)
+                ->update(['income' => $updateAmount, 'description' => $updateRecords['remark']]);
+        }
+        return redirect("/head_quater/income_cashbook");
+	}
+
+
+    public function calculateDiffAmount($originalAmount,$updateAmount) {
+        $updateRecords= [];
+        if ($updateAmount > $originalAmount) {
+            $updateRecords['diff_amount'] = $updateAmount - $originalAmount;
+            $updateRecords['change_status'] = "increase";
+        } else if ($originalAmount > $updateAmount ){
+            $updateRecords['diff_amount'] = $originalAmount - $updateAmount;
+            $updateRecords['change_status'] = "decrease";
+        } else {
+            $updateRecords['diff_amount'] = 0;
+            $updateRecords['change_status'] = null;
+        }
+        return $updateRecords;
+    }
     public function updateTransactionbyId($id,$tablename,$column_name)
     {
         return DB::table($tablename)->where($column_name, $id)->update(['amount' => request()->amount]);

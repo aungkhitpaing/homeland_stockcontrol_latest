@@ -16,6 +16,9 @@ Route::get('/', function () {
 });
 
 Route::get('/admin_dashboard', 'DashBoardController@index');
+Route::get('/record_histories', 'RecordHistoryController@index');
+Route::post('/record_histories/excel', 'RecordHistoryController@excelExport');
+
 
 Route::prefix('head_quater')->group(function () {
 	// Route::post('/login',function(){
@@ -26,28 +29,73 @@ Route::prefix('head_quater')->group(function () {
 	// });
 	Route::get('/create', 'HeadQuaterIncomeController@create');
 
+    /**
+     * Investor
+     */
 	Route::get('/invester_detail/{id}', 'HeadQuaterIncomeController@getAllInvestorIncomeById');
 	Route::get('{invester_id}/invester_detail/{id}/edit', 'HeadQuaterIncomeController@EditInvestorIncomeById');
 	Route::patch('{invester_id}/invester_detail/{id}', 'HeadQuaterIncomeController@UpdateInvestorIncomeById');
 
-
+    /**
+     * Project
+     */
 	Route::get('/project_detail/{id}', 'HeadQuaterIncomeController@getAllProjectIncomeById');
     Route::get('{project_id}/project_detail/{id}/edit', 'HeadQuaterIncomeController@EditProjectIncomeById');
     Route::patch('{project_id}/project_detail/{id}', 'HeadQuaterIncomeController@UpdateProjectIncomeById');
 
-
+    /**
+     * Bank
+     */
 	Route::get('/bank_detail/{id}', 'HeadQuaterIncomeController@getAllBankIncomeById');
-    Route::get('{bank_id}/loan_detail/{id}/edit', 'HeadQuaterIncomeController@EditBankIncomeById');
-    Route::patch('{bank_id}/loan_detail/{id}', 'HeadQuaterIncomeController@UpdateBankIncomeById');
+    Route::get('/loan_detail/{loan_id}/edit', 'HeadQuaterIncomeController@EditBankIncomeById');
+    Route::patch('/loan_detail/{loan_id}', 'HeadQuaterIncomeController@UpdateBankIncomeById');
+//    Route::get('{bank_detail_id}/loan_detail/{loan_id}/edit', 'HeadQuaterIncomeController@EditBankIncomeById');
+//    Route::patch('{bank_detail_id}/loan_detail/{loan_id}', 'HeadQuaterIncomeController@UpdateBankIncomeById');
 
-
+    /**
+     * purchase order
+     */
 	Route::get('/payment_order_detail/{id}', 'HeadQuaterIncomeController@getAllPaymentOrderIncomeById');
     Route::get('{payment_order_id}/payment_order_detail/{id}/edit', 'HeadQuaterIncomeController@EditPOIncomeById');
     Route::patch('{payment_order_id}/payment_order_detail/{id}', 'HeadQuaterIncomeController@UpdatePOIncomeById');
 
+    /**
+     * purchase guarantee
+     */
 	Route::get('/purchase_guarantee_detail/{id}', 'HeadQuaterIncomeController@getAllPurchaseGuaranteeIncomeById');
     Route::get('{purchase_guarantee_id}/purchase_guarantee_detail/{id}/edit', 'HeadQuaterIncomeController@EditPGIncomeById');
-    Route::patch('{purchase_guarantee_id}/purchase_guarantee_detail/{id}', 'HeadQuaterIncomeController@UpdatePGIncomeById');
+    Route::patch('{purchase_guarantee_id}/purchase_guarantee_detail/{id}', 'HeadQuaterIncomeController@UpdateExpendById');
+
+
+    /**
+     * Update and Edit Expense for all
+     */
+
+
+    /**
+     * Office expenses or Daily Expenses
+     */
+    Route::get('/office_expense_detail/expense_cat/{id}', 'HeadQuaterExpandController@getAllOfficeExpenseByExpenseCatId');
+    Route::get('/office_expense_detail/project/{id}', 'HeadQuaterExpandController@getAllOfficeExpenseByProjectId');
+    Route::get('/office_expense_detail/{id}/edit', 'HeadQuaterExpandController@EditExpenseById');
+    Route::patch('/office_expense_detail/{id}', 'HeadQuaterExpandController@UpdateExpendById');
+
+
+    /**
+     * Project Expenses
+     */
+    Route::get('/project_expense_detail/{id}', 'HeadQuaterExpandController@getAllProjectExpenseByProjectId');
+    Route::get('/project_expense_detail/{id}/edit', 'HeadQuaterExpandController@EditExpenseById');
+    Route::patch('/project_expense_detail/{id}/update', 'HeadQuaterExpandController@UpdateExpendById');
+
+
+    /**
+     * Bank Expensee
+     */
+    Route::get('/bank_expense_detail/{id}/edit', 'HeadQuaterExpandController@EditExpenseById');
+    Route::patch('/bank_expense_detail/{id}/update', 'HeadQuaterExpandController@UpdateExpendById');
+
+
 
 
 	Route::get('/income_cashbook', 'HeadQuaterIncomeController@index');
@@ -72,9 +120,7 @@ Route::prefix('head_quater')->group(function () {
 	Route::get('/expend_cashbook', 'HeadQuaterExpandController@index');
 	Route::get('/add_expend', 'HeadQuaterExpandController@create');
 
-	Route::get('/office_expense_detail/expense_cat/{id}', 'HeadQuaterExpandController@getAllOfficeExpenseByExpenseCatId');
-	Route::get('/office_expense_detail/project/{id}', 'HeadQuaterExpandController@getAllOfficeExpenseByProjectId');
-	Route::get('/project_expense_detail/{id}', 'HeadQuaterExpandController@getAllProjectExpenseByProjectId');
+
 });
 
 /* Investor */

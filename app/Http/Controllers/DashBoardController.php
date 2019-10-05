@@ -112,6 +112,12 @@ class DashBoardController extends Controller
         }
         $result = $totalIncrease + $totalDecrease;
         $originalTotalBalance = DB::table('cash_book_tb')->select('balance')->where('deleted_flag',0)->latest('id')->first();
-    	return (int)$originalTotalBalance->balance + $result;
+        if(!empty($originalTotalBalance->balance)) {
+            return (int)$originalTotalBalance->balance + $result;
+        } else {
+            $balance = 0;
+            return $balance;
+        }
+
     }
 }

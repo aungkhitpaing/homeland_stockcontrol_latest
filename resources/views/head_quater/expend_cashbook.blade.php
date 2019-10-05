@@ -50,39 +50,41 @@
                             <table id="example1" class="table table-bordered table-striped">
                               <thead>
                                 <tr>
-                                  <th>Project</th>
-                                  <!-- <th>Specification</th> -->
-                                  <th>Total Amount</th>
-                                  <th>Created Date</th>
+                                  <th>Expense Category</th>
+                                  <th>Account Head</th>
+                                  <th>Payment Type</th>
+                                  <th>Amount</th>
+                                  <th>Description</th>
+                                  <th>Created At</th>
                                   <th>Action</th>
                                 </tr>
                               </thead>
                               <tbody>
                               @foreach($getAllOfficeExpense as $getOfficeExpense)
                                 <tr>
-                                  <td><a href="/head_quater/office_expense_detail/project/{{$getOfficeExpense->project_id}}">{{$getOfficeExpense->name}}</a></td>
-                                  <!-- <td> -->
-                                    <!-- <a href="/head_quater/office_expense_detail/expense_cat/{{$getOfficeExpense->expense_category}}"> -->
-                                       <!-- {{$getOfficeExpense->expense_category_name}} -->
-                                    <!-- </a> -->
-                                  <!-- </td> -->
-                                  <td>{{$getOfficeExpense->total_expense_balance}}</td>
+                                  <td>{{$getOfficeExpense->expense_category_name}}</td>
+                                  <td>{{$getOfficeExpense->account_head_type}}</td>
+                                  <td>{{$getOfficeExpense->payment_type}}</td>
+                                  <td>{{$getOfficeExpense->amount}}</td>
+                                  <td>{{$getOfficeExpense->description}}</td>
                                   <?php
                                     $created_at = explode(" ", $getOfficeExpense->created_at);
                                   ?>
                                   <td>{{$created_at['0']}}</td>
                                   <td>
-                                    <button type="button" class="btn btn-block btn-warning btn-sm">Edit</button>
+                                    <a href="/head_quater/office_expense_detail/{{$getOfficeExpense->office_expense_detail_id}}/edit"  class="btn btn-block btn-warning btn-sm">Edit</a>
                                   </td>
                                 </tr>
                               @endforeach
                               </tbody>
                               <tfoot>
                                 <tr>
-                                  <th>Project</th>
-                                  <!-- <th>Specification</th> -->
+                                  <th>Expense Category</th>
+                                  <th>Account Head</th>
+                                  <th>Payment Type</th>
                                   <th>Amount</th>
-                                  <th>Created Date</th>
+                                  <th>Description</th>
+                                  <th>Created At</th>
                                   <th>Action</th>
                                 </tr>
                               </tfoot>
@@ -94,6 +96,23 @@
                       </div>
                     </div>
                   </section>
+                  {{--total amount of expend--}}
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="box box-default">
+                        <div class="box-header with-border">
+                          <i class="fa fa-bullhorn"></i>
+                          <h3 class="box-title">Total Office Expend Amount</h3>
+                        </div>
+                        <div class="box-body">
+                          <div class="callout callout-danger">
+                            <h4>Total expend amount is <b>{{$getTotalOfficeExpense}}</b> <span>Kyats</span></h4>
+                            <p>This is all calculation amount of total income</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
                 <div class="tab-pane" id="tab_2">
@@ -117,28 +136,25 @@
                                 <th>Project Name</th>
                                 <th>Total Balance </th>
                                 <th>Created Date</th>
-                                <th>Action</th>
                               </tr>
                               </thead>
                               <tbody>
-                              @foreach($getAllProjectExpense as $getprojectexpense)
-                              <tr>
-                                <td><a href="/head_quater/project_expense_detail/{{$getOfficeExpense->project_id}}">{{$getprojectexpense->name}}</a></td>
-                                <td>{{$getprojectexpense->total_expense_balance}}</td>
-                                <td>{{$getprojectexpense->created_at}}</td>
-                                <td>
-                                  <button type="button" class="btn btn-block btn-warning btn-sm">Edit</button>
-                                </td>
-                              </tr>
-                              @endforeach
-                              </tr>
+                                @foreach($getAllProjectExpense as $getprojectexpense)
+                                <tr>
+                                  <td><a href="/head_quater/project_expense_detail/{{$getprojectexpense->project_id}}">{{$getprojectexpense->name}}</a></td>
+                                  <td>{{$getprojectexpense->total_expense_balance}}</td>
+                                    <?php
+                                      $created_at = explode(" ", $getprojectexpense->created_at);
+                                    ?>
+                                  <td>{{$created_at[0]}}</td>
+                                </tr>
+                                @endforeach
                               </tbody>
                               <tfoot>
                               <tr>
                                 <th>Project Name</th>
                                 <th>Total Balance </th>
                                 <th>Created Date</th>
-                                <th>Action</th>
                               </tr>
                               </tfoot>
                             </table>
@@ -170,32 +186,34 @@
                                   <tr>
 <!--                                     <th>Id</th> -->
                                     <th>Title</th>
-                                    <th>payback Amount</th>
+                                    <th>Payback Amount</th>
+                                    <th>Payment Type</th>
                                     <th>payback Date</th>
-                                    <!-- <th>Left Amount</th> -->
                                     <th>Action</th>
                                   </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($getAllBankExpense as $getBankExpense) 
                                   <tr>
-                                  <!-- <td>{{$getBankExpense->id}}</td> -->
                                     <td>{{$getBankExpense->description}}</td>
                                     <td>{{$getBankExpense->payback_amount}}</td>
-                                    <td>{{$getBankExpense->created_at}}</td>
+                                    <td>{{$getBankExpense->payment_type}}</td>
+                                      <?php
+                                        $created_at = explode(" ", $getBankExpense->created_at);
+                                      ?>
+                                    <td>{{$created_at[0]}}</td>
                                     <td>
-                                      <button type="button" class="btn btn-block btn-warning btn-sm">Edit</button>
+                                      <a href="/head_quater/bank_expense_detail/{{$getBankExpense->id}}/edit" class="btn btn-block btn-warning btn-sm">Edit</a>
                                     </td>
                                   </tr>
                                 @endforeach
                                 </tbody>
                                 <tfoot>
                                   <tr>
-                                    <!-- <th>Id</th> -->
                                     <th>Title</th>
-                                    <th>payback Amount</th>
+                                    <th>Payback Amount</th>
+                                    <th>Payment Type</th>
                                     <th>payback Date</th>
-                                    <!-- <th>Left Amount</th> -->
                                     <th>Action</th>
                                   </tr>
                                 </tfoot>
@@ -292,28 +310,6 @@
             <!-- nav-tabs-custom -->
         </div>
       <!-- /.col -->
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <div class="box box-default">
-            <div class="box-header with-border">
-              <i class="fa fa-bullhorn"></i>
-
-              <h3 class="box-title">Total Expend Amount</h3>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <div class="callout callout-danger">
-                <h4>Total expend amount is <b>100,000,000</b> <span>Kyats</span></h4>
-
-                <p>This is all calculation amount of total income</p>
-              </div>
-            </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
-        </div>
-        <!-- /.col -->
       </div>
     </section>
 <!-- /.content -->

@@ -48,23 +48,26 @@
 									                  		<label for="investor_name" class="col-sm-2 control-label"> Account Head</label>
 									                  		<div class="col-sm-10">
 										                  		<!-- select -->
-										                  		<select class="form-control" name="accountHead">
-										                  				<option value="6">Office Expense</option>
-											                  	</select>
+																<select class="form-control" name="accountHead" required>
+																	<option>Select AccountHead</option>
+																	@foreach($accountHeads as $accountHead)
+																		<option value="{{$accountHead->id}}" required>{{$accountHead->account_head_type}}</option>
+																	@endforeach
+																</select>
 									                  		</div>
 									                	</div>
 									                	
-									                	<div class="form-group">
-									                  		<label for="investor_name" class="col-sm-2 control-label">To Project</label>
-									                  		<div class="col-sm-10">
-										                  		<!-- select -->
-										                  		<select class="form-control" name="project">
-										                  		@foreach($getAllProjects as $getAllProject)
-										                  			<option value="{{$getAllProject->id}}">{{$getAllProject->name}}</option>
-										                  		@endforeach
-											                  	</select>
-									                  		</div>
-										                </div>
+									                	{{--<div class="form-group">--}}
+									                  		{{--<label for="investor_name" class="col-sm-2 control-label">To Project</label>--}}
+									                  		{{--<div class="col-sm-10">--}}
+										                  		{{--<!-- select -->--}}
+										                  		{{--<select class="form-control" name="project">--}}
+										                  		{{--@foreach($getAllProjects as $getAllProject)--}}
+										                  			{{--<option value="{{$getAllProject->id}}">{{$getAllProject->name}}</option>--}}
+										                  		{{--@endforeach--}}
+											                  	{{--</select>--}}
+									                  		{{--</div>--}}
+										                {{--</div>--}}
 
 										              	<div class="form-group">
 									                  		<label for="investor_name" class="col-sm-2 control-label"> Expend Category</label>
@@ -143,7 +146,6 @@
 									                  		<div class="col-sm-10">
 										                  		<!-- select -->
 										                  		<select class="form-control" name="accountHead" required>
-
 										                  			<option>Select AccountHead</option>
 										                  			@foreach($accountHeads as $accountHead)
 										                  				<option value="{{$accountHead->id}}" required>{{$accountHead->account_head_type}}</option>
@@ -237,7 +239,7 @@
 										            	<!-- <input type="hidden" name="accountHead" value="3" > -->
 										              	<div class="box-body">
 											              	<div class="form-group">
-										                  		<label for="investor_name" class="col-sm-2 control-label"> Account Head</label>
+										                  		<label for="accounthead" class="col-sm-2 control-label"> Account Head</label>
 										                  		<div class="col-sm-10">
 											                  		<!-- select -->
 											                  		<select class="form-control" name="accountHead" required>
