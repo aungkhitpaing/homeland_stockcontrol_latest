@@ -7,6 +7,12 @@ use Illuminate\Support\Facades\DB;
 
 class DashBoardController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('admin');
+    }
+    
     public function index()
     {
     	$getTransactions = $this->getAlltransaction();

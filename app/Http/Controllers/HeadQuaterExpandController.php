@@ -13,6 +13,12 @@ use Illuminate\Support\Collection;
 class HeadQuaterExpandController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('admin');
+    }
+    
 	public function index() {
 
 	    $getAllOfficeExpense = $this->getAllOfficeExpense();

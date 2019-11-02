@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\DB;
 class HeadQuaterIncomeController extends Controller
 {
 
+	public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('admin');
+    }
 	/**
 	 * Index for income cash book
 	 *

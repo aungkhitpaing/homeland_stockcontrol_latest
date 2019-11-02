@@ -86,7 +86,7 @@
                     @endif
                     <td>{{ $data->created_at }}</td>
                     <td>
-                        <a href="/project-expense/{{$data->id}}/record" class="btn btn-danger">Edit History</a>
+                        {{-- <a href="/project-expense/{{$data->id}}/record" class="btn btn-danger">Edit History</a> --}}
                         <a href="/project-expense/{{$data->id}}/edit" class="btn btn-warning">Edit</a>
                     </td>
                 </tr>
@@ -108,7 +108,9 @@
                     @endif
                     <td>{{ $data->created_at }}</td>
                     <td>
+                        @if(!$data->income)
                         <a href="/project-expense/{{$data->id}}/edit" class="btn btn-warning">Edit</a>
+                        @endif
                     </td>
                 </tr>
                 @endif

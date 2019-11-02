@@ -6,6 +6,12 @@ use Illuminate\Http\Request;
 
 class SupplierController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('admin');
+    }
+    
     public function index()
     {
     	$suppliers = \DB::table('suppliers')->get();
