@@ -23,16 +23,14 @@
               <ul class="nav nav-tabs">
                   <li class="active"><a href="#tab_1" data-toggle="tab">Office Expense</a></li>
                   <li><a href="#tab_2" data-toggle="tab">Project</a></li>
-                  <li><a href="#tab_3" data-toggle="tab">Bank Loan</a></li>
-                  <!-- <li><a href="#tab_4" data-toggle="tab">PO</a></li>
+                  {{--<li><a href="#tab_3" data-toggle="tab">Bank Loan</a></li>--}}
+                  <li><a href="#tab_4" data-toggle="tab">PO</a></li>
                   <li><a href="#tab_6" data-toggle="tab">PG</a></li>
-                  <li><a href="#tab_7" data-toggle="tab">Interest Paid</a></li> -->
+                  <!-- <li><a href="#tab_7" data-toggle="tab">Interest Paid</a></li> -->
 
                   <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>
               </ul>
-            
               <div class="tab-content">
-
                 <div class="tab-pane active" id="tab_1">
                   <section class="content">
                     <div class="row">
@@ -114,7 +112,6 @@
                     </div>
                   </div>
                 </div>
-
                 <div class="tab-pane" id="tab_2">
                   <section class="content">
                     <div class="row">
@@ -166,7 +163,6 @@
                     </div>
                   </section>  
                 </div>
-
                 <div class="tab-pane" id="tab_3">
                   <section class="content">
                       <div class="row">
@@ -193,7 +189,7 @@
                                   </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($getAllBankExpense as $getBankExpense) 
+                                @foreach($getAllBankExpense as $getBankExpense)
                                   <tr>
                                     <td>{{$getBankExpense->description}}</td>
                                     <td>{{$getBankExpense->payback_amount}}</td>
@@ -226,7 +222,6 @@
                       </div>
                   </section>
                 </div>
-
                 <div class="tab-pane" id="tab_4">
                   <section class="content">
                       <div class="row">
@@ -297,15 +292,9 @@
                       </div>
                   </section>                
                 </div>
-
-                <div class="tab-pane" id="tab_6">
-                </div>
-
-                <div class="tab-pane" id="tab_7">
-                </div>
-
+                <div class="tab-pane" id="tab_6"></div>
+                <div class="tab-pane" id="tab_7"></div>
               </div>
-              <!-- /.tab-content -->
             </div>
             <!-- nav-tabs-custom -->
         </div>
@@ -320,7 +309,7 @@
   $(function () {
     $('#example1').DataTable()
     $('#example2').DataTable()
-    $('#example3').DataTable()
+    // $('#example3').DataTable()
     $('#example4').DataTable()
   })
 </script>

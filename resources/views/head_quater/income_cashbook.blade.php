@@ -24,8 +24,8 @@
                   <li class="active"><a href="#tab_1" data-toggle="tab">Investor</a></li>
                   <li><a href="#tab_2" data-toggle="tab">Project</a></li>
                   <li><a href="#tab_3" data-toggle="tab">Bank Loan</a></li>
-                  {{--<li><a href="#tab_4" data-toggle="tab">PO</a></li>--}}
-                  {{--<li><a href="#tab_6" data-toggle="tab">PG</a></li>--}}
+                  <li><a href="#tab_4" data-toggle="tab">PO</a></li>
+                  <li><a href="#tab_6" data-toggle="tab">PG</a></li>
                   <!-- <li><a href="#tab_7" data-toggle="tab">Interest Receive</a></li> -->
                   <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>
               </ul>
@@ -50,6 +50,7 @@
                                   <th>Investor Name</th>
                                   <th>Balance</th>
                                   <th>Updated Date</th>
+                                  <th>Option</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -64,6 +65,9 @@
                                     $updated_at = explode(" ", $getInvestorIncome->updated_at);
                                   ?>
                                   <td>{{$updated_at[0]}}</td>
+                                  <td>
+                                      <a href="/head_quater/invester_detail/{{$getInvestorIncome->investor_id}}" class="btn btn-primary btn-sm">Detail</a>
+                                  </td>
                                 </tr>
                               @endforeach
                               </tbody>
@@ -72,6 +76,7 @@
                                   <th>Investor Name</th>
                                   <th>Balance</th>
                                   <th>Updated Date</th>
+                                  <th>Option</th>
                                 </tr>
                               </tfoot>
                             </table>
@@ -134,7 +139,7 @@
                                 <th>Project Name</th>
                                 <th>Amount</th>
                                 <th>Updated Date</th>
-                                <!-- <th>Action</th> -->
+                                <th>Option</th>
                               </tr>
                               </thead>
                               <tbody>
@@ -147,6 +152,9 @@
                                   $created_at = explode(" ", $getProjectIncome->created_at);
                                 ?>
                                 <td>{{$created_at[0]}}</td>
+                                <td>
+                                    <a href="/head_quater/project_detail/{{$getProjectIncome->project_id}}" class="btn btn-primary btn-sm">Detail</a>
+                                </td>
                               </tr>
                               @endforeach
                               </tbody>
@@ -155,7 +163,7 @@
                                 <th>Project Name</th>
                                 <th>Amount</th>
                                 <th>Updated Date</th>
-                                <!-- <th>Action</th> -->
+                                <th>Option</th>
                               </tr>
                               </tfoot>
                             </table>
@@ -185,14 +193,14 @@
                           <div class="box-body">
                             <table id="example3" class="table table-bordered table-striped">
                               <thead>
-                              <tr>
-                                <th>Title</th>
-                                <th>Loan Amount</th>
-                                <th>Loan Date</th>
-                                <th>Payback Amount</th>
-                                <th>Left to Paid</th>
-                                <th>Option</th>
-                              </tr>
+                                  <tr>
+                                    <th>Title</th>
+                                    <th>Loan Amount</th>
+                                    <th>Loan Date</th>
+                                    <th>Payback Amount</th>
+                                    <th>Left to Paid</th>
+                                    <th>Option</th>
+                                  </tr>
                               </thead>
                               <tbody>
                               @foreach($loanDetail as $loanDetailById)
@@ -219,7 +227,16 @@
                                       {{$loanDetailById->loan_amount - $loanDetailById->payback_amount}} Kyats
                                     </td>
                                   @endif
-                                  <td><a href="/head_quater/loan_detail/{{$loanDetailById->id}}/edit" class="btn btn-primary btn-sm">Edit</a></td>
+                                  <td>
+                                      @if($loanDetailById->loan_amount == $loanDetailById->payback_amount)
+                                          <a href="/head_quater/add_expend/bank/{{$loanDetailById->id}}" class="btn btn-danger btn-sm disabled">PayBack</a>
+                                          <a href="/head_quater/loan_detail/{{$loanDetailById->id}}/edit" class="btn btn-warning btn-sm disabled">Edit</a>
+                                          @else
+                                             <a href="/head_quater/add_expend/bank/{{$loanDetailById->id}}" class="btn btn-danger btn-sm">PayBack</a>
+                                            <a href="/head_quater/loan_detail/{{$loanDetailById->id}}/edit" class="btn btn-warning btn-sm">Edit</a>
+                                      @endif
+                                      <a href="/head_quater/loan_detail/{{$loanDetailById->id}}/show" class="btn btn-primary btn-sm">Detail</a>
+                                  </td>
                                 </tr>
                               @endforeach
                               </tbody>
@@ -261,34 +278,65 @@
                             <table id="example4" class="table table-bordered table-striped">
                               <thead>
                                 <tr>
-                                  <th>PO Name</th>
-                                  <th>Total Amount</th>
-                                  <th>With Draw</th>
-                                  <th>Description</th>
+                                    <th>Register Date</th>
+                                    <th>PO Register Name</th>
+                                    <th>Register Amount</th>
+                                    <th>Payback Amount</th>
+                                    <th>Left Amount</th>
+                                    <th>Description</th>
+                                    <th>Options</th>
                                 </tr>
                               </thead>
                               <tbody>
-                              @foreach($getAllPaymentOrderIncome as $getPaymentOrderIncomeById)
-                                <tr>
-                                  <td><a href="/head_quater/payment_order_detail/{{$getPaymentOrderIncomeById->payment_order_id}}">{{$getPaymentOrderIncomeById->name}}</a></td>
-                                  <td>{{$getPaymentOrderIncomeById->total_income_balance}} Kyats</td>
-                                  <?php
-                                    $updated_at = explode(" ", $getPaymentOrderIncomeById->updated_at);
-                                  ?>                                  
-                                  <td>{{$updated_at[0]}}</td>
-                                  <td>{{$getPaymentOrderIncomeById->description}}</td>
-                            <!--  <td>
-                                    <button type="button" class="btn btn-block btn-warning btn-sm">Edit</button>
-                                  </td> -->
-                                </tr>
-                              @endforeach
+                                @foreach ($getAllPaymentOrderIncome as $getAllPaymentOrder)
+                                  <tr>
+                                    <?php
+                                    $updated_at = explode(" ", $getAllPaymentOrder->updated_at);
+                                    ?>
+                                    <td>{{$updated_at[0]}}</td>
+                                    <td>{{$getAllPaymentOrder->name}}</td>
+                                      @if($getAllPaymentOrder->install_amount == null)
+                                        <td>0 Kyats</td>
+                                      @else
+                                        <td>{{$getAllPaymentOrder->install_amount}} Kyats</td>
+                                      @endif
+
+                                      @if($getAllPaymentOrder->receive_amount == null)
+                                        <td>0 Kyats</td>
+                                      @else
+                                        <td>{{$getAllPaymentOrder->receive_amount}} Kyats</td>
+                                      @endif
+
+                                      @if($getAllPaymentOrder->receive_amount == null)
+                                        <td>{{$getAllPaymentOrder->install_amount}} Kyats</td>
+                                      @else
+                                        <td>{{$getAllPaymentOrder->install_amount - $getAllPaymentOrder->receive_amount}} Kyats</td>
+                                      @endif
+                                      <td>
+                                        {{$getAllPaymentOrder->description}}
+                                      </td>
+                                      <td>
+                                        @if($getAllPaymentOrder->install_amount == $getAllPaymentOrder->receive_amount)
+                                          <a href="" class="btn btn-danger btn-sm disabled">PayBack</a>
+                                          <a href="" class="btn btn-warning btn-sm disabled">Edit</a>
+                                        @else
+                                          <a href="/head_quater/receive_paymentorder/{{$getAllPaymentOrder->payment_order_id}}" class="btn btn-danger btn-sm">PayBack</a>
+                                          <a href="/head_quater/receive_paymentorder/{{$getAllPaymentOrder->payment_order_id}}" class="btn btn-warning btn-sm">Edit</a>
+                                        @endif
+                                        <a href="/head_quater/receive_paymentorder/{{$getAllPaymentOrder->payment_order_id}}" class="btn btn-primary btn-sm">Detail</a>
+                                      </td>
+                                  </tr>
+                                @endforeach
                               </tbody>
                               <tfoot>
                                 <tr>
-                                  <th>PO Name</th>
-                                  <th>Total Amount</th>
-                                  <th>With Draw</th>
-                                  <th>Description</th>
+                                    <th>Register Date</th>
+                                    <th>PO Register Name</th>
+                                    <th>Register Amount</th>
+                                    <th>Payback Amount</th>
+                                    <th>Left Amount</th>
+                                    <th>Description</th>
+                                    <th>Options</th>
                                 </tr>
                               </tfoot>
                             </table>
@@ -297,7 +345,7 @@
                         </div>
                       </div>
                     </div>
-                </section>                
+                </section>
               </div>
               <!-- /.tab-pane -->
 

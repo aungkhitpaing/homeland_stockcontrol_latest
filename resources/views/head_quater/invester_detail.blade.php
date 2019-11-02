@@ -70,7 +70,7 @@
                     <td>{{$investorDetailById->payment_type}}</td>
                     <td>{{$investorDetailById->description}}</td>
                     <td></td>
-                    <td><a href="/head_quater/{{$investorDetailById->investor_id}}/invester_detail/{{$investorDetailById->investor_detail_id}}/edit" class="btn btn-primary btn-sm">Edit</a></td>
+                    <td><a href="/head_quater/{{$investorDetailById->investor_id}}/invester_detail/{{$investorDetailById->investor_detail_id}}/edit" class="btn btn-warning btn-sm">Edit</a></td>
                   </tr>
                 @endforeach
 <!--                   <tr style="background-color: lightpink;">

@@ -17,29 +17,6 @@
 <!-- Main content -->
 <section class="content">
 
-  {{--<div class="row">--}}
-    {{--<div class="col-md-12">--}}
-        {{--<div class="box">--}}
-        {{--<div class="box-header">--}}
-          {{--<h3 class="box-title">Search with Date Range</h3>--}}
-        {{--</div>--}}
-        {{--<div class="box-body">--}}
-          {{--<div class="form-group">--}}
-            {{--<label>Date range:</label>--}}
-
-            {{--<div class="input-group">--}}
-              {{--<div class="input-group-addon">--}}
-                {{--<i class="fa fa-calendar"></i>--}}
-              {{--</div>--}}
-              {{--<input type="text" class="form-control pull-right" id="reservation">--}}
-            {{--</div>--}}
-            {{--<!-- /.input group -->--}}
-          {{--</div>--}}
-        {{--</div>    --}}
-        {{--</div> --}}
-    {{--</div>--}}
-  {{--</div>--}}
-
   <div class="row">
     <div class="col-md-12">
       <div class="row">
@@ -52,50 +29,30 @@
                 <thead>
                   <tr>
                     <th>Title</th>
-                    <th>Loan Amount</th>
-                    <th>Loan Date</th>
+                    <th>Payment Type</th>
                     <th>Payback Amount</th>
-                    <th>Left to Paid</th>
-                    <th>Option</th>
+                    <th>Payback Date</th>
                   </tr>
                 </thead>
                 <tbody>
                 @foreach($loanDetail as $loanDetailById)
                   <tr>
                     <td>{{$loanDetailById->description}}</td>
-                    @if ($loanDetailById->loan_amount == null)
-                      <td>0 Kyats</td>
-                    @else
-                      <td>{{$loanDetailById->loan_amount}} Kyats</td>
-                    @endif
-                    <td>{{$loanDetailById->loan_date}}</td>
-                    @if ($loanDetailById->payback_amount == null)
-                    <td>0 Kyats</td>
-                    @else
-                    <td>{{$loanDetailById->payback_amount}} Kyats</td>
-                    @endif
-
-                    @if ( $loanDetailById->payback_amount == null)
-                      <td>
-                        {{$loanDetailById->loan_amount - 0 }} Kyats
-                      </td>
-                    @else
-                      <td>
-                        {{$loanDetailById->loan_amount - $loanDetailById->payback_amount}} Kyats
-                      </td>
-                    @endif
-                      <td><a href="/head_quater/loan_detail/{{$loanDetailById->id}}/edit" class="btn btn-primary btn-sm">Edit</a></td>
+                    <td>{{$loanDetailById->payment_type}}</td>
+                    <td>{{$loanDetailById->payback_amount}}</td>
+                      <?php
+                        $paybackDate = explode(' ',$loanDetailById->created_at);
+                      ?>
+                    <td>{{$paybackDate[0]}}</td>
                   </tr>
                 @endforeach
                 </tbody>
                 <tfoot>
                   <tr>
                     <th>Title</th>
-                    <th>Loan Amount</th>
-                    <th>Loan Date</th>
+                    <th>Payment Type</th>
                     <th>Payback Amount</th>
-                    <th>Left to Paid</th>
-                    <th>Option</th>
+                    <th>Payback Date</th>
                   </tr>
                 </tfoot>
               </table>
@@ -103,17 +60,6 @@
             <!-- /.box-body -->
           </div>
         </div>
-      </div>
-      <div class="row">        
-        <!-- /.col -->
-        <div class="col-md-6">
-          <div class="callout" style="background-color:lightpink">
-            <h4> <span>Total Loan Transfer amount is</span> <b>{{$totalBalance}}</b> <span>Kyats</span></h4>
-            <p>This is all calculation amount of total investor income</p>
-          </div>
-        </div>        
-        <!-- /.col -->
-
       </div>
     </div>
   </div>
