@@ -120,4 +120,10 @@ class DashBoardController extends Controller
         }
 
     }
+    
+    public function logout()
+    {
+        auth()->logout();
+        return back();
+    }
 }

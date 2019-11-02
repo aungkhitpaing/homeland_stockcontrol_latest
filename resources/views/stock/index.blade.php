@@ -16,9 +16,7 @@
                                 <tr>
                                     <th>Code No</th>
                                     <th>Stock Name</th>
-                                    <th>Project Name</th>
-                                    <th>From Date</th>
-                                    <th>To Date</th>
+                                    <th>Price</th>
                                     <th>Avaliable</th>
                                     <th colspan="2">Option</th>
                                 </tr>
@@ -28,9 +26,7 @@
                                 <tr>
                                     <td>{{$stock->code_no}}</td>
                                     <td>{{$stock->stock_name}}</td>
-                                    <td>{{$stock->project_id}}</td>
-                                    <td>{{$stock->from_date}}</td>
-                                    <td>{{$stock->to_date}}</td>
+                                    <td>{{$stock->price }}</td>
                                     @if($stock->is_avaliable == 1)
                                     <td>Yes</td>
                                     @else 

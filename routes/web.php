@@ -18,7 +18,7 @@ Route::get('/', function () {
 Route::get('/admin_dashboard', 'DashBoardController@index');
 Route::get('/record_histories', 'RecordHistoryController@index');
 Route::post('/record_histories/excel', 'RecordHistoryController@excelExport');
-
+Route::get('log-out','DashBoardController@logout');
 
 Route::prefix('head_quater')->group(function () {
 	// Route::post('/login',function(){
@@ -229,12 +229,6 @@ Route::prefix('bank')->group(function () {
 	});
 });
 
-/* Supplier */
-Route::prefix('supplier')->group(function () {
-	Route::get('/add', function () {
-		return view('supplier.add');
-	});
-});
 
 
 
@@ -251,10 +245,40 @@ Route::get('/dailyexpense/detail', function () {
 });
 
 
-Route::get('/supplier', 'ProjectController@supplier');
-Route::get('/supplier/create', 'ProjectController@supplierCreate');
-Route::get('/supplier/edit', 'ProjectController@supplierEdit');
-
-
 
 Route::get('/stock-control', 'ProjectController@stockControl');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/project-expense','ProjectExpenseController@index');
+Route::get('/project-expense','ProjectExpenseController@index');
+Route::post('/project-expense','ProjectExpenseController@store');
+Route::get('/project-expense/{id}/edit','ProjectExpenseController@edit');
+Route::post('/project-expense/{id}/update','ProjectExpenseController@update');
+Route::get('/project-expense/{id}/record','ProjectExpenseController@record');
+
+
+
+Route::get('/project-order','ProjectOrderController@index');
+Route::get('/project-order/stock_price/{stock}','ProjectOrderController@getStockPrice');
+Route::post('/project-order','ProjectOrderController@store');
+
+
+Route::get('/project-user','ProjectUserController@index');
+Route::post('/project-user','ProjectUserController@store');
+Route::post('/project-user/{id}/delete','ProjectUserController@destroy');
+
+Route::get('/supplier','SupplierController@index');
+Route::post('/supplier','SupplierController@store');
+Route::get('/supplier/{id}/edit','SupplierController@edit');
+Route::post('/supplier/{id}/update','SupplierController@update');
+Route::post('/supplier/{id}/delete','SupplierController@destroy');
+
+
+
+Route::get('custom-logout','HomeController@logout');
+
+Route::get('have-not-permission','HomeController@haveNotPermission');
+

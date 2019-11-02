@@ -147,17 +147,7 @@
           </ul>
         </li>
 
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-sticky-note"></i> <span>Supplier</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="/supplier/add"><i class="fa fa-circle-o"></i> <span>Add Supplier</span></a></li>
-          </ul>
-        </li>
+        
 
 <!--         <li class="treeview">
           <a href="#">
@@ -247,8 +237,11 @@
           </ul>
         </li> -->
 
+        <li><a href="/supplier"><i class="fa fa-book"></i> <span>Supplier</span></a></li>
         <li><a href="/stock"><i class="fa fa-book"></i> <span>Stock</span></a></li>
-        <li><a href="https://adminlte.io/docs"><i class="fa fa-book"></i> <span>Documentation</span></a></li>
+        <li><a href="/project-expense"><i class="fa fa-book"></i> <span>Project Expense</span></a></li>
+        <li><a href="/project-order"><i class="fa fa-book"></i> <span>Project Order</span></a></li>
+        <li><a href="/project-user"><i class="fa fa-book"></i> <span>Project User</span></a></li>
         
         <!-- <li class="header">LABELS</li>
         <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
