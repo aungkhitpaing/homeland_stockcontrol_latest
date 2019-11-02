@@ -25,7 +25,7 @@
                   <li><a href="#tab_2" data-toggle="tab">Project</a></li>
                   <li><a href="#tab_3" data-toggle="tab">Bank Loan</a></li>
                   <li><a href="#tab_4" data-toggle="tab">PO</a></li>
-                  <li><a href="#tab_6" data-toggle="tab">PG</a></li>
+                  {{--<li><a href="#tab_6" data-toggle="tab">PG</a></li>--}}
                   <!-- <li><a href="#tab_7" data-toggle="tab">Interest Receive</a></li> -->
                   <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>
               </ul>
@@ -103,15 +103,6 @@
                         <!-- /.box -->
                       </div>
                       <!-- /.col -->
-                    </div>
-                    <div class="row">
-                      <div class="col-md-2 pull-right">
-                        <a href="" class="btn btn-block btn-success btn-sm">
-                          <i class="fa fa-download">
-                            Export Excel
-                          </i>
-                        </a>
-                      </div>                      
                     </div>
                   </section>
                 </div>
@@ -318,12 +309,12 @@
                                       <td>
                                         @if($getAllPaymentOrder->install_amount == $getAllPaymentOrder->receive_amount)
                                           <a href="" class="btn btn-danger btn-sm disabled">PayBack</a>
-                                          <a href="" class="btn btn-warning btn-sm disabled">Edit</a>
+                                          {{--<a href="" class="btn btn-warning btn-sm disabled">Edit</a>--}}
                                         @else
                                           <a href="/head_quater/receive_paymentorder/{{$getAllPaymentOrder->payment_order_id}}" class="btn btn-danger btn-sm">PayBack</a>
-                                          <a href="/head_quater/receive_paymentorder/{{$getAllPaymentOrder->payment_order_id}}" class="btn btn-warning btn-sm">Edit</a>
+                                          {{--<a href="/head_quater/receive_paymentorder/{{$getAllPaymentOrder->payment_order_id}}/edit" class="btn btn-warning btn-sm">Edit</a>--}}
                                         @endif
-                                        <a href="/head_quater/receive_paymentorder/{{$getAllPaymentOrder->payment_order_id}}" class="btn btn-primary btn-sm">Detail</a>
+                                        <a href="/head_quater/receive_paymentorder/{{$getAllPaymentOrder->payment_order_id}}/show" class="btn btn-primary btn-sm">Detail</a>
                                       </td>
                                   </tr>
                                 @endforeach
