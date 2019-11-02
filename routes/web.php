@@ -29,6 +29,8 @@ Route::prefix('head_quater')->group(function () {
 	// });
 	Route::get('/create', 'HeadQuaterIncomeController@create');
 
+    Route::get('/receive_paymentorder/{id}','HeadQuaterIncomeController@ReceivePaymentOrder');
+
     /**
      * Investor
      */
@@ -58,6 +60,8 @@ Route::prefix('head_quater')->group(function () {
 	Route::get('/payment_order_detail/{id}', 'HeadQuaterIncomeController@getAllPaymentOrderIncomeById');
     Route::get('{payment_order_id}/payment_order_detail/{id}/edit', 'HeadQuaterIncomeController@EditPOIncomeById');
     Route::patch('{payment_order_id}/payment_order_detail/{id}', 'HeadQuaterIncomeController@UpdatePOIncomeById');
+
+
 
     /**
      * purchase guarantee
@@ -115,10 +119,12 @@ Route::prefix('head_quater')->group(function () {
 	Route::post('/storeDailyExpend', 'HeadQuaterExpandController@storeDailyExpend');
 	Route::post('/storeProjectExpend', 'HeadQuaterExpandController@storeProjectExpend');
 	Route::post('/storeBankExpense', 'HeadQuaterExpandController@storeBankExpense');
-
+	Route::post('/storePaymentOrderExpend','HeadQuaterExpandController@storePaymentOrderExpend');
 
 	Route::get('/expend_cashbook', 'HeadQuaterExpandController@index');
 	Route::get('/add_expend', 'HeadQuaterExpandController@create');
+	Route::get('/add_expend/bank/{id}','HeadQuaterExpandController@createBankLoan');
+    Route::get('/loan_detail/{loan_id}/show', 'HeadQuaterExpandController@getBankExpenseById');
 
 
 });
@@ -258,3 +264,5 @@ Route::get('/supplier/edit', 'ProjectController@supplierEdit');
 
 
 Route::get('/stock-control', 'ProjectController@stockControl');
+
+

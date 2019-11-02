@@ -37,10 +37,10 @@ class HeadQuaterIncomeController extends Controller
             ->get();
 
 
-		$getAllPaymentOrderIncome = DB::table('payment_order_income_tb')
-			->join('payment_order_tb', 'payment_order_tb.id', '=', 'payment_order_income_tb.payment_order_id')
-			->select('payment_order_income_tb.*', 'payment_order_tb.name')
-			->where('payment_order_income_tb.delete_flag', 0)
+		$getAllPaymentOrderIncome = DB::table('payment_order_detail_tb')
+			->join('payment_order_tb', 'payment_order_tb.id', '=', 'payment_order_detail_tb.payment_order_id')
+			->select('payment_order_detail_tb.*', 'payment_order_tb.name')
+			->where('payment_order_detail_tb.delete_flag', 0)
 			->get();
 
 		$getAllPurchaseGauranteeIncome = DB::table('purchase_guarantee_income_tb')
@@ -53,12 +53,9 @@ class HeadQuaterIncomeController extends Controller
 	}
 
 
-	/**
-	 * create
-	 *
-	 * @return Response
-	 */
-
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
 	public function create()
 	{
 		$investors = $this->getAllInvestor();
@@ -69,12 +66,17 @@ class HeadQuaterIncomeController extends Controller
 		return view('head_quater.add_income', compact('investors', 'projects', 'banks', 'paymentOrders', 'purchaseGuarantees'));
 	}
 
-	/**
-	 * createInvestorIncome
-	 *
-	 * @return Response
-	 */
+    public function ReceivePaymentOrder($id){
 
+        $paymentOrders = DB::table('payment_order_tb')->orderby('created_at', 'desc')
+            ->where('id',$id)
+            ->where('delete_flag', 0)->get();
+        return view('head_quater.receive_payment_order',compact("paymentOrders"));
+    }
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|string
+     */
 	public function storeInvestorIncome(Request $request)
 	{
 		$investorIncomeReq = [
@@ -119,11 +121,10 @@ class HeadQuaterIncomeController extends Controller
 		}
 	}
 
-	/**
-	 * storeProjectIncome
-	 *
-	 * @return Response
-	 */
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|string
+     */
 	public function storeProjectIncome(Request $request)
 	{
 
@@ -167,11 +168,10 @@ class HeadQuaterIncomeController extends Controller
 		}
 	}
 
-	/**
-	 * storeBankIncome
-	 *
-	 * @return Response
-	 */
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|string
+     */
 	public function storeBankIncome(Request $request)
 	{
 
@@ -221,11 +221,10 @@ class HeadQuaterIncomeController extends Controller
 		}
 	}
 
-	/**
-	 * storePaymentOrderIncome
-	 *
-	 * @return Response
-	 */
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|string
+     */
 	public function storePaymentOrderIncome(Request $request)
 	{
 		$POIncomeReq = [
@@ -239,42 +238,36 @@ class HeadQuaterIncomeController extends Controller
 		$specification_id = $request->paymentorder;
 
 		$getCashBookInfo = $this->getCashBookInfo($request, $request->accountHead, $specification_id);
-
 		try {
-
+            DB::beginTransaction();
 			// check row count of project detail
 			$paymentOrderDetail = DB::table('payment_order_detail_tb')->orderby('created_at', 'desc')
 				->where('delete_flag', 0)
 				->where('payment_order_id', $request->paymentorder)
 				->get();
-
-			if (sizeof($paymentOrderDetail) == 0) {
-				$insertProjectIncome = DB::table('payment_order_income_tb')->insert([
-					'payment_order_id' => $request->paymentorder,
-					'total_income_balance' => $request->amount,
-					'with_draw' => $request->receive_date,
-					'description' => $request->description,
-				]);
-			} else {
-
-				// calculate total balance
-				$totalBalance = DB::table('payment_order_income_tb')->where('payment_order_id', $request->paymentorder)->first();
-				 DB::table('payment_order_income_tb')->where('payment_order_id', $request->paymentorder)->update(['total_income_balance' => $totalBalance->total_income_balance + $request->amount]);
+			if (sizeof($paymentOrderDetail) != 0) {
+                foreach ($paymentOrderDetail as $paymentOrderDetailbyId) {
+                    if($paymentOrderDetailbyId->receive_amount == null) {
+                        $paymentOrderDetailbyId->receive_amount = 0;
+                    }
+                    $update_amount = $paymentOrderDetailbyId->receive_amount + $request->amount;
+                }
+                DB::update('update payment_order_detail_tb set receive_amount = ?  where payment_order_id = ?',[$update_amount,$request->paymentorder]);
 			}
-			DB::table('payment_order_detail_tb')->insert($POIncomeReq);
+			
 			DB::table('cash_book_tb')->insert($getCashBookInfo);
+			DB::commit();
 			return redirect('/head_quater/income_cashbook');
 		} catch (Exception $e) {
+		    DB::rollBack();
 			return $e->getMessage();
 		}
 	}
 
     /**
-     * storePurchaseGuaranteeIncome
-     *
-     * @return Response
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|string
      */
-
 	public function storePurchaseGuaranteeIncome(Request $request)
 	{
 
@@ -318,11 +311,12 @@ class HeadQuaterIncomeController extends Controller
 		}
 	}
 
-	/**
-	 * getCashBook Information
-	 *
-	 * @return Response
-	 */
+    /**
+     * @param Request $request
+     * @param $accoundhead_id
+     * @param null $specification_id
+     * @return array
+     */
 	public function getCashbookInfo(Request $request, $accoundhead_id, $specification_id = null)
 	{
 		$cashBookInfo = [
@@ -343,12 +337,10 @@ class HeadQuaterIncomeController extends Controller
 	}
 
 
-	/**
-	 * Get Row Count Balance For CashBook and Check balance amount
-	 *
-	 * @return Response
-	 */
-
+    /**
+     * Get Row Count Balance For CashBook and Check balance amount
+     * @return \Illuminate\Support\Collection
+     */
 	public function getRowCountFromCashBook()
 	{
 		$rowCounts = DB::table('cash_book_tb')->get();
@@ -489,8 +481,6 @@ class HeadQuaterIncomeController extends Controller
 		}
 		return $totalBalance;
 	}
-
-
 
 
 	public function EditInvestorIncomeById($investor_id,$investor_detail_id)
@@ -666,7 +656,6 @@ class HeadQuaterIncomeController extends Controller
         return redirect("/head_quater/income_cashbook");
 	}
 
-
     public function calculateDiffAmount($originalAmount,$updateAmount) {
         $updateRecords= [];
         if ($updateAmount > $originalAmount) {
@@ -681,6 +670,7 @@ class HeadQuaterIncomeController extends Controller
         }
         return $updateRecords;
     }
+
     public function updateTransactionbyId($id,$tablename,$column_name)
     {
         return DB::table($tablename)->where($column_name, $id)->update(['amount' => request()->amount]);

@@ -13,10 +13,6 @@ use Illuminate\Support\Collection;
 class HeadQuaterExpandController extends Controller
 {
 
-    /**
-     * Index file
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
 	public function index() {
 
 	    $getAllOfficeExpense = $this->getAllOfficeExpense();
@@ -31,22 +27,27 @@ class HeadQuaterExpandController extends Controller
         return view('head_quater.expend_cashbook',compact('getAllOfficeExpense','getTotalOfficeExpense','getAllProjectExpense','getAllBankExpense'));
     }
 
-    /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
     public function create() {
         $accountHeads = $this->getAllAccountHead();
         $getAllExpenseCategories = $this->showExpenseCategory();
         $getAllProjects = $this->getAllProject();
         $banks = $this->getAllBank();
         $getAllLoanTransfer = $this->getAllLoanTransfer();
-        return view ('head_quater.add_expend', compact('accountHeads','getAllExpenseCategories','getAllProjects','banks','getAllLoanTransfer'));
+        $getAllPaymentOrder = DB::table('payment_order_tb')->select('id','name')->where('delete_flag',0)->get();
+        return view ('head_quater.add_expend', compact('accountHeads','getAllExpenseCategories','getAllProjects','banks','getAllLoanTransfer','getAllPaymentOrder'));
     }
 
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|string
-     */
+    public function createBankLoan($id) {
+        $accountHeads = $this->getAllAccountHead();
+        $getBankLoanTransfer = DB::table('loan_detail_tb')
+            ->join('bank_tb','bank_tb.id','=','loan_detail_tb.bank_detail_id')
+            ->select('loan_detail_tb.*','bank_tb.name')
+            ->where('loan_detail_tb.id',$id)
+            ->where('loan_detail_tb.delete_flag',0)->get();
+        $banks = $this->getAllBank();
+        return view ('head_quater.add_bank_expend', compact('accountHeads','getBankLoanTransfer','banks'));
+    }
+
     public function storeDailyExpend(Request $request) {
         try {
                 DB::transaction(function() use ($request){
@@ -84,7 +85,8 @@ class HeadQuaterExpandController extends Controller
 
         $specification_id = $request->project;
         $getCashbookInfo = $this->getCashbookInfo($request,$request->accountHead,$specification_id);
-        
+
+        DB::beginTransaction();
         try {
             // check row count of  detail 
             $projectExpenseDetail = DB::table('project_expense_detail_tb')->orderby('created_at','desc')
@@ -94,29 +96,31 @@ class HeadQuaterExpandController extends Controller
 
 
             if (sizeof($projectExpenseDetail) == 0 ) {
-                
                 DB::table('project_expense_tb')->insert([
                     'project_id' => $request->project,
                     'total_expense_balance' => $request->amount,
                 ]);
-
             } else {
-
                 $totalBalance = DB::table('project_expense_tb')->where('project_id',$request->project)->first();
-                
                 DB::table('project_expense_tb')->where('project_id',$request->project)->update(['total_expense_balance' => $totalBalance->total_expense_balance + $request->amount]);
-                
             }
 
             DB::table('project_expense_detail_tb')->insert($projectExpenseReq);
             $getCashbookInfo['project_expense_detail_id'] = DB::getPdo()->lastInsertId();
 
             DB::table('cash_book_tb')->insert($getCashbookInfo);
-
+            $siteExpense = [
+                'project_id' => $request->project,
+                'account_head' => $request->accountHead,
+                'description' => $request->description,
+                'income' => $request->amount,
+            ];
+            DB::table('site_cashbook')->insert($siteExpense);
+            DB::commit();
             return redirect('/head_quater/alltransaction');
 
         } catch (Exception $e) {
-
+            DB::rollback();
             return $e->getMessage();
 
         }
@@ -148,12 +152,49 @@ class HeadQuaterExpandController extends Controller
                     DB::table('cash_book_tb')->insert($getCashBookInfo);
                     return redirect('/head_quater/income_cashbook/');
                 } else {
-                    return redirect('/head_quater/add_expend');
+                    return redirect('/head_quater/add_expend/bank');
                 }   
             }
         } catch (Exception $e) {
             return $e->getMessage();
         }
+    }
+
+    public function storePaymentOrderExpend(Request $request) {
+        try {
+            $inputs = [
+                'po_name_id' => $request->paymentorder,
+                'po_register_amount' => $request->amount,
+                'payment_type' => $request->optionsRadios,
+                'register_date' => $request->register_date,
+                'account_head_id' => $request->accountHead,
+            ];
+            $getCashbookInfo = $this->getCashbookInfo($request,$request->accountHead);
+
+            DB::beginTransaction();
+                DB::table('payment_order_detail_tb')->insert([
+                    'payment_order_id' => $request->paymentorder,
+                    'install_amount' => $request->amount,
+                    'install_date' => $request->register_date,
+                    'payment_type' => $request->optionsRadios,
+                    'description' => $request->description,
+                ]);
+
+            DB::table('payment_order_expend_tb')->insert($inputs);
+            $getCashbookInfo['payment_order_expense_detail_id'] = DB::getPdo()->lastInsertId();
+            DB::table('cash_book_tb')->insert($getCashbookInfo);
+            DB::commit();
+            return redirect('/head_quater/income_cashbook/');
+
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $e->getMessage();
+        }
+    }
+
+    public function storePurchaseGuarantee(Request $request) {
+
     }
 
     public function getCashbookInfo(Request $request, $accoundhead_id, $specification_id = null) {
@@ -294,6 +335,13 @@ class HeadQuaterExpandController extends Controller
         return $projects;   
     }
 
+    public function getBankExpenseById($id)
+    {
+        $loanDetail = DB::table('bank_expense_tb')->select('*')->where('loan_transfer_id',$id)->get();
+        return view('head_quater.loan_detail',compact('loanDetail'));
+    }
+
+
 
     // Common Function For Edit
 
@@ -340,7 +388,11 @@ class HeadQuaterExpandController extends Controller
     }
 
     /**
-     * Common Update
+     * Common updated for expense
+     *
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function UpdateExpendById(Request $request,$id)
     {
@@ -429,7 +481,6 @@ class HeadQuaterExpandController extends Controller
         return redirect("/head_quater/expend_cashbook");
     }
 
-
     public function calculateDiffAmount($originalAmount,$updateAmount) {
         $updateRecords= [];
         if ($updateAmount > $originalAmount) {
@@ -444,4 +495,5 @@ class HeadQuaterExpandController extends Controller
         }
         return $updateRecords;
     }
+
 }
