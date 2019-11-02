@@ -105,7 +105,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="/head_quater/all_transactions"><i class="fa fa-circle-o"></i>All</a></li>
+            <li><a href="/head_quater/alltransaction"><i class="fa fa-circle-o"></i>All</a></li>
             <li><a href="/head_quater/income_cashbook"><i class="fa fa-circle-o"></i>Income Cashbook</a></li>
             <li><a href="/head_quater/expend_cashbook"><i class="fa fa-circle-o"></i>Expand Cashbook</a></li>
           </ul>
@@ -119,7 +119,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="/investor/add"><i class="fa fa-circle-o"></i>Add Investor</a></li>
+            <li><a href="/investor"><i class="fa fa-circle-o"></i>Add Investor</a></li>
           </ul>
         </li>
 
@@ -131,7 +131,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="/project/add"><i class="fa fa-circle-o"></i> <span>Add Project</span></a></li>
+            <li><a href="/project"><i class="fa fa-circle-o"></i> <span>Add Project</span></a></li>
           </ul>
         </li>
 
@@ -143,7 +143,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="/bank/add"><i class="fa fa-circle-o"></i> <span>Add Bank</span></a></li>
+            <li><a href="/bank"><i class="fa fa-circle-o"></i> <span>Add Bank</span></a></li>
           </ul>
         </li>
 
@@ -243,7 +243,7 @@
         <li><a href="/project-order"><i class="fa fa-book"></i> <span>Project Order</span></a></li>
         <li><a href="/project-user"><i class="fa fa-book"></i> <span>Project User</span></a></li>
         
-        <!-- <li class="header">LABELS</li>
+        <!-- <li class="http://localhost:8000/head_quater/alltransactioner">LABELS</li>
         <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
         <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>
         <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li> -->
