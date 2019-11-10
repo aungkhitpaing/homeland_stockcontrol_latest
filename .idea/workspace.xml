@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5fe932ee-01a7-43c7-a708-886e475b4487" name="Default Changelist" comment="" />
+    <list default="true" id="5fe932ee-01a7-43c7-a708-886e475b4487" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/app/Providers/AppServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Providers/AppServiceProvider.php" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,7 +34,7 @@
           <entry key="env" value="4" />
           <entry key="example" value="1" />
           <entry key="html" value="2" />
-          <entry key="php" value="103" />
+          <entry key="php" value="105" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
@@ -40,7 +42,7 @@
           <entry key=".env file" value="5" />
           <entry key="Blade" value="68" />
           <entry key="HTML" value="2" />
-          <entry key="PHP" value="35" />
+          <entry key="PHP" value="37" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
@@ -92,11 +94,30 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/.env.example">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="920">
               <caret line="40" column="1" selection-start-line="40" selection-start-column="1" selection-end-line="40" selection-end-column="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/config/app.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-2703" />
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/Providers/AppServiceProvider.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="441">
+              <caret line="27" column="5" lean-forward="true" selection-start-line="27" selection-start-column="5" selection-end-line="27" selection-end-column="5" />
+              <folding>
+                <element signature="e#33#72#0#PHP" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -120,15 +141,6 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/views/head_quater/project_detail_edit.blade.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="529">
-              <caret line="23" column="44" selection-start-line="23" selection-start-column="44" selection-end-line="23" selection-end-column="44" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/views/head_quater/add_income.blade.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="203">
@@ -142,15 +154,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="176">
               <caret line="527" column="16" selection-start-line="527" selection-start-column="16" selection-end-line="530" selection-end-column="22" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/adminlte/pages/forms/advanced.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="176">
-              <caret line="330" column="8" selection-start-line="330" selection-start-column="8" selection-end-line="336" selection-end-column="14" />
             </state>
           </provider>
         </entry>
@@ -232,6 +235,7 @@
         <option value="$PROJECT_DIR$/resources/views/head_quater/income_cashbook.blade.php" />
         <option value="$PROJECT_DIR$/.env" />
         <option value="$PROJECT_DIR$/.env.example" />
+        <option value="$PROJECT_DIR$/app/Providers/AppServiceProvider.php" />
       </list>
     </option>
   </component>
@@ -380,76 +384,7 @@
               <item name="homeland_stockcontrol_latest" type="b2602c69:ProjectViewProjectNode" />
               <item name="homeland_stockcontrol_latest" type="462c0819:PsiDirectoryNode" />
               <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="Http" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="homeland_stockcontrol_latest" type="b2602c69:ProjectViewProjectNode" />
-              <item name="homeland_stockcontrol_latest" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="Http" type="462c0819:PsiDirectoryNode" />
-              <item name="Controllers" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="homeland_stockcontrol_latest" type="b2602c69:ProjectViewProjectNode" />
-              <item name="homeland_stockcontrol_latest" type="462c0819:PsiDirectoryNode" />
-              <item name="database" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="homeland_stockcontrol_latest" type="b2602c69:ProjectViewProjectNode" />
-              <item name="homeland_stockcontrol_latest" type="462c0819:PsiDirectoryNode" />
-              <item name="database" type="462c0819:PsiDirectoryNode" />
-              <item name="seeds" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="homeland_stockcontrol_latest" type="b2602c69:ProjectViewProjectNode" />
-              <item name="homeland_stockcontrol_latest" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="homeland_stockcontrol_latest" type="b2602c69:ProjectViewProjectNode" />
-              <item name="homeland_stockcontrol_latest" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
-              <item name="adminlte" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="homeland_stockcontrol_latest" type="b2602c69:ProjectViewProjectNode" />
-              <item name="homeland_stockcontrol_latest" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
-              <item name="adminlte" type="462c0819:PsiDirectoryNode" />
-              <item name="pages" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="homeland_stockcontrol_latest" type="b2602c69:ProjectViewProjectNode" />
-              <item name="homeland_stockcontrol_latest" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
-              <item name="adminlte" type="462c0819:PsiDirectoryNode" />
-              <item name="pages" type="462c0819:PsiDirectoryNode" />
-              <item name="forms" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="homeland_stockcontrol_latest" type="b2602c69:ProjectViewProjectNode" />
-              <item name="homeland_stockcontrol_latest" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="homeland_stockcontrol_latest" type="b2602c69:ProjectViewProjectNode" />
-              <item name="homeland_stockcontrol_latest" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-              <item name="views" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="homeland_stockcontrol_latest" type="b2602c69:ProjectViewProjectNode" />
-              <item name="homeland_stockcontrol_latest" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-              <item name="views" type="462c0819:PsiDirectoryNode" />
-              <item name="record_history" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="homeland_stockcontrol_latest" type="b2602c69:ProjectViewProjectNode" />
-              <item name="homeland_stockcontrol_latest" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-              <item name="views" type="462c0819:PsiDirectoryNode" />
-              <item name="tinder" type="462c0819:PsiDirectoryNode" />
+              <item name="Providers" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="homeland_stockcontrol_latest" type="b2602c69:ProjectViewProjectNode" />
@@ -506,12 +441,12 @@
       <workItem from="1572657356646" duration="9430000" />
       <workItem from="1572788312117" duration="524000" />
       <workItem from="1573010639399" duration="577000" />
-      <workItem from="1573387459834" duration="18603000" />
+      <workItem from="1573387459834" duration="19022000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="176171000" />
+    <option name="totallyTimeSpent" value="176590000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="798" extended-state="0" />
@@ -892,6 +827,21 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="920">
           <caret line="40" column="1" selection-start-line="40" selection-start-column="1" selection-end-line="40" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/app.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2703" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Providers/AppServiceProvider.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="441">
+          <caret line="27" column="5" lean-forward="true" selection-start-line="27" selection-start-column="5" selection-end-line="27" selection-end-column="5" />
+          <folding>
+            <element signature="e#33#72#0#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
