@@ -23,7 +23,7 @@
 		                  	<li><a href="#tab_2" data-toggle="tab">Project</a></li>
 		                  	<li><a href="#tab_3" data-toggle="tab">Bank Loan</a></li>
 		                  	{{--<li><a href="#tab_4" data-toggle="tab">PO</a></li>--}}
-		                  	<li><a href="#tab_6" data-toggle="tab">PG</a></li>
+		                  	<li><a href="#tab_6" data-toggle="tab">PO/PG</a></li>
 		                  	<!-- <li><a href="#tab_7" data-toggle="tab">Interest Receive</a></li>		                  	 -->
 					      	<li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>
 					    </ul>
@@ -350,34 +350,51 @@
 											<div class="col-md-12">
 												<!-- <div class="box box-info"> -->
 													<div class="box-header with-border">
-														<h3 class="box-title">Amount Form Purchase Guarantee</h3>
+														<h3 class="box-title">Tinder Registeration ( PO / PG ) </h3>
 										            </div>
 										            <!-- form start -->
-										            <form class="form-horizontal" method="POST" action="/head_quater/storePurchaseGuaranteeIncome">
+										            <form class="form-horizontal" method="POST" action="/head_quater/tinder_registeration">
 										            	{{ csrf_field() }}
 										            	<input type="hidden" name="accountHead" value="5" >
-										              	<div class="box-body">
-										                	<div class="form-group">
-										                  		<label for="purchase_guarantee" class="col-sm-2 control-label">Purchase Guarantee Name</label>
-										                  		<div class="col-sm-10">
-											                  		<select class="form-control" name="purchaseguarantee" required>
-											                  			<option>----- select purchase guarantee -----</option>
-											                  		@foreach($purchaseGuarantees as $purchaseguarantee)
-											                  			<option value="{{$purchaseguarantee->id}}">{{$purchaseguarantee->name}}</option>
-											                  		@endforeach
-												                  	</select>
-										                  		</div>
-										                	</div>
-											                
 
+										              	<div class="box-body">
+															<div class="form-group">
+																<label for="investor_name" class="col-sm-2 control-label">Account Head</label>
+																<div class="col-sm-10">
+																	<select class="form-control" name="account_head" required>
+																		<option disabled selected>--- Select your option ---</option>
+																			@foreach($accountHead as $data)
+																				<option value="{{$data->id}}">{{$data->account_head_type}}</option>
+																			@endforeach
+																	</select>
+																</div>
+															</div>
+															<div class="form-group">
+																<label for="exampleInputEmail1" class="col-sm-2 control-label">Register Name</label>
+																<div class="col-sm-10">
+																	<input type="text" class="form-control" id="" name="register_name" placeholder="Register name">
+																</div>
+															</div>
+
+															<div class="radio">
+																<label style="margin-left: 17%;">
+																	<input type="radio" name="register_type" value="0" required>
+																	PO
+																</label>
+																<label style="margin-left: 2%;">
+																	<input type="radio" name="register_type"  value="1" required>
+																	PG
+																</label>
+															</div>
+															<br>
 
 											                <div class="radio">
 										                    	<label style="margin-left: 17%;">
-										                    		<input type="radio" name="optionsRadios" id="optionsRadios1" value="Cash" required>
+										                    		<input type="radio" name="payment_type" id="optionsRadios1" value="Cash" required>
 										                    		Cash
 										                    	</label>
 										                    	<label style="margin-left: 2%;">
-										                      		<input type="radio" name="optionsRadios" id="optionsRadios2" value="Bank" required>
+										                      		<input type="radio" name="payment_type" id="optionsRadios2" value="Bank" required>
 										                      		Bank
 										                    	</label>
 										                  	</div>
@@ -389,7 +406,7 @@
 											                	<div class="col-sm-10">
 											                		<div class="input-group">
 											                			<span class="input-group-addon">$</span>
-											                			<input type="text" id="inputamount" class="form-control" name="amount">
+											                			<input type="number" id="inputamount" class="form-control" name="register_amount">
 											                			<span class="input-group-addon">Kyats</span>
 											                		</div>
 											                	</div>
@@ -402,7 +419,7 @@
 																		<div class="input-group-addon">
 																			<i class="fa fa-calendar"></i>
 																		</div>
-																		<input type="text" class="form-control pull-right" id="pg_with_draw" name="receive_date">
+																		<input type="text" class="form-control pull-right" id="pg_with_draw" name="register_date">
 																	</div>
 																</div>
 											                </div>

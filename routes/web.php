@@ -109,6 +109,14 @@ Route::prefix('head_quater')->group(function () {
 	Route::post('/storePaymentOrderIncome', 'HeadQuaterIncomeController@storePaymentOrderIncome');
 	Route::post('/storePurchaseGuaranteeIncome', 'HeadQuaterIncomeController@storePurchaseGuaranteeIncome');
 
+    /**
+     * Tinder Registeration
+     */
+	Route::post('tinder_registeration','HeadQuaterIncomeController@storeTinderRegister');
+	Route::get('tinder_registeration/{id}','HeadQuaterIncomeController@getTinderRegisterById');
+	Route::Post('tinder_registeration/payback/{id}','HeadQuaterIncomeController@paybackTinder');
+
+
 
 	Route::get('/alltransaction', 'CashBookController@index');
 	Route::post('/alltransaction/excel', 'CashBookController@excelExport');
@@ -287,3 +295,4 @@ Route::post('/supplier/{id}/delete','SupplierController@destroy');
 Route::get('custom-logout','HomeController@logout');
 
 Route::get('have-not-permission','HomeController@haveNotPermission');
+

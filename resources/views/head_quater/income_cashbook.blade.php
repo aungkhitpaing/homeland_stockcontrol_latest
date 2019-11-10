@@ -24,7 +24,7 @@
                   <li class="active"><a href="#tab_1" data-toggle="tab">Investor</a></li>
                   <li><a href="#tab_2" data-toggle="tab">Project</a></li>
                   <li><a href="#tab_3" data-toggle="tab">Bank Loan</a></li>
-                  <li><a href="#tab_4" data-toggle="tab">PO</a></li>
+                  <li><a href="#tab_4" data-toggle="tab">PO/PG</a></li>
                   {{--<li><a href="#tab_6" data-toggle="tab">PG</a></li>--}}
                   <!-- <li><a href="#tab_7" data-toggle="tab">Interest Receive</a></li> -->
                   <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>
@@ -269,8 +269,10 @@
                             <table id="example4" class="table table-bordered table-striped">
                               <thead>
                                 <tr>
+                                    <th>Account Head</th>
                                     <th>Register Date</th>
-                                    <th>PO Register Name</th>
+                                    <th>Register Name</th>
+                                    <th>Register Type</th>
                                     <th>Register Amount</th>
                                     <th>Payback Amount</th>
                                     <th>Left Amount</th>
@@ -279,55 +281,52 @@
                                 </tr>
                               </thead>
                               <tbody>
-                                @foreach ($getAllPaymentOrderIncome as $getAllPaymentOrder)
+                                @foreach ($getAllTinderRegisteration as $data)
                                   <tr>
+                                      <td>{{$data->account_head_type}}</td>
                                     <?php
-                                    $updated_at = explode(" ", $getAllPaymentOrder->updated_at);
+                                    $updated_at = explode(" ", $data->updated_at);
                                     ?>
                                     <td>{{$updated_at[0]}}</td>
-                                    <td>{{$getAllPaymentOrder->name}}</td>
-                                      @if($getAllPaymentOrder->install_amount == null)
-                                        <td>0 Kyats</td>
+                                    <td>{{$data->register_name}}</td>
+                                      @if( ($data->register_type) == 0)
+                                        <td>PO</td>
                                       @else
-                                        <td>{{$getAllPaymentOrder->install_amount}} Kyats</td>
+                                        <td>PG</td>
                                       @endif
+                                    <td>{{$data->register_amount}}</td>
+                                    <td>{{$data->payback_amount}}</td>
 
-                                      @if($getAllPaymentOrder->receive_amount == null)
-                                        <td>0 Kyats</td>
+                                      @if(empty($data->payback_amount))
+                                        <td>{{($data->register_amount) -  0}}</td>
                                       @else
-                                        <td>{{$getAllPaymentOrder->receive_amount}} Kyats</td>
+                                        <td>{{($data->register_amount) - ($data->payback_amount)}} </td>
                                       @endif
-
-                                      @if($getAllPaymentOrder->receive_amount == null)
-                                        <td>{{$getAllPaymentOrder->install_amount}} Kyats</td>
+                                    <td>{{$data->description}}</td>
+                                    <td>
+                                      @if($data->register_amount == $data->payback_amount)
+                                        <a href="" class="btn btn-danger btn-sm disabled">PayBack</a>
+                                        <a href="" class="btn btn-warning btn-sm disabled">Edit</a>
                                       @else
-                                        <td>{{$getAllPaymentOrder->install_amount - $getAllPaymentOrder->receive_amount}} Kyats</td>
+                                        <a href="/head_quater/tinder_registeration/{{$data->id}}" class="btn btn-danger btn-sm">PayBack</a>
+                                        {{--<a href="/head_quater/receive_paymentorder/{{$getAllPaymentOrder->payment_order_id}}/edit" class="btn btn-warning btn-sm">Edit</a>--}}
                                       @endif
-                                      <td>
-                                        {{$getAllPaymentOrder->description}}
-                                      </td>
-                                      <td>
-                                        @if($getAllPaymentOrder->install_amount == $getAllPaymentOrder->receive_amount)
-                                          <a href="" class="btn btn-danger btn-sm disabled">PayBack</a>
-                                          {{--<a href="" class="btn btn-warning btn-sm disabled">Edit</a>--}}
-                                        @else
-                                          <a href="/head_quater/receive_paymentorder/{{$getAllPaymentOrder->payment_order_id}}" class="btn btn-danger btn-sm">PayBack</a>
-                                          {{--<a href="/head_quater/receive_paymentorder/{{$getAllPaymentOrder->payment_order_id}}/edit" class="btn btn-warning btn-sm">Edit</a>--}}
-                                        @endif
-                                        <a href="/head_quater/receive_paymentorder/{{$getAllPaymentOrder->payment_order_id}}/show" class="btn btn-primary btn-sm">Detail</a>
-                                      </td>
+                                      {{--<a href="/head_quater/tinder_payback/{{$data->id}}/show" class="btn btn-primary btn-sm">Detail</a>--}}
+                                    </td>
                                   </tr>
                                 @endforeach
                               </tbody>
                               <tfoot>
                                 <tr>
-                                    <th>Register Date</th>
-                                    <th>PO Register Name</th>
-                                    <th>Register Amount</th>
-                                    <th>Payback Amount</th>
-                                    <th>Left Amount</th>
-                                    <th>Description</th>
-                                    <th>Options</th>
+                                    <th>Account Head</th>
+                                  <th>Register Date</th>
+                                  <th>Register Name</th>
+                                  <th>Register Type</th>
+                                  <th>Register Amount</th>
+                                  <th>Payback Amount</th>
+                                  <th>Left Amount</th>
+                                  <th>Description</th>
+                                  <th>Options</th>
                                 </tr>
                               </tfoot>
                             </table>
