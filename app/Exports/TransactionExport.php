@@ -15,53 +15,56 @@ class TransactionExport implements FromCollection, WithHeadings, ShouldAutoSize
      */
     public function collection()
     {
-        $query = DB::table('cash_book_tb')
-            ->orderby('id', 'asc')
-            ->join('account_head_tb', 'account_head_tb.id', '=', 'cash_book_tb.account_head_id');
+        try {
+            $query = DB::table('cash_book_tb')
+                ->orderby('id', 'asc')
+                ->join('account_head_tb', 'account_head_tb.id', '=', 'cash_book_tb.account_head_id');
 
-        if (request()->account_head_type) {
-            $query = $query->where('account_head_type', '=', request()->account_head_type);
-        }
+            if (request()->account_head_type) {
+                $query = $query->where('account_head_type', '=', request()->account_head_type);
+            }
 
-        if (request()->payment_type) {
-            $query = $query->where('payment_type', '=', request()->payment_type);
-        }
+            if (request()->payment_type) {
+                $query = $query->where('payment_type', '=', request()->payment_type);
+            }
 
-        $datas = $query->select('cash_book_tb.*', 'account_head_tb.account_head_type')
-            ->where('deleted_flag', 0)
-            ->whereBetween('cash_book_tb.created_at', [request()->from_date, request()->to_date])
-            ->get()
-            ->toArray();
+            $datas = $query->select('cash_book_tb.*', 'account_head_tb.account_head_type')
+                ->where('deleted_flag', 0)
+                ->whereBetween('cash_book_tb.created_at', [request()->from_date, request()->to_date])
+                ->get()
+                ->toArray();
 
-        $open_amount = $datas[0]->income;
+            $open_amount = $datas[0]->income;
 
-        $datas[0]->balance = $open_amount;
+            $datas[0]->balance = $open_amount;
 
-        for ($i = 1; $i < sizeof($datas); $i++) {
+            for ($i = 1; $i < sizeof($datas); $i++) {
 
-            $x = $i - 1;
+                $x = $i - 1;
 
-            if ($datas[$i]->income > 0) {
+                if ($datas[$i]->income > 0) {
 
 //                $updateBalance = abs($datas[$x]->balance + $datas[$i]->income);
-                $updateBalance = $datas[$x]->balance + $datas[$i]->income;
-            }
+                    $updateBalance = $datas[$x]->balance + $datas[$i]->income;
+                }
 
-            if ($datas[$i]->expend > 0) {
+                if ($datas[$i]->expend > 0) {
 //                $updateBalance = abs($datas[$x]->balance - $datas[$i]->expend);
-                $updateBalance = $datas[$x]->balance - $datas[$i]->expend;
+                    $updateBalance = $datas[$x]->balance - $datas[$i]->expend;
+                }
+
+                $datas[$i]->balance = $updateBalance;
             }
 
-            $datas[$i]->balance = $updateBalance;
+            foreach ($datas as $data) {
+                $data->id = $data->created_at;
+                $data->specification_id = $data->account_head_type;
+                $data->account_head_id = $data->description;
+            }
+            return $this->selectCustomColumns($datas);
+        } catch (\Exception $e) {
+            return $e->getMessage();
         }
-
-        foreach ($datas as $data) {
-            $data->id = $data->created_at;
-            $data->specification_id = $data->account_head_type;
-            $data->account_head_id = $data->description;
-        }
-
-        return $this->selectCustomColumns($datas);
     }
 
     /**

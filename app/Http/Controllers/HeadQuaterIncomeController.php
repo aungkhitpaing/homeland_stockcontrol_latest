@@ -54,7 +54,11 @@ class HeadQuaterIncomeController extends Controller
 			->where('purchase_guarantee_income_tb.delete_flag', 0)
 			->get();
 
-		return view('head_quater.income_cashbook', compact('getAllInvestorIncome', 'getAllProjectIncome', 'getAllBankIncome', 'getAllPaymentOrderIncome', 'getAllPurchaseGauranteeIncome','loanDetail'));
+		$getAllTinderRegisteration = DB::table('popg_tb')
+            ->join('account_head_tb','account_head_tb.id','=','popg_tb.account_head')
+            ->select('popg_tb.*','account_head_tb.account_head_type')->where('popg_tb.delete_flag',0)
+            ->get();
+		return view('head_quater.income_cashbook', compact('getAllInvestorIncome', 'getAllProjectIncome', 'getAllBankIncome', 'getAllPaymentOrderIncome', 'getAllPurchaseGauranteeIncome','loanDetail','getAllTinderRegisteration'));
 	}
 
 
@@ -66,9 +70,8 @@ class HeadQuaterIncomeController extends Controller
 		$investors = $this->getAllInvestor();
 		$projects = $this->getAllProject();
 		$banks = $this->getAllBank();
-		$paymentOrders = $this->getAllPaymentOrder();
-		$purchaseGuarantees = $this->getAllPurchaseGuarantee();
-		return view('head_quater.add_income', compact('investors', 'projects', 'banks', 'paymentOrders', 'purchaseGuarantees'));
+        $accountHead = $this->getAllAccountHead();
+		return view('head_quater.add_income', compact('investors', 'projects', 'banks', 'paymentOrders', 'purchaseGuarantees', 'accountHead'));
 	}
 
     public function ReceivePaymentOrder($id){
@@ -94,7 +97,7 @@ class HeadQuaterIncomeController extends Controller
 		$specification_id = $request->investor;
 		$getCashbookInfo = $this->getCashbookInfo($request, $request->accountHead, $specification_id);
 		try {
-
+            DB::beginTransaction();
 			$investorDetail = DB::table('invester_detail_tb')->orderby('created_at', 'desc')
 				->where('delete_flag', 0)
 				->where('investor_id', $request->investor)
@@ -118,10 +121,11 @@ class HeadQuaterIncomeController extends Controller
                 $getCashbookInfo['investor_income_detail_id'] = $getLastId;
 			    DB::table('cash_book_tb')->insert($getCashbookInfo);
             }
+            DB::commit();
 			return redirect('/head_quater/income_cashbook');
 
 		} catch (Exception $e) {
-
+            DB::rollBack();
 			return $e->getMessage();
 		}
 	}
@@ -144,7 +148,9 @@ class HeadQuaterIncomeController extends Controller
 		];
 		$specification_id = $request->project;
 		$getCashBookInfo = $this->getCashBookInfo($request, $request->accountHead, $specification_id);
+
 		try {
+		    DB::beginTransaction();
 			// check row count of project detail 
 			$projectDetail = DB::table('project_detail_tb')->orderby('created_at', 'desc')
 				->where('delete_flag', 0)
@@ -167,8 +173,10 @@ class HeadQuaterIncomeController extends Controller
                 $getCashBookInfo['project_income_detail_id'] = $getLastId;
                 DB::table('cash_book_tb')->insert($getCashBookInfo);
             }
+            DB::commit();
 			return redirect('/head_quater/income_cashbook');
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
+		    DB::rollBack();
 			return $e->getMessage();
 		}
 	}
@@ -194,7 +202,7 @@ class HeadQuaterIncomeController extends Controller
 		$getCashBookInfo = $this->getCashBookInfo($request, $request->accountHead, $specification_id);
 
 		try {
-
+            DB::beginTransaction();
 			$loanDetail = DB::table('loan_detail_tb')->orderby('created_at', 'desc')
 				->where('delete_flag', 0)
 				->where('bank_detail_id', $request->bank)
@@ -220,8 +228,10 @@ class HeadQuaterIncomeController extends Controller
                 $getCashBookInfo['bank_income_detail_id'] = $getLastId;
                 $insertBankIncomeIntoCashBook = DB::table('cash_book_tb')->insert($getCashBookInfo);
             }
+            DB::commit();
 			return redirect('/head_quater/income_cashbook');
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
+		    DB::rollBack();
 			return $e->getMessage();
 		}
 	}
@@ -618,6 +628,11 @@ class HeadQuaterIncomeController extends Controller
 //        return view('head_quater.loan_detail_edit', compact('loanDetailId','bank_detail_id'));
     }
 
+    public function DeleteBankIncomeById($id) {
+        DB::update('update loan_detail_tb set delete_flag = ?  where id = ?', [1, $id]);
+        return redirect('/head_quater/income_cashbook');
+	}
+
     public function UpdateBankIncomeById(Request $request,$loan_id){
 
         $updateRecords = [
@@ -681,4 +696,184 @@ class HeadQuaterIncomeController extends Controller
         return DB::table($tablename)->where($column_name, $id)->update(['amount' => request()->amount]);
     }
 
+    /**
+     * Tinder Register
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|string
+     */
+    public function storeTinderRegister(Request $request) {
+        $inputs = [
+            'register_name' => $request->register_name,
+            'register_type' => $request->register_type, // 0 define PO and 1 define PG
+            'register_amount' => $request->register_amount,
+            'payment_type' => $request->payment_type,
+            'register_date' => $request->register_date,
+            'description' => $request->description,
+            'account_head' => $request->account_head,
+        ];
+        try {
+            DB::beginTransaction();
+            $insertTable = DB::table('popg_tb')->insert($inputs);
+            $getLastInserId = DB::getPdo()->lastInsertId();
+            if($insertTable) {
+                $lasCashBookData = DB::table('cash_book_tb')->get()->last();
+                $totalBalance = $lasCashBookData->balance;
+                $cashBookDatas = [
+                    'account_head_id' => $inputs['account_head'],
+                    'payment_type' => $inputs['payment_type'] ,
+                    'description' => $inputs['description'],
+                ];
+                if($inputs['register_type'] == 0) {
+                    $cashBookDatas['po_expense_id'] = $getLastInserId;
+                } else {
+                    $cashBookDatas['pg_expense_id'] = $getLastInserId;
+                }
+                $cashBookDatas['expend'] =  $inputs['register_amount'];
+                $cashBookDatas['balance'] = $totalBalance - $inputs['register_amount'];
+                DB::table('cash_book_tb')->insert($cashBookDatas);
+                DB::commit();
+
+                return redirect('/head_quater/income_cashbook');
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $e->getMessage();
+        }
+    }
+
+    public function paybackTinder(Request $request, $id) {
+        $input = [
+            'register_type' => $request->register_type,
+            'payback_amount' => $request->payback_amount,
+        ];
+        try {
+            DB::beginTransaction();
+            $checkId = DB::table('popg_tb')->select('id','payback_amount')->where("id", $id)->first();
+            $update_payback_amount = $checkId->payback_amount + $input['payback_amount'];
+            if ($checkId != null) {
+                $updateAmount = DB::update('update popg_tb set payback_amount = ?  where id = ?', [$update_payback_amount, $id]);
+                if($updateAmount) {
+                    DB::table('popg_detail_tb')->insert([
+                        'popg_id' => $id,
+                        'payback_date' => $request->register_date,
+                        'payback_amount' => $request->payback_amount,
+                        'description' => $request->description,
+                    ]);
+
+                    $lasCashBookData = DB::table('cash_book_tb')->get()->last();
+                    $totalBalance = $lasCashBookData->balance;
+                    $cashBookDatas = [
+                        'account_head_id' => $request->account_head,
+//                        'payment_order_detail_id'=> $id,
+                        'payment_type' => $request->payment_type,
+                        'description' => $request->description,
+                    ];
+                    if ($input['register_type'] == 0) {
+                        $cashBookDatas['po_income_id'] = $id;
+                    } else {
+                        $cashBookDatas['pg_income_id'] = $id;
+                    }
+
+                    $cashBookDatas['income'] = $input['payback_amount'] ;
+                    $cashBookDatas['balance'] = $totalBalance + $input['payback_amount'];
+                    DB::table('cash_book_tb')->insert($cashBookDatas);
+                }
+            }
+            DB::commit();
+            return redirect('/head_quater/income_cashbook');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $e->getMessage();
+        }
+    }
+
+    public function getTinderRegisterById($id){
+        $getData = DB::table('popg_tb')->select("*")->where('id',$id)->where('delete_flag',0)->get();
+        return view('tinder.payback_tinder',compact('getData'));
+    }
+
+    public function editTinderRegisterById($id) {
+
+        $getData = DB::table('popg_tb')
+            ->join('account_head_tb','account_head_tb.id','=','popg_tb.account_head')
+            ->select('popg_tb.*','account_head_tb.account_head_type')
+            ->where('popg_tb.id',$id)
+            ->where('popg_tb.delete_flag',0)
+            ->get();
+        return view('tinder.edit_payback_tinder_detail',compact('getData'));
+    }
+
+    public function updateTinderRegisterById(Request $request,$id) {
+
+        $inputs = [
+            'register_name' => $request->register_name,
+            'register_type' => $request->register_type, // 0 define PO and 1 define PG
+            'register_amount' => $request->register_amount,
+            'payment_type' => $request->payment_type,
+            'register_date' => $request->register_date,
+            'description' => $request->description,
+            'account_head' => $request->account_head,
+        ];
+
+        try {
+            DB::beginTransaction();
+                $updateData = DB::table('popg_tb')->where('id',$id)->update($inputs);
+
+                if($updateData) {
+                    //change value into cashbook
+                    if($inputs['register_type'] == 0) {
+                        $detail_id = "po_detail_id";
+                        $originalTransaction = DB::table('cash_book_tb')->select("expend")->where('po_expense_id',$id)->get();
+                        $originalTransaction = $originalTransaction[0]->expend;
+                        $updateTransaction = $inputs['register_amount'];
+                        if($updateTransaction > $originalTransaction) {
+                            $changeStatus = "increase";
+                        } else {
+                            $changeStatus = "decrease";
+                        }
+                        DB::update('update cash_book_tb set expend = ?  where po_expense_id = ?', [$inputs['register_amount'], $id]);
+                    } else {
+                        $detail_id = "pg_detail_id";
+                        $originalTransaction = DB::table('cash_book_tb')->select("expend")->where('pg_expense_id',$id)->get();
+                        $originalTransaction = $originalTransaction[0]->expend;
+                        $updateTransaction = $inputs['register_amount'];
+                        if($updateTransaction > $originalTransaction) {
+                            $changeStatus = "increase";
+                        } else {
+                            $changeStatus = "decrease";
+                        }
+                        DB::update('update cash_book_tb set expend = ?  where pg_expense_id = ?', [$inputs['register_amount'], $id]);
+                    }
+
+                    DB::table('record_histroies_tb')->insert([
+                        $detail_id => $id,
+                        'account_head_type' => $request->account_head,
+                        'transaction_update_amount' => $updateTransaction,
+                        'transaction_original_amount' => $originalTransaction,
+                        'change_status' => $changeStatus,
+                        'diff_amount' => $updateTransaction - $originalTransaction,
+                        'remark' => "I have to changed transaction from ". $originalTransaction. " Kyats to ". $updateTransaction ." Kyats . Because I have to wrong filling into po/pg.",
+                    ]);
+                }
+            DB::commit();
+                return redirect('/head_quater/income_cashbook');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $e->getMessage();
+        }
+    }
+
+    public function getAllAccountHead(){
+        return DB::table('account_head_tb')->select('*')->where('delete_flag',0)->get();
+    }
+
+    public function getAllDetailPaybackTinder($id){
+
+        $getAllData =  DB::table('popg_detail_tb')
+            ->select("*")
+            ->where('popg_id', $id)
+            ->get();
+        return view('tinder.payback_tinder_detail',compact('getAllData'));
+    }
 }
