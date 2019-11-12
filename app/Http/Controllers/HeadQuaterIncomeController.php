@@ -673,7 +673,7 @@ class HeadQuaterIncomeController extends Controller
                 ->where('bank_income_detail_id', $loan_id)->where('deleted_flag',0)
                 ->update(['income' => $updateAmount, 'description' => $updateRecords['remark']]);
         }
-        return redirect("/head_quater/income_cashbook");
+        return redirect("/head_quater/income_cashbook/bank_loan");
 	}
 
     public function calculateDiffAmount($originalAmount,$updateAmount) {

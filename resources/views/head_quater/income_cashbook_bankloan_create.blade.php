@@ -157,6 +157,16 @@
 
 @section('page_scripts')
 <script>
+   $('#load_date').datepicker({
+      autoclose: true
+    });
+    $('#with_draw').datepicker({
+    	autoclose:true
+    });
+    $('#pg_with_draw').datepicker({
+    	autoclose:true
+    });
+    
   $(function () {
     $('#example1').DataTable();
     $('#example2').DataTable();

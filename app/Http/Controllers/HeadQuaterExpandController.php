@@ -163,7 +163,7 @@ class HeadQuaterExpandController extends Controller
                     ]);
                     $getCashBookInfo['bank_expense_detail_id'] = DB::getPdo()->lastInsertId();
                     DB::table('cash_book_tb')->insert($getCashBookInfo);
-                    return redirect('/head_quater/income_cashbook/');
+                    return redirect('/head_quater/income_cashbook/bank_loan');
                 } else {
                     return redirect('/head_quater/add_expend/bank');
                 }   
