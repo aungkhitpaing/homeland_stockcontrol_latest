@@ -128,7 +128,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="box-footer">
-                                                    <a href="/purchase_guarantee" class="btn btn-default">Cancel</a>
+                                                    <a href="/head_quater/income_cashbook/po_pg" class="btn btn-default">Cancel</a>
                                                     <button type="submit" class="btn btn-info pull-right">Update</button>
                                                 </div>
                                             </form>

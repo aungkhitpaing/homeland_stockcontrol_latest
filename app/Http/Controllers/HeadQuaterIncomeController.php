@@ -734,7 +734,7 @@ class HeadQuaterIncomeController extends Controller
                 DB::table('cash_book_tb')->insert($cashBookDatas);
                 DB::commit();
 
-                return redirect('/head_quater/income_cashbook');
+                return redirect('/head_quater/income_cashbook/po_pg');
             }
         } catch (\Exception $e) {
             DB::rollBack();
@@ -781,7 +781,7 @@ class HeadQuaterIncomeController extends Controller
                 }
             }
             DB::commit();
-            return redirect('/head_quater/income_cashbook');
+            return redirect('/head_quater/income_cashbook/po_pg');
         } catch (\Exception $e) {
             DB::rollBack();
             return $e->getMessage();
@@ -857,7 +857,7 @@ class HeadQuaterIncomeController extends Controller
                     ]);
                 }
             DB::commit();
-                return redirect('/head_quater/income_cashbook');
+                return redirect('/head_quater/income_cashbook/po_pg');
         } catch (\Exception $e) {
             DB::rollBack();
             return $e->getMessage();
