@@ -174,7 +174,7 @@ class HeadQuaterIncomeController extends Controller
                 DB::table('cash_book_tb')->insert($getCashBookInfo);
             }
             DB::commit();
-			return redirect('/head_quater/income_cashbook');
+			return redirect('/head_quater/income_cashbook/project');
 		} catch (\Exception $e) {
 		    DB::rollBack();
 			return $e->getMessage();
@@ -229,7 +229,7 @@ class HeadQuaterIncomeController extends Controller
                 $insertBankIncomeIntoCashBook = DB::table('cash_book_tb')->insert($getCashBookInfo);
             }
             DB::commit();
-			return redirect('/head_quater/income_cashbook');
+			return redirect('/head_quater/income_cashbook/bank_loan');
 		} catch (\Exception $e) {
 		    DB::rollBack();
 			return $e->getMessage();
@@ -875,5 +875,161 @@ class HeadQuaterIncomeController extends Controller
             ->where('popg_id', $id)
             ->get();
         return view('tinder.payback_tinder_detail',compact('getAllData'));
+    }
+
+    public function incomeCashbookProject()
+    {
+        $getAllInvestorIncome = DB::table('investor_income_tb')
+			->join('invester_tb', 'invester_tb.id', '=', 'investor_income_tb.investor_id')
+			->select('investor_income_tb.*', 'invester_tb.name')
+			->where('investor_income_tb.delete_flag', 0)
+			->get();
+
+		$getAllProjectIncome = DB::table('project_income_tb')
+			->join('project_tb', 'project_tb.id', '=', 'project_income_tb.project_id')
+			->select('project_income_tb.*', 'project_tb.name')
+			->where('project_income_tb.delete_flag', 0)
+			->get();
+
+		$getAllBankIncome = DB::table('bank_detail_tb')
+			->join('bank_tb', 'bank_tb.id', '=', 'bank_detail_tb.bank_id')
+			->select('bank_detail_tb.*', 'bank_tb.name')
+			->where('bank_detail_tb.delete_flag', 0)
+			->get();
+        $loanDetail = DB::table('loan_detail_tb')->orderby('created_at', 'desc')
+            ->where('delete_flag', 0)
+            ->get();
+
+
+		$getAllPaymentOrderIncome = DB::table('payment_order_detail_tb')
+			->join('payment_order_tb', 'payment_order_tb.id', '=', 'payment_order_detail_tb.payment_order_id')
+			->select('payment_order_detail_tb.*', 'payment_order_tb.name')
+			->where('payment_order_detail_tb.delete_flag', 0)
+			->get();
+
+		$getAllPurchaseGauranteeIncome = DB::table('purchase_guarantee_income_tb')
+			->join('purchase_guarantee_tb', 'purchase_guarantee_tb.id', '=', 'purchase_guarantee_income_tb.purchase_guarantee_id')
+			->select('purchase_guarantee_income_tb.*', 'purchase_guarantee_tb.name')
+			->where('purchase_guarantee_income_tb.delete_flag', 0)
+			->get();
+
+		$getAllTinderRegisteration = DB::table('popg_tb')
+            ->join('account_head_tb','account_head_tb.id','=','popg_tb.account_head')
+            ->select('popg_tb.*','account_head_tb.account_head_type')->where('popg_tb.delete_flag',0)
+            ->get();
+		return view('head_quater.income_cashbook_project', compact('getAllInvestorIncome', 'getAllProjectIncome', 'getAllBankIncome', 'getAllPaymentOrderIncome', 'getAllPurchaseGauranteeIncome','loanDetail','getAllTinderRegisteration'));
+    }
+
+    public function incomeCashbookProjectCreate()
+    {
+        $investors = $this->getAllInvestor();
+		$projects = $this->getAllProject();
+		$banks = $this->getAllBank();
+        $accountHead = $this->getAllAccountHead();
+		return view('head_quater.income_cashbook_project_create', compact('investors', 'projects', 'banks', 'paymentOrders', 'purchaseGuarantees', 'accountHead'));
+    }
+
+    public function incomeBankLoan()
+    {
+        $getAllInvestorIncome = DB::table('investor_income_tb')
+			->join('invester_tb', 'invester_tb.id', '=', 'investor_income_tb.investor_id')
+			->select('investor_income_tb.*', 'invester_tb.name')
+			->where('investor_income_tb.delete_flag', 0)
+			->get();
+
+		$getAllProjectIncome = DB::table('project_income_tb')
+			->join('project_tb', 'project_tb.id', '=', 'project_income_tb.project_id')
+			->select('project_income_tb.*', 'project_tb.name')
+			->where('project_income_tb.delete_flag', 0)
+			->get();
+
+		$getAllBankIncome = DB::table('bank_detail_tb')
+			->join('bank_tb', 'bank_tb.id', '=', 'bank_detail_tb.bank_id')
+			->select('bank_detail_tb.*', 'bank_tb.name')
+			->where('bank_detail_tb.delete_flag', 0)
+			->get();
+        $loanDetail = DB::table('loan_detail_tb')->orderby('created_at', 'desc')
+            ->where('delete_flag', 0)
+            ->get();
+
+
+		$getAllPaymentOrderIncome = DB::table('payment_order_detail_tb')
+			->join('payment_order_tb', 'payment_order_tb.id', '=', 'payment_order_detail_tb.payment_order_id')
+			->select('payment_order_detail_tb.*', 'payment_order_tb.name')
+			->where('payment_order_detail_tb.delete_flag', 0)
+			->get();
+
+		$getAllPurchaseGauranteeIncome = DB::table('purchase_guarantee_income_tb')
+			->join('purchase_guarantee_tb', 'purchase_guarantee_tb.id', '=', 'purchase_guarantee_income_tb.purchase_guarantee_id')
+			->select('purchase_guarantee_income_tb.*', 'purchase_guarantee_tb.name')
+			->where('purchase_guarantee_income_tb.delete_flag', 0)
+			->get();
+
+		$getAllTinderRegisteration = DB::table('popg_tb')
+            ->join('account_head_tb','account_head_tb.id','=','popg_tb.account_head')
+            ->select('popg_tb.*','account_head_tb.account_head_type')->where('popg_tb.delete_flag',0)
+            ->get();
+		return view('head_quater.income_bank_loan', compact('getAllInvestorIncome', 'getAllProjectIncome', 'getAllBankIncome', 'getAllPaymentOrderIncome', 'getAllPurchaseGauranteeIncome','loanDetail','getAllTinderRegisteration'));
+    }
+
+    public function incomeCashbookBankLoanCreate()
+    {
+        $investors = $this->getAllInvestor();
+		$projects = $this->getAllProject();
+		$banks = $this->getAllBank();
+        $accountHead = $this->getAllAccountHead();
+		return view('head_quater.income_cashbook_bankloan_create', compact('investors', 'projects', 'banks', 'paymentOrders', 'purchaseGuarantees', 'accountHead'));
+    }
+
+    public function incomePoPG()
+    {
+        $getAllInvestorIncome = DB::table('investor_income_tb')
+			->join('invester_tb', 'invester_tb.id', '=', 'investor_income_tb.investor_id')
+			->select('investor_income_tb.*', 'invester_tb.name')
+			->where('investor_income_tb.delete_flag', 0)
+			->get();
+
+		$getAllProjectIncome = DB::table('project_income_tb')
+			->join('project_tb', 'project_tb.id', '=', 'project_income_tb.project_id')
+			->select('project_income_tb.*', 'project_tb.name')
+			->where('project_income_tb.delete_flag', 0)
+			->get();
+
+		$getAllBankIncome = DB::table('bank_detail_tb')
+			->join('bank_tb', 'bank_tb.id', '=', 'bank_detail_tb.bank_id')
+			->select('bank_detail_tb.*', 'bank_tb.name')
+			->where('bank_detail_tb.delete_flag', 0)
+			->get();
+        $loanDetail = DB::table('loan_detail_tb')->orderby('created_at', 'desc')
+            ->where('delete_flag', 0)
+            ->get();
+
+
+		$getAllPaymentOrderIncome = DB::table('payment_order_detail_tb')
+			->join('payment_order_tb', 'payment_order_tb.id', '=', 'payment_order_detail_tb.payment_order_id')
+			->select('payment_order_detail_tb.*', 'payment_order_tb.name')
+			->where('payment_order_detail_tb.delete_flag', 0)
+			->get();
+
+		$getAllPurchaseGauranteeIncome = DB::table('purchase_guarantee_income_tb')
+			->join('purchase_guarantee_tb', 'purchase_guarantee_tb.id', '=', 'purchase_guarantee_income_tb.purchase_guarantee_id')
+			->select('purchase_guarantee_income_tb.*', 'purchase_guarantee_tb.name')
+			->where('purchase_guarantee_income_tb.delete_flag', 0)
+			->get();
+
+		$getAllTinderRegisteration = DB::table('popg_tb')
+            ->join('account_head_tb','account_head_tb.id','=','popg_tb.account_head')
+            ->select('popg_tb.*','account_head_tb.account_head_type')->where('popg_tb.delete_flag',0)
+            ->get();
+		return view('head_quater.income_po_pg', compact('getAllInvestorIncome', 'getAllProjectIncome', 'getAllBankIncome', 'getAllPaymentOrderIncome', 'getAllPurchaseGauranteeIncome','loanDetail','getAllTinderRegisteration'));
+    }
+
+    public function incomeCashbookPoPgreate()
+    {
+        $investors = $this->getAllInvestor();
+		$projects = $this->getAllProject();
+		$banks = $this->getAllBank();
+        $accountHead = $this->getAllAccountHead();
+		return view('head_quater.income_cashbook_po_pg_create', compact('investors', 'projects', 'banks', 'paymentOrders', 'purchaseGuarantees', 'accountHead'));
     }
 }
