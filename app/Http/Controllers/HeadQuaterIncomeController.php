@@ -97,7 +97,7 @@ class HeadQuaterIncomeController extends Controller
 		$specification_id = $request->investor;
 		$getCashbookInfo = $this->getCashbookInfo($request, $request->accountHead, $specification_id);
 		try {
-
+            DB::beginTransaction();
 			$investorDetail = DB::table('invester_detail_tb')->orderby('created_at', 'desc')
 				->where('delete_flag', 0)
 				->where('investor_id', $request->investor)
@@ -121,10 +121,11 @@ class HeadQuaterIncomeController extends Controller
                 $getCashbookInfo['investor_income_detail_id'] = $getLastId;
 			    DB::table('cash_book_tb')->insert($getCashbookInfo);
             }
+            DB::commit();
 			return redirect('/head_quater/income_cashbook');
 
 		} catch (Exception $e) {
-
+            DB::rollBack();
 			return $e->getMessage();
 		}
 	}
@@ -147,7 +148,9 @@ class HeadQuaterIncomeController extends Controller
 		];
 		$specification_id = $request->project;
 		$getCashBookInfo = $this->getCashBookInfo($request, $request->accountHead, $specification_id);
+
 		try {
+		    DB::beginTransaction();
 			// check row count of project detail 
 			$projectDetail = DB::table('project_detail_tb')->orderby('created_at', 'desc')
 				->where('delete_flag', 0)
@@ -170,8 +173,10 @@ class HeadQuaterIncomeController extends Controller
                 $getCashBookInfo['project_income_detail_id'] = $getLastId;
                 DB::table('cash_book_tb')->insert($getCashBookInfo);
             }
+            DB::commit();
 			return redirect('/head_quater/income_cashbook');
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
+		    DB::rollBack();
 			return $e->getMessage();
 		}
 	}
@@ -197,7 +202,7 @@ class HeadQuaterIncomeController extends Controller
 		$getCashBookInfo = $this->getCashBookInfo($request, $request->accountHead, $specification_id);
 
 		try {
-
+            DB::beginTransaction();
 			$loanDetail = DB::table('loan_detail_tb')->orderby('created_at', 'desc')
 				->where('delete_flag', 0)
 				->where('bank_detail_id', $request->bank)
@@ -223,8 +228,10 @@ class HeadQuaterIncomeController extends Controller
                 $getCashBookInfo['bank_income_detail_id'] = $getLastId;
                 $insertBankIncomeIntoCashBook = DB::table('cash_book_tb')->insert($getCashBookInfo);
             }
+            DB::commit();
 			return redirect('/head_quater/income_cashbook');
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
+		    DB::rollBack();
 			return $e->getMessage();
 		}
 	}
@@ -850,7 +857,7 @@ class HeadQuaterIncomeController extends Controller
                     ]);
                 }
             DB::commit();
-                return redirect('/head-quater/income_cashbook');
+                return redirect('/head_quater/income_cashbook');
         } catch (\Exception $e) {
             DB::rollBack();
             return $e->getMessage();

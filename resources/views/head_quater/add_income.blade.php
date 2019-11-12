@@ -43,7 +43,21 @@
 									            <form class="form-horizontal" method="POST" action="/head_quater/storeInvestorIncome">
 									            	{{ csrf_field() }}
 									              	<div class="box-body">
-									              		<input type="hidden" name="accountHead" value="1" >
+
+														{{--<input type="hidden" name="accountHead" value="1" >--}}
+
+														<div class="form-group">
+															<label for="" class="col-sm-2 control-label">Account Head</label>
+															<div class="col-sm-10">
+																<select class="form-control" name="accountHead" required>
+																	<option disabled selected>--- Select your option ---</option>
+																	@foreach($accountHead as $data)
+																		<option value="{{$data->id}}">{{$data->account_head_type}}</option>
+																	@endforeach
+																</select>
+															</div>
+														</div>
+
 									                	<div class="form-group">
 									                  		<label for="investor_name" class="col-sm-2 control-label">Investor Name</label>
 									                  		<div class="col-sm-10">
@@ -113,7 +127,18 @@
 										            <!-- form start -->
 										            <form class="form-horizontal" method="POST" action="/head_quater/storeProjectIncome">
 										            {{ csrf_field() }}
-										            <input type="hidden" name="accountHead" value="2" >
+										            {{--<input type="hidden" name="accountHead" value="2" >--}}
+														<div class="form-group">
+															<label for="" class="col-sm-2 control-label">Account Head</label>
+															<div class="col-sm-10">
+																<select class="form-control" name="accountHead" required>
+																	<option disabled selected>--- Select your option ---</option>
+																	@foreach($accountHead as $data)
+																		<option value="{{$data->id}}">{{$data->account_head_type}}</option>
+																	@endforeach
+																</select>
+															</div>
+														</div>
 										              	<div class="box-body">
 										                	<div class="form-group">
 										                  		<label for="investor_name" class="col-sm-2 control-label">Project Name</label>
@@ -128,11 +153,11 @@
 										                	</div>
 										                	<div class="radio">
 										                    	<label style="margin-left: 17%;">
-										                    		<input type="radio" name="optionsRadios" id="optionsRadios1" value="cash" required>
+										                    		<input type="radio" name="optionsRadios" id="optionsRadios1" value="Cash" required>
 										                    		Cash
 										                    	</label>
 										                    	<label style="margin-left: 2%;">
-										                      		<input type="radio" name="optionsRadios" id="optionsRadios2" value="bank" required>
+										                      		<input type="radio" name="optionsRadios" id="optionsRadios2" value="Bank" required>
 										                      		Bank
 										                    	</label>
 									                  		</div>
@@ -183,7 +208,19 @@
 										            <!-- form start -->
 										            <form class="form-horizontal" method="POST" action="/head_quater/storeBankIncome">
 										            	{{ csrf_field() }}
-										            	<input type="hidden" name="accountHead" value="3" >
+										            	{{--<input type="hidden" name="accountHead" value="3" >--}}
+														<div class="form-group">
+															<label for="" class="col-sm-2 control-label">Account Head</label>
+															<div class="col-sm-10">
+																<select class="form-control" name="accountHead" required>
+																	<option disabled selected>--- Select your option ---</option>
+																	@foreach($accountHead as $data)
+																		<option value="{{$data->id}}">{{$data->account_head_type}}</option>
+																	@endforeach
+																</select>
+															</div>
+														</div>
+
 										              	<div class="box-body">
 										                	<div class="form-group">
 										                  		<label for="investor_name" class="col-sm-2 control-label">Bank Name</label>
@@ -198,11 +235,11 @@
 										                	</div>
 											                <div class="radio">
 										                    	<label style="margin-left: 17%;">
-										                    		<input type="radio" name="optionsRadios" id="optionsRadios1" value="cash" required>
+										                    		<input type="radio" name="optionsRadios" id="optionsRadios1" value="Cash" required>
 										                    		Cash
 										                    	</label>
 										                    	<label style="margin-left: 2%;">
-										                      		<input type="radio" name="optionsRadios" id="optionsRadios2" value="bank" required>
+										                      		<input type="radio" name="optionsRadios" id="optionsRadios2" value="Bank" required>
 										                      		Bank
 										                    	</label>
 									                  		</div>
