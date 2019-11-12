@@ -18,12 +18,16 @@
 					<!-- Custom Tabs -->
 				  	<div class="nav-tabs-custom">
 				    	<ul class="nav nav-tabs">
-		                  <li class="active"><a href="#tab_1" data-toggle="tab">Office Expense</a></li>
-		                  <li><a href="#tab_2" data-toggle="tab">Project Expense</a></li>
-		                  {{--<li><a href="#tab_3" data-toggle="tab">Bank Loan</a></li>--}}
+
+						
+						  <li class="active">
+							<a href="#tab_1" data-toggle="tab">Office Expense</a>
+						</li>
+						  
+		                  {{-- <li>
+							  <a href="#tab_2" data-toggle="tab">Project Expense</a>
+							</li> --}}
 		                  <li><a href="#tab_4" data-toggle="tab">PO</a></li>
-		                  {{--<li><a href="#tab_5" data-toggle="tab">PG</a></li>--}}
-		                  <!-- <li><a href="#tab_6" data-toggle="tab">Interest Paid</a></li> -->
 		                  <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>
 		              	</ul>
 

@@ -286,7 +286,7 @@
                                     ?>
                                     <td>{{$updated_at[0]}}</td>
                                     <td>{{$getAllPaymentOrder->name}}</td>
-                                      @if($getAllPaymentOrder->install_amount == null)
+                                      {{-- @if($getAllPaymentOrder->install_amount == null)
                                         <td>0 Kyats</td>
                                       @else
                                         <td>{{$getAllPaymentOrder->install_amount}} Kyats</td>
@@ -302,7 +302,7 @@
                                         <td>{{$getAllPaymentOrder->install_amount}} Kyats</td>
                                       @else
                                         <td>{{$getAllPaymentOrder->install_amount - $getAllPaymentOrder->receive_amount}} Kyats</td>
-                                      @endif
+                                      @endif --}}
                                       <td>
                                         {{$getAllPaymentOrder->description}}
                                       </td>

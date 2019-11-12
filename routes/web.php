@@ -126,6 +126,11 @@ Route::prefix('head_quater')->group(function () {
 	Route::get('/add_expend/bank/{id}','HeadQuaterExpandController@createBankLoan');
     Route::get('/loan_detail/{loan_id}/show', 'HeadQuaterExpandController@getBankExpenseById');
 
+	Route::get('/expend_cashbook/office_expense', 'HeadQuaterExpandController@officeExpense');
+	Route::get('/add_expend/project','HeadQuaterExpandController@addExpendProject');
+	Route::get('/project', 'HeadQuaterExpandController@project');
+
+
 
 });
 
