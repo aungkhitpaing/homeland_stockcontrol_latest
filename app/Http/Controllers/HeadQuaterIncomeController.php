@@ -54,9 +54,9 @@ class HeadQuaterIncomeController extends Controller
 			->where('purchase_guarantee_income_tb.delete_flag', 0)
 			->get();
 
-		$getAllTinderRegisteration = DB::table('popg_detail_tb')
-            ->join('account_head_tb','account_head_tb.id','=','popg_detail_tb.account_head')
-            ->select('popg_detail_tb.*','account_head_tb.account_head_type')->where('popg_detail_tb.delete_flag',0)
+		$getAllTinderRegisteration = DB::table('popg_tb')
+            ->join('account_head_tb','account_head_tb.id','=','popg_tb.account_head')
+            ->select('popg_tb.*','account_head_tb.account_head_type')->where('popg_tb.delete_flag',0)
             ->get();
 
 		return view('head_quater.income_cashbook', compact('getAllInvestorIncome', 'getAllProjectIncome', 'getAllBankIncome', 'getAllPaymentOrderIncome', 'getAllPurchaseGauranteeIncome','loanDetail','getAllTinderRegisteration'));
@@ -622,6 +622,11 @@ class HeadQuaterIncomeController extends Controller
 //        return view('head_quater.loan_detail_edit', compact('loanDetailId','bank_detail_id'));
     }
 
+    public function DeleteBankIncomeById($id) {
+        DB::update('update loan_detail_tb set delete_flag = ?  where id = ?', [1, $id]);
+        return redirect('/head_quater/income_cashbook');
+	}
+
     public function UpdateBankIncomeById(Request $request,$loan_id){
 
         $updateRecords = [
@@ -703,7 +708,7 @@ class HeadQuaterIncomeController extends Controller
         ];
         try {
             DB::beginTransaction();
-            $insertTable = DB::table('popg_detail_tb')->insert($inputs);
+            $insertTable = DB::table('popg_tb')->insert($inputs);
             $getLastInserId = DB::getPdo()->lastInsertId();
             if($insertTable) {
                 $lasCashBookData = DB::table('cash_book_tb')->get()->last();
@@ -732,14 +737,20 @@ class HeadQuaterIncomeController extends Controller
         ];
         try {
             DB::beginTransaction();
-            $checkId = DB::table('popg_detail_tb')->select('id')->where("id", $id)->first();
-
+            $checkId = DB::table('popg_tb')->select('id','payback_amount')->where("id", $id)->first();
+            $update_payback_amount = $checkId->payback_amount + $input['payback_amount'];
             if ($checkId != null) {
-                $updateAmount = DB::update('update popg_detail_tb set payback_amount = ?  where id = ?', [$input['payback_amount'], $id]);
+                $updateAmount = DB::update('update popg_tb set payback_amount = ?  where id = ?', [$update_payback_amount, $id]);
                 if($updateAmount) {
+                    DB::table('popg_detail_tb')->insert([
+                        'popg_id' => $id,
+                        'payback_date' => $request->register_date,
+                        'payback_amount' => $request->payback_amount,
+                        'description' => $request->description,
+                    ]);
+
                     $lasCashBookData = DB::table('cash_book_tb')->get()->last();
                     $totalBalance = $lasCashBookData->balance;
-
                     $cashBookDatas = [
                         'account_head_id' => $request->account_head,
                         'payment_order_detail_id'=> $id,
@@ -760,11 +771,20 @@ class HeadQuaterIncomeController extends Controller
     }
 
     public function getTinderRegisterById($id){
-        $getData = DB::table('popg_detail_tb')->select("*")->where('id',$id)->where('delete_flag',0)->get();
+        $getData = DB::table('popg_tb')->select("*")->where('id',$id)->where('delete_flag',0)->get();
         return view('tinder.payback_tinder',compact('getData'));
     }
 
     public function getAllAccountHead(){
         return DB::table('account_head_tb')->select('*')->where('delete_flag',0)->get();
+    }
+
+    public function getAllDetailPaybackTinder($id){
+
+        $getAllData =  DB::table('popg_detail_tb')
+            ->select("*")
+            ->where('popg_id', $id)
+            ->get();
+        return view('tinder.payback_tinder_detail',compact('getAllData'));
     }
 }

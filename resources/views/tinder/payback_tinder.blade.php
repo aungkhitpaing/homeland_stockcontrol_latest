@@ -56,13 +56,13 @@
 
                                                 <div class="radio">
                                                     @if($data->register_type == 0)
-                                                    <label style="margin-left: 17%;">
-                                                        <input type="radio" name="register_type" value="0" checked>
-                                                        PO
-                                                    </label>
+                                                        <label style="margin-left: 17%;">
+                                                            <input type="radio" name="register_type" value="0" checked>
+                                                            PO
+                                                        </label>
                                                     @else
-                                                        <label style="margin-left: 2%;">
-                                                            <input type="radio" name="register_type"  value="1"  checked>
+                                                        <label style="margin-left: 17%;">
+                                                            <input type="radio" name="register_type" value="1" checked>
                                                             PG
                                                         </label>
                                                     @endif
@@ -114,7 +114,7 @@
                                                             <div class="input-group-addon">
                                                                 <i class="fa fa-calendar"></i>
                                                             </div>
-                                                            <input type="text" class="form-control pull-right" id="pg_with_draw" value="{{$data->register_date}}" disabled name="register_date">
+                                                            <input type="text" class="form-control pull-right" id="pg_with_draw"   name="register_date">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -122,9 +122,7 @@
                                                     <label for="inputamount" class="col-sm-2 control-label">Description</label>
                                                     <div class="col-sm-10">
                                                         <div class="input-group">
-                                                            <textarea class="form-control"  name="description" id="exampleFormControlTextarea5" rows="3" cols="200">
-                                                                {{$data->description}}
-                                                            </textarea>
+                                                            <textarea class="form-control"  name="description" id="exampleFormControlTextarea5" rows="3" cols="200"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -144,4 +142,11 @@
             </div>
         </div>
     </section>
+@endsection
+@section('page_scripts')
+    <script type="text/javascript">
+        $('#pg_with_draw').datepicker({
+            autoclose:true
+        });
+    </script>
 @endsection

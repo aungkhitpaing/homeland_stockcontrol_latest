@@ -50,6 +50,7 @@ Route::prefix('head_quater')->group(function () {
      */
 	Route::get('/bank_detail/{id}', 'HeadQuaterIncomeController@getAllBankIncomeById');
     Route::get('/loan_detail/{loan_id}/edit', 'HeadQuaterIncomeController@EditBankIncomeById');
+    Route::get('/loan_detail/{loan_id}/delete', 'HeadQuaterIncomeController@DeleteBankIncomeById');
     Route::patch('/loan_detail/{loan_id}', 'HeadQuaterIncomeController@UpdateBankIncomeById');
 //    Route::get('{bank_detail_id}/loan_detail/{loan_id}/edit', 'HeadQuaterIncomeController@EditBankIncomeById');
 //    Route::patch('{bank_detail_id}/loan_detail/{loan_id}', 'HeadQuaterIncomeController@UpdateBankIncomeById');
@@ -115,7 +116,7 @@ Route::prefix('head_quater')->group(function () {
 	Route::post('tinder_registeration','HeadQuaterIncomeController@storeTinderRegister');
 	Route::get('tinder_registeration/{id}','HeadQuaterIncomeController@getTinderRegisterById');
 	Route::Post('tinder_registeration/payback/{id}','HeadQuaterIncomeController@paybackTinder');
-
+    Route::get('tinder_registeration/payback/{id}','HeadQuaterIncomeController@getAllDetailPaybackTinder');
 
 
 	Route::get('/alltransaction', 'CashBookController@index');

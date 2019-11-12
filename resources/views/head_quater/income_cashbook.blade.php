@@ -221,6 +221,7 @@
                                   <td>
                                       @if($loanDetailById->loan_amount == $loanDetailById->payback_amount)
                                           <a href="/head_quater/add_expend/bank/{{$loanDetailById->id}}" class="btn btn-danger btn-sm disabled">PayBack</a>
+                                          <a href="/head_quater/loan_detail/{{$loanDetailById->id}}/delete" class="btn btn-danger btn-sm">Delete</a>
                                           <a href="/head_quater/loan_detail/{{$loanDetailById->id}}/edit" class="btn btn-warning btn-sm disabled">Edit</a>
                                           @else
                                              <a href="/head_quater/add_expend/bank/{{$loanDetailById->id}}" class="btn btn-danger btn-sm">PayBack</a>
@@ -285,9 +286,9 @@
                                   <tr>
                                       <td>{{$data->account_head_type}}</td>
                                     <?php
-                                    $updated_at = explode(" ", $data->updated_at);
+                                    $registerDate = explode(" ", $data->register_date);
                                     ?>
-                                    <td>{{$updated_at[0]}}</td>
+                                    <td>{{$registerDate[0]}}</td>
                                     <td>{{$data->register_name}}</td>
                                       @if( ($data->register_type) == 0)
                                         <td>PO</td>
@@ -309,6 +310,7 @@
                                         <a href="" class="btn btn-warning btn-sm disabled">Edit</a>
                                       @else
                                         <a href="/head_quater/tinder_registeration/{{$data->id}}" class="btn btn-danger btn-sm">PayBack</a>
+                                        <a href="/head_quater/tinder_registeration/payback/{{$data->id}}" class="btn btn-primary btn-sm">Detail</a>
                                         {{--<a href="/head_quater/receive_paymentorder/{{$getAllPaymentOrder->payment_order_id}}/edit" class="btn btn-warning btn-sm">Edit</a>--}}
                                       @endif
                                       {{--<a href="/head_quater/tinder_payback/{{$data->id}}/show" class="btn btn-primary btn-sm">Detail</a>--}}
@@ -318,7 +320,7 @@
                               </tbody>
                               <tfoot>
                                 <tr>
-                                    <th>Account Head</th>
+                                  <th>Account Head</th>
                                   <th>Register Date</th>
                                   <th>Register Name</th>
                                   <th>Register Type</th>
@@ -393,86 +395,8 @@
                     </div>
                 </section>                
               </div>
-              <!-- /.tab-pane -->
-
-              <!-- Interest Receive -->
-              <div class="tab-pane" id="tab_7">
-                <section class="content">
-                    <div class="row">
-                      <div class="col-md-2 pull-right">
-                        <a href="/head_quater/add_income">
-                          <button type="button" class="btn btn-block btn-primary btn-sm">Add</button>
-                        </a>
-                      </div>
-                      <div class="col-md-12">
-                        <div class="box" style="border: none;">
-                          <div class="box-header">
-                          </div>
-                          <!-- /.box-header -->
-                          <div class="box-body">
-                            <table id="example7" class="table table-bordered table-striped">
-                              <thead>
-                                <tr>
-                                  <th>Id</th>
-                                  <th>Project Name</th>
-                                  <th>Amount</th>
-                                  <th>With Draw</th>
-                                  <th>Action</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr>
-                                  <td>1</td>
-                                  <td>Project A</td>
-                                  <td>100,000,000</td>
-                                  <td>18 Jun 2019</td>
-                                  <td>
-                                    <button type="button" class="btn btn-block btn-warning btn-sm">Edit</button>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>2</td>
-                                  <td>Project B</td>
-                                  <td>100,000,000</td>
-                                  <td>18 Jun 2019</td>
-                                  <td>
-                                    <button type="button" class="btn btn-block btn-warning btn-sm">Edit</button>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>3</td>
-                                  <td>Project C</td>
-                                  <td>100,000,000</td>
-                                  <td>18 Jun 2019</td>
-                                  <td>
-                                    <button type="button" class="btn btn-block btn-warning btn-sm">Edit</button>
-                                  </td>
-                                </tr>
-                              </tbody>
-                              <tfoot>
-                                <tr>
-                                  <th>Id</th>
-                                  <th>Invester Name</th>
-                                  <th>Amount</th>
-                                  <th>Created Date</th>
-                                  <th>Action</th>
-                                </tr>
-                              </tfoot>
-                            </table>
-                          </div>
-                          <!-- /.box-body -->
-                        </div>
-                      </div>
-                    </div>
-                </section>                
               </div>
-              <!-- /.tab-pane -->              
-
-
-              </div>
-              <!-- /.tab-content -->
             </div>
-            <!-- nav-tabs-custom -->
         </div>
       <!-- /.col -->
       </div>
@@ -506,12 +430,12 @@
 @section('page_scripts')
 <script>
   $(function () {
-    $('#example1').DataTable()
-    $('#example2').DataTable()
-    $('#example3').DataTable()
-    $('#example4').DataTable()
-    $('#example6').DataTable()
-    $('#example7').DataTable()
+    $('#example1').DataTable();
+    $('#example2').DataTable();
+    $('#example3').DataTable();
+    $('#example4').DataTable();
+    $('#example6').DataTable();
+    $('#example7').DataTable();
   })
 </script>
 @endsection
