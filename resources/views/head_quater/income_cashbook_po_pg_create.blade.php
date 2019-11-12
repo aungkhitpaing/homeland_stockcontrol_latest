@@ -30,84 +30,107 @@
                   <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>
               </ul>
             
-              <div class="tab-pane" id="tab_2">
-                <section class="content">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <!-- <div class="box box-info"> -->
-                                    <div class="box-header with-border">
-                                        <h3 class="box-title">Amount Form Project</h3>
-                                    </div>
-                                    <!-- form start -->
-                                    <form class="form-horizontal" method="POST" action="/head_quater/storeProjectIncome">
+              <div class="tab-pane">
+                  <section class="content">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <!-- <div class="box box-info"> -->
+                            <div class="box-header with-border">
+                              <h3 class="box-title">Tinder Registeration ( PO / PG ) </h3>
+                                  </div>
+                                  <!-- form start -->
+                                  <form class="form-horizontal" method="POST" action="/head_quater/tinder_registeration">
                                     {{ csrf_field() }}
-                                    {{--<input type="hidden" name="accountHead" value="2" >--}}
-                                        <div class="form-group">
-                                            <label for="" class="col-sm-2 control-label">Account Head</label>
-                                            <div class="col-sm-10">
-                                                <select class="form-control" name="accountHead" required>
-                                                    <option disabled selected>--- Select your option ---</option>
-                                                    @foreach($accountHead as $data)
-                                                        <option value="{{$data->id}}">{{$data->account_head_type}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                          <div class="box-body">
-                                            <div class="form-group">
-                                                  <label for="investor_name" class="col-sm-2 control-label">Project Name</label>
-                                                  <div class="col-sm-10">
-                                                      <select class="form-control" name="project" required>
-                                                        <option>-----select project-----</option>
-                                                      @foreach($projects as $project)
-                                                          <option value="{{$project->id}}">{{$project->name}}</option>
-                                                      @endforeach
-                                                      </select>
-                                                  </div>
-                                            </div>
-                                            <div class="radio">
-                                                <label style="margin-left: 17%;">
-                                                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="Cash" required>
-                                                    Cash
-                                                </label>
-                                                <label style="margin-left: 2%;">
-                                                      <input type="radio" name="optionsRadios" id="optionsRadios2" value="Bank" required>
-                                                      Bank
-                                                </label>
-                                              </div>
-                                            <br>
-                                            <div class="form-group">
-                                                <label for="inputamount" class="col-sm-2 control-label">Amount</label>
-                                                <div class="col-sm-10">
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon">$</span>
-                                                        <input type="text" id="inputamount" class="form-control" name="amount">
-                                                        <span class="input-group-addon">Kyats</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="inputamount" class="col-sm-2 control-label">Description</label>
-                                                <div class="col-sm-10">
-                                                    <div class="input-group">
-                                                      <textarea class="form-control" name="description" id="exampleFormControlTextarea5" rows="3" cols="200"></textarea>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- /.box-body -->
-
-                                        <div class="box-footer">
-                                            <a href="/head_quater/income_cashbook/po_pg" class="btn btn-default">Cancel</a>
-                                            <input type="submit" class="btn btn-info pull-right" value="Add Amount">
+                                    <input type="hidden" name="accountHead" value="5" >
+  
+                                      <div class="box-body">
+                                <div class="form-group">
+                                  <label for="investor_name" class="col-sm-2 control-label">Account Head</label>
+                                  <div class="col-sm-10">
+                                    <select class="form-control" name="account_head" required>
+                                      <option disabled selected>--- Select your option ---</option>
+                                        @foreach($accountHead as $data)
+                                          <option value="{{$data->id}}">{{$data->account_head_type}}</option>
+                                        @endforeach
+                                    </select>
+                                  </div>
+                                </div>
+                                <div class="form-group">
+                                  <label for="exampleInputEmail1" class="col-sm-2 control-label">Register Name</label>
+                                  <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="" name="register_name" placeholder="Register name">
+                                  </div>
+                                </div>
+  
+                                <div class="radio">
+                                  <label style="margin-left: 17%;">
+                                    <input type="radio" name="register_type" value="0" required>
+                                    PO
+                                  </label>
+                                  <label style="margin-left: 2%;">
+                                    <input type="radio" name="register_type"  value="1" required>
+                                    PG
+                                  </label>
+                                </div>
+                                <br>
+  
+                                        <div class="radio">
+                                            <label style="margin-left: 17%;">
+                                              <input type="radio" name="payment_type" id="optionsRadios1" value="Cash" required>
+                                              Cash
+                                            </label>
+                                            <label style="margin-left: 2%;">
+                                                <input type="radio" name="payment_type" id="optionsRadios2" value="Bank" required>
+                                                Bank
+                                            </label>
                                           </div>
-                                          <!-- /.box-footer -->
-                                    </form>
-                                <!-- </div> -->
-                            </div>
-                        </div>
-                </section>
-            </div>
+                                        <br>
+  
+  
+                                        <div class="form-group">
+                                          <label for="inputamount" class="col-sm-2 control-label">Amount</label>
+                                          <div class="col-sm-10">
+                                            <div class="input-group">
+                                              <span class="input-group-addon">$</span>
+                                              <input type="number" id="inputamount" class="form-control" name="register_amount">
+                                              <span class="input-group-addon">Kyats</span>
+                                            </div>
+                                          </div>
+                                        </div>
+  
+                                        <div class="form-group">
+                                          <label for="inputamount" class="col-sm-2 control-label">With Draw</label>
+                                          <div class="col-sm-10">
+                                    <div class="input-group date">
+                                      <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                      </div>
+                                      <input type="text" class="form-control pull-right" id="pg_with_draw" name="register_date">
+                                    </div>
+                                  </div>
+                                        </div>
+                                        <div class="form-group">
+                                          <label for="inputamount" class="col-sm-2 control-label">Description</label>
+                                          <div class="col-sm-10">
+                                            <div class="input-group">
+                                              <textarea class="form-control" name="description" id="exampleFormControlTextarea5" rows="3" cols="200"></textarea>
+                                            </div>
+                                          </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.box-body -->
+  
+                                    <div class="box-footer">
+                                      <a href="/head_quater/income_cashbook/po_pg" class="btn btn-default">Cancel</a>
+                                        <button type="submit" class="btn btn-info pull-right">Add Amount</button>
+                                      </div>
+                                      <!-- /.box-footer -->
+                                  </form>
+                              <!-- </div> -->
+                          </div>
+                      </div>
+                  </section>
+                </div>
             </div>
         </div>
       <!-- /.col -->
@@ -141,6 +164,16 @@
 
 @section('page_scripts')
 <script>
+     $('#load_date').datepicker({
+      autoclose: true
+    });
+    $('#with_draw').datepicker({
+    	autoclose:true
+    });
+    $('#pg_with_draw').datepicker({
+    	autoclose:true
+    });
+    
   $(function () {
     $('#example1').DataTable();
     $('#example2').DataTable();
