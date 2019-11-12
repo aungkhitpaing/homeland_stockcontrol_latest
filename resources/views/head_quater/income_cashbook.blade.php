@@ -220,11 +220,9 @@
                                   @endif
                                   <td>
                                       @if($loanDetailById->loan_amount == $loanDetailById->payback_amount)
-                                          <a href="/head_quater/add_expend/bank/{{$loanDetailById->id}}" class="btn btn-danger btn-sm disabled">PayBack</a>
                                           <a href="/head_quater/loan_detail/{{$loanDetailById->id}}/delete" class="btn btn-danger btn-sm">Delete</a>
-                                          <a href="/head_quater/loan_detail/{{$loanDetailById->id}}/edit" class="btn btn-warning btn-sm disabled">Edit</a>
                                           @else
-                                             <a href="/head_quater/add_expend/bank/{{$loanDetailById->id}}" class="btn btn-danger btn-sm">PayBack</a>
+                                             <a href="/head_quater/add_expend/bank/{{$loanDetailById->id}}" class="btn btn-success btn-sm">PayBack</a>
                                             <a href="/head_quater/loan_detail/{{$loanDetailById->id}}/edit" class="btn btn-warning btn-sm">Edit</a>
                                       @endif
                                       <a href="/head_quater/loan_detail/{{$loanDetailById->id}}/show" class="btn btn-primary btn-sm">Detail</a>
@@ -283,6 +281,7 @@
                               </thead>
                               <tbody>
                                 @foreach ($getAllTinderRegisteration as $data)
+
                                   <tr>
                                       <td>{{$data->account_head_type}}</td>
                                     <?php
@@ -306,10 +305,11 @@
                                     <td>{{$data->description}}</td>
                                     <td>
                                       @if($data->register_amount == $data->payback_amount)
-                                        <a href="" class="btn btn-danger btn-sm disabled">PayBack</a>
-                                        <a href="" class="btn btn-warning btn-sm disabled">Edit</a>
+                                        <a href="" class="btn btn-danger btn-sm">Delete</a>
+                                        <a href="/head_quater/tinder_registeration/payback/{{$data->id}}" class="btn btn-primary btn-sm">Detail</a>
                                       @else
-                                        <a href="/head_quater/tinder_registeration/{{$data->id}}" class="btn btn-danger btn-sm">PayBack</a>
+                                        <a href="/head_quater/tinder_registeration/{{$data->id}}" class="btn btn-success btn-sm">PayBack</a>
+                                        <a href="/head_quater/tinder_registeration/{{$data->id}}/edit" class="btn btn-warning btn-sm">Edit</a>
                                         <a href="/head_quater/tinder_registeration/payback/{{$data->id}}" class="btn btn-primary btn-sm">Detail</a>
                                         {{--<a href="/head_quater/receive_paymentorder/{{$getAllPaymentOrder->payment_order_id}}/edit" class="btn btn-warning btn-sm">Edit</a>--}}
                                       @endif

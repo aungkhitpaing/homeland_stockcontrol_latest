@@ -115,8 +115,11 @@ Route::prefix('head_quater')->group(function () {
      */
 	Route::post('tinder_registeration','HeadQuaterIncomeController@storeTinderRegister');
 	Route::get('tinder_registeration/{id}','HeadQuaterIncomeController@getTinderRegisterById');
+    Route::get('tinder_registeration/{id}/edit','HeadQuaterIncomeController@editTinderRegisterById');
+    Route::patch('tinder_registeration/payback/{id}/update','HeadQuaterIncomeController@updateTinderRegisterById');
 	Route::Post('tinder_registeration/payback/{id}','HeadQuaterIncomeController@paybackTinder');
     Route::get('tinder_registeration/payback/{id}','HeadQuaterIncomeController@getAllDetailPaybackTinder');
+
 
 
 	Route::get('/alltransaction', 'CashBookController@index');

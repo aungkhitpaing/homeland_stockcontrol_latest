@@ -2,7 +2,7 @@
 @section('content')
     <section class="content-header">
         <h1>
-            Income Data
+            Payback Data
             <small>Preview of UI elements</small>
         </h1>
         <ol class="breadcrumb">
@@ -76,7 +76,7 @@
                                                             Cash
                                                         </label>
                                                     @else
-                                                        <label style="margin-left: 2%;">
+                                                        <label style="margin-left: 17%;">
                                                             <input type="radio" name="payment_type" id="optionsRadios2" value="Bank" checked>
                                                             Bank
                                                         </label>
@@ -101,7 +101,7 @@
                                                     <div class="col-sm-10">
                                                         <div class="input-group">
                                                             <span class="input-group-addon">$</span>
-                                                            <input type="number" id="inputamount" class="form-control" name="payback_amount">
+                                                            <input type="number" id="inputamount" class="form-control" required name="payback_amount">
                                                             <span class="input-group-addon">Kyats</span>
                                                         </div>
                                                     </div>
@@ -114,7 +114,7 @@
                                                             <div class="input-group-addon">
                                                                 <i class="fa fa-calendar"></i>
                                                             </div>
-                                                            <input type="text" class="form-control pull-right" id="pg_with_draw"   name="register_date">
+                                                            <input type="text" class="form-control pull-right" id="pg_with_draw" required   name="register_date">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -122,7 +122,7 @@
                                                     <label for="inputamount" class="col-sm-2 control-label">Description</label>
                                                     <div class="col-sm-10">
                                                         <div class="input-group">
-                                                            <textarea class="form-control"  name="description" id="exampleFormControlTextarea5" rows="3" cols="200"></textarea>
+                                                            <textarea class="form-control" required  name="description" id="exampleFormControlTextarea5" rows="3" cols="200"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
