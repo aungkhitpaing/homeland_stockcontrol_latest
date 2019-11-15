@@ -147,6 +147,17 @@
           </ul>
         </li>
 
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-sticky-note"></i> <span>Mistake Records</span><span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="/record_histories"><i class="fa fa-circle-o"></i> <span>Show</span></a></li>
+          </ul>
+        </li>
+
         
 
 <!--         <li class="treeview">
