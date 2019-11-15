@@ -130,7 +130,7 @@ class HeadQuaterExpandController extends Controller
 
             DB::table('site_cashbook')->insert($siteExpense);
             DB::commit();
-            return redirect('/head_quater/alltransaction');
+            return redirect('/head_quater/project');
 
         } catch (Exception $e) {
             DB::rollback();
