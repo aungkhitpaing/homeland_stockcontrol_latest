@@ -88,7 +88,7 @@
                                   @endif
                                   <td>
                                       @if($loanDetailById->loan_amount == $loanDetailById->payback_amount)
-                                          <a href="/head_quater/loan_detail/{{$loanDetailById->id}}/delete" class="btn btn-danger btn-sm">Delete</a>
+                                          <a href="/head_quater/loan_detail/{{$loanDetailById->id}}/delete" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
                                           @else
                                              <a href="/head_quater/add_expend/bank/{{$loanDetailById->id}}" class="btn btn-success btn-sm">PayBack</a>
                                             <a href="/head_quater/loan_detail/{{$loanDetailById->id}}/edit" class="btn btn-warning btn-sm">Edit</a>
