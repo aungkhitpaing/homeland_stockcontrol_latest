@@ -300,3 +300,12 @@ Route::get('custom-logout','HomeController@logout');
 
 Route::get('have-not-permission','HomeController@haveNotPermission');
 
+Route::get('stock_payable','PayableController@index');
+Route::get('/stock_payable/create','PayableController@create');
+Route::Post('/stock_payable/create','PayableController@store');
+Route::get('/stock_payable/{id}/confirm','PayableController@confirm');
+Route::get('/stock_payable/{id}/show','PayableController@show');
+Route::post('/stock_payable/{id}/payback','PayableController@payback');
+Route::get('/stock_payable/{id}/payback_detail','PayableController@payback_detail');
+//Route::get('/stock_payable/{id}/update','PayableController@update');
+//Route::get('/stock_payable/{id}/delete','PayableController@index');

@@ -109,12 +109,12 @@
             url:"/project-order/stock_price/"+this.value,
             success: function(data) {
                 price = data.price;
+                $('.price').val(price);
             },
         });
     });
 
     $(".qty").on("change paste keyup", function() {
-        $('.price').val(price);
         $('.amount').val(price * this.value);
     });
 </script>
