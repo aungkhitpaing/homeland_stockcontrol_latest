@@ -34,13 +34,16 @@ class HeadQuaterExpandController extends Controller
     }
 
     public function create() {
+
         $accountHeads = $this->getAllAccountHead();
         $getAllExpenseCategories = $this->showExpenseCategory();
         $getAllProjects = $this->getAllProject();
         $banks = $this->getAllBank();
         $getAllLoanTransfer = $this->getAllLoanTransfer();
         $getAllPaymentOrder = DB::table('payment_order_tb')->select('id','name')->where('delete_flag',0)->get();
-        return view ('head_quater.add_expend', compact('accountHeads','getAllExpenseCategories','getAllProjects','banks','getAllLoanTransfer','getAllPaymentOrder'));
+        return view ('head_quater.add_expend', compact('accountHeads','getAllExpenseCategories',
+        'getAllProjects','banks','getAllLoanTransfer',
+        'getAllPaymentOrder'));
     }
 
     public function createBankLoan($id) {
@@ -127,7 +130,7 @@ class HeadQuaterExpandController extends Controller
 
             DB::table('site_cashbook')->insert($siteExpense);
             DB::commit();
-            return redirect('/head_quater/alltransaction');
+            return redirect('/head_quater/project');
 
         } catch (Exception $e) {
             DB::rollback();
@@ -160,7 +163,7 @@ class HeadQuaterExpandController extends Controller
                     ]);
                     $getCashBookInfo['bank_expense_detail_id'] = DB::getPdo()->lastInsertId();
                     DB::table('cash_book_tb')->insert($getCashBookInfo);
-                    return redirect('/head_quater/income_cashbook/');
+                    return redirect('/head_quater/income_cashbook/bank_loan');
                 } else {
                     return redirect('/head_quater/add_expend/bank');
                 }   
@@ -488,7 +491,12 @@ class HeadQuaterExpandController extends Controller
                     ->update(['expend' => $updateAmount, 'description' => $updateRecords['remark']]);
             }
         }
-        return redirect("/head_quater/expend_cashbook");
+        if(str_replace(url('/'), '', url()->previous()) == "/head_quater/office_expense_detail/$id/edit"){
+            return redirect("/head_quater/expend_cashbook");
+        }
+        else{
+            return redirect("/head_quater/project");
+        }
     }
 
     public function calculateDiffAmount($originalAmount,$updateAmount) {
@@ -506,4 +514,35 @@ class HeadQuaterExpandController extends Controller
         return $updateRecords;
     }
 
+    public function officeExpense()
+    {
+
+    }
+
+    public function project()
+    {
+        $getAllOfficeExpense = $this->getAllOfficeExpense();
+
+	    $getTotalOfficeExpense = 0;
+        foreach ($getAllOfficeExpense as $data) {
+            $getTotalOfficeExpense += $data->amount;
+        }
+
+	    $getAllProjectExpense = $this->getAllProjectExpense();
+        $getAllBankExpense = $this->getAllBankExpense();
+        return view('head_quater.project',compact('getAllOfficeExpense','getTotalOfficeExpense','getAllProjectExpense','getAllBankExpense'));
+    }
+
+    public function addExpendProject()
+    {
+        $accountHeads = $this->getAllAccountHead();
+        $getAllExpenseCategories = $this->showExpenseCategory();
+        $getAllProjects = $this->getAllProject();
+        $banks = $this->getAllBank();
+        $getAllLoanTransfer = $this->getAllLoanTransfer();
+        $getAllPaymentOrder = DB::table('payment_order_tb')->select('id','name')->where('delete_flag',0)->get();
+        return view ('head_quater.add_expend_project', compact('accountHeads','getAllExpenseCategories',
+        'getAllProjects','banks','getAllLoanTransfer',
+        'getAllPaymentOrder'));
+    }
 }

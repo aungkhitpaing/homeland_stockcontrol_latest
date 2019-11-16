@@ -21,6 +21,17 @@ Route::post('/record_histories/excel', 'RecordHistoryController@excelExport');
 Route::get('log-out','DashBoardController@logout');
 
 Route::prefix('head_quater')->group(function () {
+
+	Route::get('/income_cashbook/project', 'HeadQuaterIncomeController@incomeCashbookProject');
+	Route::get('/income_cashbook/bank_loan', 'HeadQuaterIncomeController@incomeBankLoan');
+	Route::get('/income_cashbook/po_pg', 'HeadQuaterIncomeController@incomePoPG');
+
+	Route::get('/project/create', 'HeadQuaterIncomeController@incomeCashbookProjectCreate');
+	Route::get('/bank_loan/create', 'HeadQuaterIncomeController@incomeCashbookBankLoanCreate');
+	Route::get('/po_pg/create', 'HeadQuaterIncomeController@incomeCashbookPoPgreate');
+
+
+
 	// Route::post('/login',function(){
 	// 	return view('authentication.login');
 	// });
@@ -137,6 +148,11 @@ Route::prefix('head_quater')->group(function () {
 	Route::get('/add_expend', 'HeadQuaterExpandController@create');
 	Route::get('/add_expend/bank/{id}','HeadQuaterExpandController@createBankLoan');
     Route::get('/loan_detail/{loan_id}/show', 'HeadQuaterExpandController@getBankExpenseById');
+
+	Route::get('/expend_cashbook/office_expense', 'HeadQuaterExpandController@officeExpense');
+	Route::get('/add_expend/project','HeadQuaterExpandController@addExpendProject');
+	Route::get('/project', 'HeadQuaterExpandController@project');
+
 
 
 });
@@ -309,3 +325,4 @@ Route::post('/stock_payable/{id}/payback','PayableController@payback');
 Route::get('/stock_payable/{id}/payback_detail','PayableController@payback_detail');
 //Route::get('/stock_payable/{id}/update','PayableController@update');
 //Route::get('/stock_payable/{id}/delete','PayableController@index');
+

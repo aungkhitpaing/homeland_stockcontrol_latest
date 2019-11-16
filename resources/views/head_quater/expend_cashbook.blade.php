@@ -3,16 +3,6 @@
 @section('content')
 <!-- Content Header (Page header) -->
 <section class="content-header">
-  <h1>
-    Expands Data Tables
-    <small>advanced tables</small>
-  </h1>
-  <ol class="breadcrumb">
-    <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-    <li><a href="#">Tables</a></li>
-    <li class="active">Data tables</li>
-  </ol>
-</section>
 
 <!-- Main content -->
     <section class="content">
@@ -21,8 +11,8 @@
           <!-- Custom Tabs -->
             <div class="nav-tabs-custom">
               <ul class="nav nav-tabs">
-                  <li class="active"><a href="#tab_1" data-toggle="tab">Office Expense</a></li>
-                  <li><a href="#tab_2" data-toggle="tab">Project</a></li>
+                  <li class="active"><a href="/head_quater/expend_cashbook">Office Expense</a></li>
+                  <li><a href="/head_quater/project">Project</a></li>
                   {{--<li><a href="#tab_3" data-toggle="tab">Bank Loan</a></li>--}}
                   {{--<li><a href="#tab_4" data-toggle="tab">PO</a></li>--}}
                   {{--<li><a href="#tab_6" data-toggle="tab">PG</a></li>--}}

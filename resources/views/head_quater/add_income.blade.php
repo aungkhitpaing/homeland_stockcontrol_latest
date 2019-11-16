@@ -103,7 +103,7 @@
 									            	<!-- /.box-body -->
 
 									            	<div class="box-footer">
-									            		<a href="/head_quater" class="btn btn-default">Cancel</a>
+									            		<a href="/head_quater/income_cashbook" class="btn btn-default">Cancel</a>
 									                	<input type="submit" class="btn btn-info pull-right" value="Add Amount">
 									              	</div>
 									              	<!-- /.box-footer -->

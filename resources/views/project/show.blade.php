@@ -31,7 +31,7 @@
                     <td>{{$project->code}}</td>
                     <td>{{$project->name}}</td>
                     <td>
-                      <a href="/project/{{$project->id}}/edit" class="btn btn-warning btn-sm">Edit</a> <a href="/project/{{$project->id}}/delete" class="btn btn-danger btn-sm">Delete</a>
+                      <a href="/project/{{$project->id}}/edit" class="btn btn-warning btn-sm">Edit</a> <a href="/project/{{$project->id}}/delete" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
                     </td>
                   </tr>
                 @endforeach             

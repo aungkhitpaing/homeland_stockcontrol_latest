@@ -248,12 +248,12 @@
           </ul>
         </li> -->
 
-        <li><a href="/supplier"><i class="fa fa-book"></i> <span>Supplier</span></a></li>
+        {{-- <li><a href="/supplier"><i class="fa fa-book"></i> <span>Supplier</span></a></li>
         <li><a href="/stock"><i class="fa fa-book"></i> <span>Stock</span></a></li>
         <li><a href="/project-expense"><i class="fa fa-book"></i> <span>Project Expense</span></a></li>
         <li><a href="/project-order"><i class="fa fa-book"></i> <span>Project Order</span></a></li>
         <li><a href="/project-user"><i class="fa fa-book"></i> <span>Project User</span></a></li>
-        
+         --}}
         <!-- <li class="http://localhost:8000/head_quater/alltransactioner">LABELS</li>
         <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
         <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>

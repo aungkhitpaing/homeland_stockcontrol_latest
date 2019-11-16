@@ -22,9 +22,10 @@
             <div class="nav-tabs-custom">
               <ul class="nav nav-tabs">
                   <li class="active"><a href="#tab_1" data-toggle="tab">Investor</a></li>
-                  <li><a href="#tab_2" data-toggle="tab">Project</a></li>
-                  <li><a href="#tab_3" data-toggle="tab">Bank Loan</a></li>
-                  <li><a href="#tab_4" data-toggle="tab">PO/PG</a></li>
+                  <li><a href="/head_quater/income_cashbook/project">Project</a></li>
+                  <li><a href="/head_quater/income_cashbook/bank_loan">Bank Loan</a></li>
+                  <li><a href="/head_quater/income_cashbook/po_pg">PO/PG</a></li>
+
                   {{--<li><a href="#tab_6" data-toggle="tab">PG</a></li>--}}
                   <!-- <li><a href="#tab_7" data-toggle="tab">Interest Receive</a></li> -->
                   <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>

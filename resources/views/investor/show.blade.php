@@ -33,7 +33,7 @@
                     <td>{{$investor->code}}</td>
                     <td>{{$investor->name}}</td>
                     <td>
-                      <a href="/investor/{{$investor->id}}/edit" class="btn btn-warning btn-sm">Edit</a> <a href="/investor/{{$investor->id}}/delete" class="btn btn-danger btn-sm">Delete</a>
+                      <a href="/investor/{{$investor->id}}/edit" class="btn btn-warning btn-sm">Edit</a> <a href="/investor/{{$investor->id}}/delete" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
                     </td>
                   </tr>
                 @endforeach             
