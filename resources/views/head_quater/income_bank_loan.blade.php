@@ -21,7 +21,7 @@
           <!-- Custom Tabs -->
             <div class="nav-tabs-custom">
               <ul class="nav nav-tabs">
-                  <li><a href="#tab_1" data-toggle="tab">Investor</a></li>
+                  <li><a href="/head_quater/income_cashbook">Investor</a></li>
                   <li><a href="/head_quater/income_cashbook/project">Project</a></li>
                   <li class="active"><a href="/head_quater/income_cashbook/bank_loan">Bank Loan</a></li>
                   <li><a href="/head_quater/income_cashbook/po_pg">PO/PG</a></li>
@@ -110,7 +110,7 @@
                               </tfoot>
                             </table>
                           </div>
-                          <!-- /.box-body -->
+                          {{ $loanDetail->links() }}
                         </div>
                       </div>
                     </div>
@@ -151,12 +151,12 @@
 @section('page_scripts')
 <script>
   $(function () {
-    $('#example1').DataTable();
-    $('#example2').DataTable();
-    $('#example3').DataTable();
-    $('#example4').DataTable();
-    $('#example6').DataTable();
-    $('#example7').DataTable();
+    $('#example1').DataTable({
+      "paging":   false,
+      "ordering": false,
+      "info":     false,
+      "searching": false
+    })
   })
 </script>
 @endsection

@@ -112,7 +112,7 @@
                               </tfoot>
                             </table>
                           </div>
-                          <!-- /.box-body -->
+                          {{ $getAllTinderRegisteration->links() }}
                         </div>
                       </div>
                     </div>
@@ -152,13 +152,13 @@
 
 @section('page_scripts')
 <script>
-  $(function () {
-    $('#example1').DataTable();
-    $('#example2').DataTable();
-    $('#example3').DataTable();
-    $('#example4').DataTable();
-    $('#example6').DataTable();
-    $('#example7').DataTable();
+ $(function () {
+    $('#example1').DataTable({
+      "paging":   false,
+      "ordering": false,
+      "info":     false,
+      "searching": false
+    })
   })
 </script>
 @endsection

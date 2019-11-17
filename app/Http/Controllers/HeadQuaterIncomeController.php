@@ -24,40 +24,40 @@ class HeadQuaterIncomeController extends Controller
 			->join('invester_tb', 'invester_tb.id', '=', 'investor_income_tb.investor_id')
 			->select('investor_income_tb.*', 'invester_tb.name')
 			->where('investor_income_tb.delete_flag', 0)
-			->get();
+			->paginate(15);
 
 		$getAllProjectIncome = DB::table('project_income_tb')
 			->join('project_tb', 'project_tb.id', '=', 'project_income_tb.project_id')
 			->select('project_income_tb.*', 'project_tb.name')
 			->where('project_income_tb.delete_flag', 0)
-			->get();
+			->paginate(15);
 
 		$getAllBankIncome = DB::table('bank_detail_tb')
 			->join('bank_tb', 'bank_tb.id', '=', 'bank_detail_tb.bank_id')
 			->select('bank_detail_tb.*', 'bank_tb.name')
 			->where('bank_detail_tb.delete_flag', 0)
-			->get();
+			->paginate(15);
         $loanDetail = DB::table('loan_detail_tb')->orderby('created_at', 'desc')
             ->where('delete_flag', 0)
-            ->get();
+            ->paginate(15);
 
 
 		$getAllPaymentOrderIncome = DB::table('payment_order_detail_tb')
 			->join('payment_order_tb', 'payment_order_tb.id', '=', 'payment_order_detail_tb.payment_order_id')
 			->select('payment_order_detail_tb.*', 'payment_order_tb.name')
 			->where('payment_order_detail_tb.delete_flag', 0)
-			->get();
+			->paginate(15);
 
 		$getAllPurchaseGauranteeIncome = DB::table('purchase_guarantee_income_tb')
 			->join('purchase_guarantee_tb', 'purchase_guarantee_tb.id', '=', 'purchase_guarantee_income_tb.purchase_guarantee_id')
 			->select('purchase_guarantee_income_tb.*', 'purchase_guarantee_tb.name')
 			->where('purchase_guarantee_income_tb.delete_flag', 0)
-			->get();
+			->paginate(15);
 
 		$getAllTinderRegisteration = DB::table('popg_tb')
             ->join('account_head_tb','account_head_tb.id','=','popg_tb.account_head')
             ->select('popg_tb.*','account_head_tb.account_head_type')->where('popg_tb.delete_flag',0)
-            ->get();
+            ->paginate(15);
 		return view('head_quater.income_cashbook', compact('getAllInvestorIncome', 'getAllProjectIncome', 'getAllBankIncome', 'getAllPaymentOrderIncome', 'getAllPurchaseGauranteeIncome','loanDetail','getAllTinderRegisteration'));
 	}
 
@@ -889,7 +889,7 @@ class HeadQuaterIncomeController extends Controller
 			->join('project_tb', 'project_tb.id', '=', 'project_income_tb.project_id')
 			->select('project_income_tb.*', 'project_tb.name')
 			->where('project_income_tb.delete_flag', 0)
-			->get();
+			->paginate(15);
 
 		$getAllBankIncome = DB::table('bank_detail_tb')
 			->join('bank_tb', 'bank_tb.id', '=', 'bank_detail_tb.bank_id')
@@ -950,7 +950,7 @@ class HeadQuaterIncomeController extends Controller
 			->get();
         $loanDetail = DB::table('loan_detail_tb')->orderby('created_at', 'desc')
             ->where('delete_flag', 0)
-            ->get();
+            ->paginate(15);
 
 
 		$getAllPaymentOrderIncome = DB::table('payment_order_detail_tb')
@@ -1020,7 +1020,7 @@ class HeadQuaterIncomeController extends Controller
 		$getAllTinderRegisteration = DB::table('popg_tb')
             ->join('account_head_tb','account_head_tb.id','=','popg_tb.account_head')
             ->select('popg_tb.*','account_head_tb.account_head_type')->where('popg_tb.delete_flag',0)
-            ->get();
+            ->paginate(15);
 		return view('head_quater.income_po_pg', compact('getAllInvestorIncome', 'getAllProjectIncome', 'getAllBankIncome', 'getAllPaymentOrderIncome', 'getAllPurchaseGauranteeIncome','loanDetail','getAllTinderRegisteration'));
     }
 

@@ -77,9 +77,9 @@
                         </tfoot>
                       </table>
                     </div>
-                    <!-- /.box-body -->
+                    {{ $getTransactions->links() }}                 
                   </div>
-                </div>                      
+                </div>      
               </div>
               
               <div class="row">
@@ -169,7 +169,12 @@
 @section('page_scripts')
 <script>
   $(function () {
-    $('#example1').DataTable()
+    $('#example1').DataTable({
+      "paging":   false,
+      "ordering": false,
+      "info":     false,
+      "searching": false
+    })
   })
 </script>
 @endsection

@@ -74,7 +74,7 @@ class HeadQuaterExpandController extends Controller
 
                     DB::table('cash_book_tb')->insert($getCashbookInfo);
             });
-    		return redirect('/head_quater/alltransaction');
+    		return redirect('/head_quater/expend_cashbook');
     	} catch (Exception $e) {
     		return $e->getMessage();
     	}
@@ -242,7 +242,7 @@ class HeadQuaterExpandController extends Controller
                 ->join('account_head_tb','account_head_tb.id', '=','office_expense_detail_tb.account_head_id')
                 ->select('office_expense_detail_tb.*', 'office_expense_category.expense_category_name','account_head_tb.account_head_type')
                 ->where('office_expense_detail_tb.delete_flag',0)
-                ->get();
+                ->paginate(15);
     }
 
     public function getAllProjectExpense() {
@@ -250,7 +250,7 @@ class HeadQuaterExpandController extends Controller
         ->join('project_tb','project_tb.id','=','project_expense_tb.project_id')
         ->select('project_expense_tb.*','project_tb.name')
         ->where('project_expense_tb.delete_flag',0)
-        ->get();
+        ->paginate(15);
         return $getAllProjectExpense;
     }
 

@@ -78,8 +78,7 @@
                               </tfoot>
                             </table>
                           </div>
-
-                          <!-- /.box-body -->
+                          {{ $getAllOfficeExpense->links() }}
                         </div>
                       </div>
                     </div>
@@ -297,10 +296,12 @@
 @section('page_scripts')
 <script>
   $(function () {
-    $('#example1').DataTable()
-    $('#example2').DataTable()
-    // $('#example3').DataTable()
-    $('#example4').DataTable()
+    $('#example1').DataTable({
+      "paging":   false,
+      "ordering": false,
+      "info":     false,
+      "searching": false
+    })
   })
 </script>
 @endsection
