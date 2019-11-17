@@ -60,8 +60,6 @@ class HeadQuaterIncomeController extends Controller
             ->paginate(15);
 		return view('head_quater.income_cashbook', compact('getAllInvestorIncome', 'getAllProjectIncome', 'getAllBankIncome', 'getAllPaymentOrderIncome', 'getAllPurchaseGauranteeIncome','loanDetail','getAllTinderRegisteration'));
 	}
-
-
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -74,6 +72,10 @@ class HeadQuaterIncomeController extends Controller
 		return view('head_quater.add_income', compact('investors', 'projects', 'banks', 'paymentOrders', 'purchaseGuarantees', 'accountHead'));
 	}
 
+    /**
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function ReceivePaymentOrder($id){
 
         $paymentOrders = DB::table('payment_order_tb')->orderby('created_at', 'desc')
@@ -362,36 +364,55 @@ class HeadQuaterIncomeController extends Controller
 		return $rowCounts;
 	}
 
+    /**
+     * @return \Illuminate\Support\Collection
+     */
 	public function getAllInvestor()
 	{
 		$investors = DB::table('invester_tb')->orderby('created_at', 'desc')->where('delete_flag', 0)->get();
 		return $investors;
 	}
 
+    /**
+     * @return \Illuminate\Support\Collection
+     */
 	public function getAllProject()
 	{
 		$projects = DB::table('project_tb')->orderby('created_at', 'desc')->where('delete_flag', 0)->get();
 		return $projects;
 	}
 
+    /**
+     * @return \Illuminate\Support\Collection
+     */
 	public function getAllBank()
 	{
 		$banks = DB::table('bank_tb')->orderby('created_at', 'desc')->where('delete_flag', 0)->get();
 		return $banks;
 	}
 
+    /**
+     * @return \Illuminate\Support\Collection
+     */
 	public function getAllPaymentOrder()
 	{
 		$payment_orders = DB::table('payment_order_tb')->orderby('created_at', 'desc')->where('delete_flag', 0)->get();
 		return $payment_orders;
 	}
 
+    /**
+     * @return \Illuminate\Support\Collection
+     */
 	public function getAllPurchaseGuarantee()
 	{
 		$purchase_guarantees = DB::table('purchase_guarantee_tb')->orderby('created_at', 'desc')->where('delete_flag', 0)->get();
 		return $purchase_guarantees;
 	}
 
+    /**
+     * @param $investor_id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
 	public function getAllInvestorIncomeById($investor_id)
 	{
         $totalBalance=0;
@@ -411,6 +432,10 @@ class HeadQuaterIncomeController extends Controller
 		return view('head_quater.invester_detail', compact('investorDetail', 'totalBalance'));
 	}
 
+    /**
+     * @param $project_id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
 	public function getAllProjectIncomeById($project_id)
 	{
 
@@ -428,6 +453,10 @@ class HeadQuaterIncomeController extends Controller
 		return view('head_quater.project_detail', compact('projectDetail', 'totalBalance'));
 	}
 
+    /**
+     * @param $bank_detail_id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
 	public function getAllBankIncomeById($bank_detail_id)
 	{
 
@@ -448,6 +477,10 @@ class HeadQuaterIncomeController extends Controller
 		return view('head_quater.loan_detail', compact('loanDetail', 'totalBalance'));
 	}
 
+    /**
+     * @param $payment_detail_id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
 	public function getAllPaymentOrderIncomeById($payment_detail_id)
 	{
 
@@ -468,6 +501,10 @@ class HeadQuaterIncomeController extends Controller
 		return view('head_quater.payment_order_detail', compact('paymentOrderDetail', 'totalBalance'));
 	}
 
+    /**
+     * @param $purchase_guarantee_id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
 	public function getAllPurchaseGuaranteeIncomeById($purchase_guarantee_id)
 	{
 
@@ -488,6 +525,10 @@ class HeadQuaterIncomeController extends Controller
 		return view('head_quater.purchase_guarantee_detail', compact('purchaseGuaranteeDetail', 'totalBalance'));
 	}
 
+    /**
+     * @param $total_amount
+     * @return int
+     */
 	public function calculateTotalBalance($total_amount)
 	{
 		$totalBalance = 0;
@@ -497,7 +538,11 @@ class HeadQuaterIncomeController extends Controller
 		return $totalBalance;
 	}
 
-
+    /**
+     * @param $investor_id
+     * @param $investor_detail_id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
 	public function EditInvestorIncomeById($investor_id,$investor_detail_id)
 	{
 		$investorDetailId = DB::table('invester_detail_tb')
@@ -506,6 +551,11 @@ class HeadQuaterIncomeController extends Controller
 		return view('head_quater.invester_detail_edit', compact('investorDetailId','investor_id'));
 	}
 
+    /**
+     * @param $invester_id
+     * @param $investor_detail_id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|string
+     */
 	public function UpdateInvestorIncomeById($invester_id,$investor_detail_id)
 	{
         $invester_detail = DB::table('invester_detail_tb')->select('amount','account_head_id','description','investor_detail_id')->where('delete_flag',0)->where('investor_detail_id',$investor_detail_id)->first();
@@ -532,6 +582,7 @@ class HeadQuaterIncomeController extends Controller
                     $updateTotalIncome = $getTotalIncomeamountById->total_income_balance + $diff; //  Out put of $diff value come with "-" sign ( eg. -1)  that why we should add "+" operator
                     $change_status = "decrease";
                 }
+                DB::beginTransaction();
                 $updateTotalIncomeResult = DB::table('investor_income_tb')->where('investor_id', $invester_id)->update(['total_income_balance' => $updateTotalIncome]);
 
                 if ($updateTotalIncomeResult == 1) {
@@ -549,7 +600,7 @@ class HeadQuaterIncomeController extends Controller
                                 'transaction_original_amount' => $invester_detail->amount,
                                 'change_status' => $change_status,
                                 'diff_amount' => $diff,
-                                'remark' => $invester_detail->description,
+                                'remark' => "I have to changed transaction from ".$invester_detail->amount." Kyats to ".$getUpdateAmount->amount ." Kyats . Because I have to wrong filling into investor income",
                                 'invester_detail_id' => $invester_detail->investor_detail_id ,
                             ]);
                         }
@@ -562,6 +613,11 @@ class HeadQuaterIncomeController extends Controller
         return redirect("/head_quater/invester_detail/$invester_id");
 	}
 
+    /**
+     * @param $project_id
+     * @param $project_detail_id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
 	public function EditProjectIncomeById($project_id,$project_detail_id){
         $projectDetailId = DB::table('project_detail_tb')
             ->where('project_detail_id', $project_detail_id)
@@ -569,8 +625,15 @@ class HeadQuaterIncomeController extends Controller
         return view('head_quater.project_detail_edit', compact('projectDetailId','project_id'));
     }
 
+    /**
+     * @param $project_id
+     * @param $project_detail_id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|string
+     */
 	public function UpdateProjectIncomeById($project_id,$project_detail_id){
-        $project_detail = DB::table('project_detail_tb')->select('amount','account_head_id')->where('delete_flag',0)->where('project_detail_id',$project_detail_id)->first();
+        $project_detail = DB::table('project_detail_tb')->select('amount','account_head_id','project_id')->where('delete_flag',0)->where('project_detail_id',$project_detail_id)->first();
+        $project_name = DB::table('project_tb')->select('name')->where('id',$project_detail->project_id)->where('delete_flag',0)->get();
+        $project_name =  $project_name[0]->name;
 
         $updateProjectDetail = $this->updateTransactionbyId($project_detail_id,'project_detail_tb','project_detail_id');
         if($updateProjectDetail) {
@@ -594,6 +657,8 @@ class HeadQuaterIncomeController extends Controller
                     $updateTotalIncome = $getTotalIncomeamountById->total_income_balance + $diff; //  Out put of $diff value come with "-" sign ( eg. -1)  that why we should add "+" operator
                     $change_status = "decrease";
                 }
+                DB::beginTransaction();
+
                 $updateTotalIncomeResult = DB::table('project_income_tb')->where('project_id', $project_id)->update(['total_income_balance' => $updateTotalIncome]);
 
                 if ($updateTotalIncomeResult == 1) {
@@ -611,9 +676,12 @@ class HeadQuaterIncomeController extends Controller
                                 'transaction_original_amount' => $project_detail->amount,
                                 'change_status' => $change_status,
                                 'diff_amount' => $diff,
+                                'remark' => "I have to changed transaction from ".$project_detail->amount." Kyats to ".$getUpdateAmount->amount." Kyats for  ".$project_name." . Because I have to wrong filling into project income",
                             ]);
                         }
+                        DB::commit();
                     }catch (Exception $e) {
+                        DB::rollBack();
                         return $e->getMessage();
                     }
                 }
@@ -622,17 +690,30 @@ class HeadQuaterIncomeController extends Controller
         return redirect("/head_quater/project_detail/$project_id");
     }
 
+    /**
+     * @param $loan_id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function EditBankIncomeById($loan_id){
         $loanDetailId = DB::table('loan_detail_tb')->where('id', $loan_id)->first();
         return view('head_quater.loan_detail_edit', compact('loanDetailId'));
 //        return view('head_quater.loan_detail_edit', compact('loanDetailId','bank_detail_id'));
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function DeleteBankIncomeById($id) {
         DB::update('update loan_detail_tb set delete_flag = ?  where id = ?', [1, $id]);
         return redirect('/head_quater/income_cashbook');
 	}
 
+    /**
+     * @param Request $request
+     * @param $loan_id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function UpdateBankIncomeById(Request $request,$loan_id){
 
         $updateRecords = [
@@ -640,7 +721,7 @@ class HeadQuaterIncomeController extends Controller
             'transaction_update_amount' => $request->amount,
             'change_status' => null,
             'payment_type' => $request->payment_type,
-            'remark' => "edited for ".$loan_id,
+            'remark' => "edited for ".$loan_id ,
         ];
 
         $transactionOrginalAmount = DB::table('loan_detail_tb')->select('loan_amount')->where('id', $loan_id)->first();
@@ -665,6 +746,7 @@ class HeadQuaterIncomeController extends Controller
             'transaction_original_amount' => $originalAmount,
             'change_status' => $updateRecords['change_status'],
             'diff_amount' => $updateRecords['diff_amount'],
+            'remark' => "I have to changed transaction from ".$originalAmount." Kyats to ".$updateAmount." Kyats . Because I have to wrong filling into bank income",
         ]);
 
         if ($insertRecord == 1) {
@@ -676,6 +758,11 @@ class HeadQuaterIncomeController extends Controller
         return redirect("/head_quater/income_cashbook/bank_loan");
 	}
 
+    /**
+     * @param $originalAmount
+     * @param $updateAmount
+     * @return array
+     */
     public function calculateDiffAmount($originalAmount,$updateAmount) {
         $updateRecords= [];
         if ($updateAmount > $originalAmount) {
@@ -691,6 +778,12 @@ class HeadQuaterIncomeController extends Controller
         return $updateRecords;
     }
 
+    /**
+     * @param $id
+     * @param $tablename
+     * @param $column_name
+     * @return int
+     */
     public function updateTransactionbyId($id,$tablename,$column_name)
     {
         return DB::table($tablename)->where($column_name, $id)->update(['amount' => request()->amount]);
@@ -742,6 +835,11 @@ class HeadQuaterIncomeController extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|string
+     */
     public function paybackTinder(Request $request, $id) {
         $input = [
             'register_type' => $request->register_type,
@@ -788,11 +886,19 @@ class HeadQuaterIncomeController extends Controller
         }
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function getTinderRegisterById($id){
         $getData = DB::table('popg_tb')->select("*")->where('id',$id)->where('delete_flag',0)->get();
         return view('tinder.payback_tinder',compact('getData'));
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function editTinderRegisterById($id) {
 
         $getData = DB::table('popg_tb')
@@ -804,6 +910,11 @@ class HeadQuaterIncomeController extends Controller
         return view('tinder.edit_payback_tinder_detail',compact('getData'));
     }
 
+    /**
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|string
+     */
     public function updateTinderRegisterById(Request $request,$id) {
 
         $inputs = [
@@ -864,10 +975,17 @@ class HeadQuaterIncomeController extends Controller
         }
     }
 
+    /**
+     * @return \Illuminate\Support\Collection
+     */
     public function getAllAccountHead(){
         return DB::table('account_head_tb')->select('*')->where('delete_flag',0)->get();
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function getAllDetailPaybackTinder($id){
 
         $getAllData =  DB::table('popg_detail_tb')

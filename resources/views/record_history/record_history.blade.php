@@ -101,46 +101,46 @@
                   </div>
                 </div>
 
-                <div class="row">
-                  <form method="POST" action="/head_quater/record_histories/excel">
-                    {{ csrf_field() }}
-                    <div class="col-md-2">
-                      <div class="form-group">
-                        <label for="">Account Head Type</label>
-                        <select class="form-control" id="" name="account_head_type">
-                          <option selected="true" disabled="disabled">Choose Account Head Type</option>
-                          @foreach($account_head_types as $account_head)
-                            <option value="{{ $account_head->account_head_type }}">
-                              {{$account_head->account_head_type}}
-                            </option>
-                          @endforeach
-                        </select>
-                      </div>
-                    </div>
+                {{--<div class="row">--}}
+                  {{--<form method="POST" action="/head_quater/record_histories/excel">--}}
+                    {{--{{ csrf_field() }}--}}
+                    {{--<div class="col-md-2">--}}
+                      {{--<div class="form-group">--}}
+                        {{--<label for="">Account Head Type</label>--}}
+                        {{--<select class="form-control" id="" name="account_head_type">--}}
+                          {{--<option selected="true" disabled="disabled">Choose Account Head Type</option>--}}
+                          {{--@foreach($account_head_types as $account_head)--}}
+                            {{--<option value="{{ $account_head->account_head_type }}">--}}
+                              {{--{{$account_head->account_head_type}}--}}
+                            {{--</option>--}}
+                          {{--@endforeach--}}
+                        {{--</select>--}}
+                      {{--</div>--}}
+                    {{--</div>--}}
 
-                    <div class="col-md-2">
-                      <div class="form-group">
-                        <label for="">From Date</label>
-                        <input type="date" class="form-control datepicker" id="datepicker" name="from_date"
-                               required>
-                      </div>
-                    </div>
-                    <div class="col-md-2">
-                      <div class="form-group">
-                        <label for="">To Date</label>
-                        <input type="date" class="form-control datepicker" id="datepicker" name="to_date"
-                               required>
-                      </div>
-                    </div>
-                    <div class="col-md-2">
-                      <div class="form-group">
-                        <label for="">Export</label>
-                        <br>
-                        <button type="submit" class="btn btn-success" >Excel Export</button>
-                      </div>
-                    </div>
-                  </form>
-                </div>
+                    {{--<div class="col-md-2">--}}
+                      {{--<div class="form-group">--}}
+                        {{--<label for="">From Date</label>--}}
+                        {{--<input type="date" class="form-control datepicker" id="datepicker" name="from_date"--}}
+                               {{--required>--}}
+                      {{--</div>--}}
+                    {{--</div>--}}
+                    {{--<div class="col-md-2">--}}
+                      {{--<div class="form-group">--}}
+                        {{--<label for="">To Date</label>--}}
+                        {{--<input type="date" class="form-control datepicker" id="datepicker" name="to_date"--}}
+                               {{--required>--}}
+                      {{--</div>--}}
+                    {{--</div>--}}
+                    {{--<div class="col-md-2">--}}
+                      {{--<div class="form-group">--}}
+                        {{--<label for="">Export</label>--}}
+                        {{--<br>--}}
+                        {{--<button type="submit" class="btn btn-success" >Excel Export</button>--}}
+                      {{--</div>--}}
+                    {{--</div>--}}
+                  {{--</form>--}}
+                {{--</div>--}}
               </section>
             </div>
             <!-- /.tab-pane -->
