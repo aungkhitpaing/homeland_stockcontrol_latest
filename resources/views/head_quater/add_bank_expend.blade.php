@@ -77,9 +77,10 @@
                                                     <div class="col-sm-10">
                                                         <div class="input-group">
                                                             <span class="input-group-addon">$</span>
-                                                            <input type="number" id="inputamount" class="form-control" name="amount">
+                                                            <input type="number" id="inputamount" class="form-control payback" name="amount" autocomplete="off">
                                                             <span class="input-group-addon">Kyats</span>
                                                         </div>
+                                                        <p class="error-message" style="color:red"></p>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -94,7 +95,7 @@
                                             <!-- /.box-body -->
 
                                             <div class="box-footer">
-                                                <a href="/bank/" class="btn btn-default">Cancel</a>
+                                                <a href="/head_quater/income_cashbook/bank_loan" class="btn btn-default">Cancel</a>
                                                 <button type="submit" class="btn btn-info pull-right">Add Amount</button>
                                             </div>
                                             <!-- /.box-footer -->
@@ -109,4 +110,21 @@
             </div>
         </div>
     </section>
+
+
+    <script>
+        $(document).ready(function(){
+            var original =   {{ $getBankLoanTransfer[0]->loan_amount }}
+            $('.payback').keyup(function(){
+                $('.error-message').html('');
+                var value = $('.payback').val();
+
+                if(value > original){
+                    $('.payback').val('');
+                    $('.error-message').append('Your Payback amount is greater than loan amount ');
+                }
+
+            })
+        })
+    </script>
 @endsection

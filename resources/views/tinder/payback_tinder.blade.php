@@ -101,9 +101,10 @@
                                                     <div class="col-sm-10">
                                                         <div class="input-group">
                                                             <span class="input-group-addon">$</span>
-                                                            <input type="number" id="inputamount" class="form-control" required name="payback_amount">
+                                                            <input type="number" id="inputamount" class="form-control payback" required name="payback_amount">
                                                             <span class="input-group-addon">Kyats</span>
                                                         </div>
+                                                        <p class="error-message" style="color:red"></p>
                                                     </div>
                                                 </div>
 
@@ -149,4 +150,21 @@
             autoclose:true
         });
     </script>
+
+<script>
+    $(document).ready(function(){
+        var original =   {{ $data->register_amount }}
+        $('.payback').keyup(function(){
+            $('.error-message').html('');
+            var value = $('.payback').val();
+
+            if(value > original){
+                $('.payback').val('');
+                $('.error-message').append('Your Payback amount is greater than register amount ');
+            }
+
+        })
+    })
+</script>
+
 @endsection

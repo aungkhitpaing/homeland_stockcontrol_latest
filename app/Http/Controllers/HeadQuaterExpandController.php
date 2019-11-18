@@ -53,6 +53,7 @@ class HeadQuaterExpandController extends Controller
             ->select('loan_detail_tb.*','bank_tb.name')
             ->where('loan_detail_tb.id',$id)
             ->where('loan_detail_tb.delete_flag',0)->get();
+
         $banks = $this->getAllBank();
         return view ('head_quater.add_bank_expend', compact('accountHeads','getBankLoanTransfer','banks'));
     }
