@@ -72,7 +72,7 @@
                                                             <td>{{$data->amount}}</td>
                                                             <td>{{$data->quantity}}</td>
                                                             <td>{{$data->total_amount}} Kyats</td>
-                                                            <td>{{$data->payback_amount}} </td>
+                                                            <td>{{$data->payback_amount}} Kyats </td>
                                                             <td>
                                                                 @if(($data->payback_amount) == null)
                                                                     {{$data->total_amount - 0}} Kyats
@@ -84,11 +84,15 @@
                                                             <td>
 
                                                                 @if($data->confirm_flag == 1)
-                                                                    <a href="/stock_payable/{{$data->id}}/show"  class="btn btn-danger btn-sm">Payback</a>
+                                                                    @if(($data->total_amount) == ($data->payback_amount))
+                                                                    <a href="/stock_payable/{{$data->id}}/show"  class="btn btn-warning btn-sm disabled">Payback</a>
+                                                                    <a href="/stock_payable/{{$data->id}}/delete"  class="btn btn-danger btn-sm">Delete</a>
+                                                                    @else
+                                                                    <a href="/stock_payable/{{$data->id}}/show"  class="btn btn-warning btn-sm">Payback</a>
+                                                                    @endif
                                                                 @else
                                                                     <a href="/stock_payable/{{$data->id}}/confirm"  class="btn btn-success btn-sm">Confirm</a>
                                                                 @endif
-                                                                    {{--<a href="#" class="btn btn-warning btn-sm">Edit</a>--}}
                                                                     <a href="/stock_payable/{{$data->id}}/payback_detail" class="btn btn-primary btn-sm">Detail</a>
                                                             </td>
                                                         </tr>
@@ -112,7 +116,6 @@
                                                     </tfoot>
                                                 </table>
                                             </div>
-                                            <!-- /.box-body -->
                                         </div>
                                     </div>
                                 </div>

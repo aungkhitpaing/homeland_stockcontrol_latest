@@ -14,7 +14,8 @@ class PayableController extends Controller
             ->leftjoin('stocks_tb','stocks_tb.stock_id','=','payable_tb.stock_id')
             ->leftjoin('project_tb','project_tb.id','=','payable_tb.project_id')
             ->leftjoin('suppliers','suppliers.id','=','payable_tb.supplier_id')
-            ->select('payable_tb.*','stocks_tb.*','project_tb.name','suppliers.supplier_name')
+            ->select('payable_tb.*','stocks_tb.unit','stocks_tb.stock_name','stocks_tb.amount','project_tb.name','suppliers.supplier_name')
+            ->where('payable_tb.delete_flag',0)
             ->get();
         return view('stock_payable.payable',compact("getAllData"));
     }
@@ -28,16 +29,38 @@ class PayableController extends Controller
             "account_head_id" => $request->account_head,
             "description" => $request->description,
         ];
-        $getStockPrice = DB::table('stocks_tb')->select('amount')->where('stock_id',1)->first();
+        $getStockPrice = DB::table('stocks_tb')->select('amount')->where('stock_id',$inputs['stock_id'])->first();
+
         $getStockPrice = $getStockPrice->amount;
         $inputs['total_amount'] = $getStockPrice * $inputs['quantity'];
+
         try {
             DB::begintransaction();
                 DB::table('payable_tb')->insert([$inputs]);
-                DB::table('warehouse_tb')->insert([
-                    "project_id" => $request->project,
+                $checkRow = DB::table('warehouse_tb')
+                    ->where('project_id','=',$inputs['project_id'])
+                    ->where('stock_id','=',$inputs['stock_id'])
+                    ->exists();
+                $getId = DB::table('warehouse_tb')->select('*')
+                    ->where('project_id','=',$inputs['project_id'])
+                    ->where('stock_id','=',$inputs['stock_id'])
+                    ->first();
+                if ($checkRow == true ) {
+                    $total_quantity = $getId->total_quantity + $inputs['quantity'];
+                    DB::update('update warehouse_tb set total_quantity = ?  where id = ?',[$total_quantity,$getId->id]);
+                    $warehouseId = $getId->id;
+                } else {
+                    DB::table('warehouse_tb')->insert([
+                        "project_id" => $request->project,
+                        "stock_id" => $request->stock,
+                        "total_quantity" => $request->quantity,
+                    ]);
+                    $warehouseId = DB::getPdo()->lastInsertId();
+                }
+                DB::table('stock_warehouse_detail')->insert([
+                    "warehouse_id" => $warehouseId,
                     "stock_id" => $request->stock,
-                    "total_quantity" => $request->quantity,
+                    "instock_amount" => $request->quantity,
                 ]);
             DB::commit();
             return redirect('/stock_payable/');
@@ -69,7 +92,13 @@ class PayableController extends Controller
             ->leftjoin('stocks_tb','stocks_tb.stock_id','=','payable_tb.stock_id')
             ->leftjoin('project_tb','project_tb.id','=','payable_tb.project_id')
             ->leftjoin('suppliers','suppliers.id','=','payable_tb.supplier_id')
-            ->select('payable_tb.*','stocks_tb.*','project_tb.name','suppliers.supplier_name')
+            ->select('payable_tb.*',
+                'stocks_tb.stock_id',
+                'stocks_tb.stock_name',
+                'stocks_tb.unit',
+                'stocks_tb.amount',
+                'project_tb.name',
+                'suppliers.supplier_name')
             ->where('payable_tb.id',$id)
             ->get();
         return view('stock_payable.payback_payable',compact('getData'));
@@ -84,14 +113,19 @@ class PayableController extends Controller
             DB::beginTransaction();
 
             // check payable
-//            $checkPayback = DB::table('payable_tb')->select('payback_amount')->where("id",$id)->where('delete_flag')->get();
-//            dd($checkPayback);
+            $checkPayback = DB::table('payable_tb')->select('payback_amount')->where("id",$id)->where('delete_flag',0)->get();
+            $checkPayback = $checkPayback[0]->payback_amount;
 
+            if(!empty($checkPayback)){
+                $increasePayback = $checkPayback + $inputs['payback_amount'];
+                DB::update('update payable_tb set payback_amount = ?  where id = ?',[$increasePayback,$id]);
+            } else {
+                DB::update('update payable_tb set payback_amount = ?  where id = ?',[$inputs['payback_amount'],$id]);
+            }
 
-            DB::update('update payable_tb set payback_amount = ?  where id = ?',[$inputs['payback_amount'],$id]);
                 // to continues to keep payable detail
                 DB::table('payable_detail')->insert([
-                   'payable_id' => $id,
+                    'payable_id' => $id,
                     'payable_amount' => $inputs['payback_amount'],
                     'payment_type' => $inputs['payment_type'],
                 ]);
@@ -106,5 +140,10 @@ class PayableController extends Controller
     public function payback_detail($id) {
         $getData = DB::table('payable_detail')->where('payable_id',$id)->get();
         return view('stock_payable/paybale_detail',compact('getData'));
+    }
+
+    public function delete($id) {
+        DB::update('update payable_tb set delete_flag = ?  where id = ?',[1,$id]);
+        return redirect('/stock_payable/');
     }
 }
