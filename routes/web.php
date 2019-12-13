@@ -287,12 +287,13 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/project-expense','ProjectExpenseController@index');
-Route::get('/project-expense','ProjectExpenseController@index');
+Route::get('/project-expense/create','ProjectExpenseController@create');
 Route::post('/project-expense','ProjectExpenseController@store');
 Route::get('/project-expense/{id}/edit','ProjectExpenseController@edit');
 Route::post('/project-expense/{id}/update','ProjectExpenseController@update');
 Route::get('/project-expense/{id}/record','ProjectExpenseController@record');
-
+Route::post('/project-expense/exportByAccoutHead','ProjectExpenseController@exportByAccoutHead');
+Route::post('/project-expense/exportByAccoutHeadTotal','ProjectExpenseController@exportByAccoutHeadTotal');
 
 
 Route::get('/project-order','ProjectOrderController@index');
