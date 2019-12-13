@@ -59,11 +59,11 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="inputamount" class="col-sm-2 control-label">Quantity</label>
+                                                    <label for="quantity" class="col-sm-2 control-label">Quantity</label>
                                                     <div class="col-sm-10">
                                                         <div class="input-group">
                                                             {{--<span class="input-group-addon">$</span>--}}
-                                                            <input type="number" id="inputamount" class="form-control" disabled value="{{$data->quantity}}" name="quantity">
+                                                            <input type="number" id="quantity" class="form-control" disabled value="{{$data->quantity}}" name="quantity">
                                                             {{--<span class="input-group-addon">Kyats</span>--}}
                                                         </div>
                                                     </div>
@@ -74,7 +74,8 @@
                                                     <div class="col-sm-10">
                                                         <div class="input-group">
                                                             {{--<span class="input-group-addon">$</span>--}}
-                                                            <input type="number" id="inputamount" class="form-control" disabled value="{{$data->total_amount}}" name="total_amount">
+                                                            <input type="hidden" id="totalPayback" value="{{$totalPayback}}" />
+                                                            <input type="number" id="totalAmount" class="form-control" disabled value="{{$data->total_amount}}" name="total_amount">
                                                             <span class="input-group-addon">Kyats</span>
                                                         </div>
                                                     </div>
@@ -93,11 +94,11 @@
                                                 </div>
                                                 <br>
                                                 <div class="form-group">
-                                                    <label for="inputamount" class="col-sm-2 control-label">Payback Amount</label>
+                                                    <label for="payback_amount" class="col-sm-2 control-label">Payback Amount</label>
                                                     <div class="col-sm-10">
                                                         <div class="input-group">
                                                             {{--<span class="input-group-addon">$</span>--}}
-                                                            <input type="number" id="inputamount" class="form-control" name="payback_amount">
+                                                            <input type="number" id="payback_amount" class="form-control" name="payback_amount">
                                                             <span class="input-group-addon">Kyats</span>
                                                         </div>
                                                     </div>
@@ -122,8 +123,15 @@
 @endsection
 @section('page_scripts')
     <script type="text/javascript">
-        $('#load_date').datepicker({
-            autoclose: true
+        $("#payback_amount").on('change',function(){
+            var total = parseInt($("#totalAmount").val());
+            var paybackTotal =  parseInt($("#totalPayback").val());
+            var leftAmount = total - paybackTotal;
+            var paybackInput  = parseInt($("#payback_amount").val());
+            if (paybackInput > leftAmount) {
+                alert ("Your only need to pay back " +leftAmount+" Kyats. Your Input payback amount is greater than left amount.");
+                $('#payback_amount').val("").focus();
+            }
         });
     </script>
 @endsection
