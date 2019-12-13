@@ -101,7 +101,18 @@ class PayableController extends Controller
                 'suppliers.supplier_name')
             ->where('payable_tb.id',$id)
             ->get();
-        return view('stock_payable.payback_payable',compact('getData'));
+        $getTotalPayback = DB::table('payable_detail')
+            ->where('payable_id',$id)
+            ->select('payable_id', \DB::raw('SUM(payable_amount) as total_amount'))
+            ->groupBy('payable_id')
+            ->get()->toArray();
+        if(!empty($getTotalPayback)) {
+            $totalPayback = $getTotalPayback[0]->total_amount;
+        } else {
+            $totalPayback = 0;
+        }
+
+        return view('stock_payable.payback_payable',compact('getData','totalPayback'));
     }
     public function payback(Request $request ,$id) {
         $inputs = [
