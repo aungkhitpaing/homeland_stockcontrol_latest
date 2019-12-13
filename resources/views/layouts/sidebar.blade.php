@@ -158,7 +158,27 @@
           </ul>
         </li>
 
-        
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-sticky-note"></i> <span>Stock Payable</span><span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="/stock_payable"><i class="fa fa-circle-o"></i> <span>Show Lists</span></a></li>
+          </ul>
+        </li>
+
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-sticky-note"></i> <span>Ware House</span><span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="/warehouse"><i class="fa fa-circle-o"></i> <span>Show Lists</span></a></li>
+          </ul>
+        </li>
 
 <!--         <li class="treeview">
           <a href="#">

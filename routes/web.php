@@ -324,6 +324,10 @@ Route::get('/stock_payable/{id}/confirm','PayableController@confirm');
 Route::get('/stock_payable/{id}/show','PayableController@show');
 Route::post('/stock_payable/{id}/payback','PayableController@payback');
 Route::get('/stock_payable/{id}/payback_detail','PayableController@payback_detail');
-//Route::get('/stock_payable/{id}/update','PayableController@update');
-//Route::get('/stock_payable/{id}/delete','PayableController@index');
+Route::get('/stock_payable/{id}/delete','PayableController@delete');
 
+Route::get('/warehouse','WarehouseController@index');
+Route::get('/warehouse/{id}/instock_detail','WarehouseController@show');
+Route::get('/warehouse/{id}/outstock_detail','WarehouseController@show');
+Route::get('/warehouse/{id}/add_outstock','WarehouseController@add_outstock');
+Route::post('/warehouse/{id}/create_outstock','WarehouseController@create_outstock');
