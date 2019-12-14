@@ -78,8 +78,7 @@ class ProjectExpenseController extends Controller
                             ->where('income','!=',NULL)
                             ->get();
 
-
-        if($data){
+        if(count($data) > 0 || \Auth::user()->name == 'admin'){
             \DB::table('site_cashbook')->insert([
                 'site_account_head_id' =>   request()->site_accountHead,
                 'project_id' => $projecId,
