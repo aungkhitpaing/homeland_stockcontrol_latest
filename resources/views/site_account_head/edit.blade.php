@@ -35,7 +35,7 @@
 	          </div>
 	          <!-- /.box-body -->
 	          <div class="box-footer">
-	            <a href="/accounthead/" class="btn btn-default">Back</a>
+	            <a href="/site-accounthead/" class="btn btn-default">Back</a>
               <input type="submit" class="btn btn-info pull-right" name="store_investor" value="Update">
 	          </div>
 	          <!-- /.box-footer -->
