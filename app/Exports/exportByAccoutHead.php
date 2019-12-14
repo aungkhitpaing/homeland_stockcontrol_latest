@@ -62,11 +62,12 @@ class exportByAccoutHead implements FromCollection, WithHeadings, ShouldAutoSize
     public function headings(): array
     {
         return [
-            'Account_head',
+            'Project',
             'Payment Type',
             'Expend',
             'Create Date',
-            'project',
+            'Account_head',
+
         ];
     }
 

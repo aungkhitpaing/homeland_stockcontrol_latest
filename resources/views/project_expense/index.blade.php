@@ -72,7 +72,7 @@
                         <div class="col-sm-2"></div>
                         <div class="col-sm-10">
                             
-                            <input type="checkbox" name="check" value="1" checked> Sa yin pyout
+                            <input type="checkbox" name="check" value="1" checked onclick="this.checked=true"> Sa yin pyout
                         </div>
                     </div>
                     
