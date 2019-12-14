@@ -233,6 +233,16 @@ Route::prefix('accounthead')->group(function () {
 	Route::get('/{id}/delete', 'AccountHeadController@delete');
 });
 
+
+Route::prefix('site-accounthead')->group(function () {
+	Route::get('/', 'SiteAccountHeadController@index');
+	Route::get('/create', 'SiteAccountHeadController@create');
+	Route::post('/store', 'SiteAccountHeadController@store');
+	Route::get('/{id}/edit', 'SiteAccountHeadController@edit');
+	Route::patch('/{id}/update', 'SiteAccountHeadController@update');
+	Route::get('/{id}/delete', 'SiteAccountHeadController@delete');
+});
+
 /* expense_category */
 
 Route::prefix('expense_category')->group(function () {
