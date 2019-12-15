@@ -21,12 +21,17 @@
                         <div class="form-group">
                             <label for="" class="col-sm-2 control-label">Account Head</label>
                             <div class="col-sm-10">
-                                <select class="site_accountHead form-control" name="site_accountHead" required>
+                                <select class="site_accountHead form-control" name="site_accountHead_id" required>
                                     <option disabled selected>--- Select your option ---</option>
                                     @foreach(\DB::table('site_account_head_tb')->get() as $data)
                                     <option value="{{$data->id}}">{{$data->account_head_type}}</option>
                                     @endforeach
                                 </select>
+                                @if($errors->has('site_accountHead_id'))
+                                <small class="error" style="color:red;opacity:0.8;">
+                                    {{ $errors->first('site_accountHead_id') }}
+                                </small>
+                                @endif
                             </div>
                         </div>
                         
@@ -39,6 +44,11 @@
                                     <option value="{{$data->name}}">{{$data->name}}</option>
                                     @endforeach
                                 </select>
+                                @if($errors->has('project_id'))
+                                <small class="error" style="color:red;opacity:0.8;">
+                                    {{ $errors->first('project_id') }}
+                                </small>
+                                @endif
                             </div>
                         </div>
 
@@ -145,11 +155,12 @@
                         </div>
                     </form>
                     @endif
-                </div>
-                <!-- /.box -->
+              
             </div>
+            
         </section>
-        
+
+       
         @endsection
         @section('page_scripts')
         <script>
@@ -172,10 +183,15 @@
                                     <select class="form-control stock-form" name="stock_id" required>
                                         <option disabled selected>--- Select Your Stock ---</option>
                                         @foreach(\DB::table('stocks_tb')->get() as $data)
-                                        <option value="{{$data->stock_name}}">{{$data->stock_name}}</option>
+                                        <option value="{{$data->id}}">{{$data->stock_name}}</option>
                                         @endforeach
                                     </select>
+                                
+                                    <input type='number' name='qty' class='stock-qty' placeholder='enter qty of stock'>
                                 </div>
+
+                                
+                                
                                 `
                             )
                         }
@@ -183,6 +199,34 @@
                     });
                 });
             });
+
+            $(document).on('change', '.stock-form','.stock-qty', function() {
+                var val = $('.stock-form').val();
+                $.ajax({
+                    type: "GET",
+                    url: "/get-stock/"+val,
+                    data: val,
+                    success: function(data){
+                        var amount = data;
+                    }
+                    });
+            });
+
+            $(document).on('keyup','.stock-qty', function() {
+                var val = $('.stock-form').val();
+                var qty = $('.stock-qty').val();
+                $.ajax({
+                    type: "GET",
+                    url: "/get-stock/"+val,
+                    data: val,
+                    success: function(data){
+                        var amount = data * qty;
+                        $('#inputamount').val(amount);
+                        
+                    }
+                    });
+            });
+            
 
             $(function () {
                 $('#example1').DataTable()

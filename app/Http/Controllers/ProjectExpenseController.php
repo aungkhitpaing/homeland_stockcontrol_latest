@@ -72,6 +72,11 @@ class ProjectExpenseController extends Controller
     public function store()
     {
 
+        request()->validate([
+            'site_accountHead_id' => 'required',
+            'project_id' => 'required',
+        ]);
+
         $projecId = \DB::table('project_tb')->where('name',request()->project_id)->first()->id;
 
         $data = \DB::table('site_cashbook')->where('project_id',$projecId)
@@ -80,11 +85,13 @@ class ProjectExpenseController extends Controller
 
         if(count($data) > 0 || \Auth::user()->name == 'admin'){
             \DB::table('site_cashbook')->insert([
-                'site_account_head_id' =>   request()->site_accountHead,
+                'site_account_head_id' =>   request()->site_accountHead_id,
                 'project_id' => $projecId,
                 'expend' =>       request()->amount,
                 'payment_type' => request()->optionsRadios,
                 'is_check' => request()->check,
+                'stock_id' => request()->stock_id,
+                'qty' => request()->qty,
                 'description' =>  request()->description,
                 'user_id'   => auth()->id(),
                 'created_at' =>  \Carbon\Carbon::now(),
@@ -161,7 +168,7 @@ class ProjectExpenseController extends Controller
         public function getStock($id)
         {
             $data = \DB::table('stocks_tb')->where('id',$id)->first();
-            return $data;
+            return $data->amount;
         }
 }
             

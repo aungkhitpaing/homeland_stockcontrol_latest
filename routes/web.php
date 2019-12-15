@@ -326,7 +326,7 @@ Route::post('/supplier/{id}/delete','SupplierController@destroy');
 Route::get('custom-logout','HomeController@logout');
 Route::get('/check-account-head-stock/{id}','ProjectExpenseController@checkAccountHeadStock');
 Route::get('have-not-permission','HomeController@haveNotPermission');
-Route::get('/get-stock','ProjectExpenseController@getStock');
+Route::get('/get-stock/{id}','ProjectExpenseController@getStock');
 
 Route::get('stock_payable','PayableController@index');
 Route::get('/stock_payable/create','PayableController@create');
