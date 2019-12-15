@@ -153,12 +153,13 @@
 
 <script>
     $(document).ready(function(){
-        var original =   {{ $data->register_amount }}
+        var leftamount =   {{ $data->register_amount }} - {{$data->payback_amount}}
+
         $('.payback').keyup(function(){
             $('.error-message').html('');
             var value = $('.payback').val();
 
-            if(value > original){
+            if(value > leftamount){
                 $('.payback').val('');
                 $('.error-message').append('Your Payback amount is greater than register amount ');
             }

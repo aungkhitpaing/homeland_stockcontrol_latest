@@ -108,6 +108,8 @@
             <li><a href="/head_quater/alltransaction"><i class="fa fa-circle-o"></i>All</a></li>
             <li><a href="/head_quater/income_cashbook"><i class="fa fa-circle-o"></i>Income Cashbook</a></li>
             <li><a href="/head_quater/expend_cashbook"><i class="fa fa-circle-o"></i>Expand Cashbook</a></li>
+            <li><a href="/accounthead"><i class="fa fa-circle-o"></i>Account Head</a></li>
+            <li><a href="/expense_category"><i class="fa fa-circle-o"></i>Office Expense</a></li>
           </ul>
         </li>
 

@@ -48,7 +48,7 @@
 									                  		<div class="col-sm-10">
 										                  		<!-- select -->
 																<select class="form-control" name="accountHead" required>
-																	<option>Select AccountHead</option>
+																		<option disabled selected value="">Select your account head</option>
 																	@foreach($accountHeads as $accountHead)
 																		<option value="{{$accountHead->id}}" required>{{$accountHead->account_head_type}}</option>
 																	@endforeach
@@ -61,9 +61,9 @@
 									                  		<div class="col-sm-10">
 										                  		<!-- select -->
 										                  		<select class="form-control" name="dailyexpend" required>
-										                  			<option>select daily expense</option>
+										                  			<option disabled selected value="">select daily expense</option>
 										                  			@foreach($getAllExpenseCategories as $getAllExpenseCategory)
-																		<option value="{{$getAllExpenseCategory->id}}" required>{{$getAllExpenseCategory->expense_category_name}}</option>							
+																		<option value="{{$getAllExpenseCategory->id}}" required>{{$getAllExpenseCategory->expense_category_name}}</option>
 																	@endforeach
 											                  	</select>
 									                  		</div>

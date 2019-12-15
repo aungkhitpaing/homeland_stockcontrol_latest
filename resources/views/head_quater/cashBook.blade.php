@@ -50,18 +50,34 @@
                         </thead>
                         <tbody>
                           @foreach($getTransactions as $getTransaction)
-                          <tr>
-                            <td>{{$getTransaction->id}}</td>
-                            <td>{{$getTransaction->account_head_type}}</td>
-                            <td>{{$getTransaction->description}}</td>
-                            <td>{{$getTransaction->payment_type}}</td>
-                            <td>{{$getTransaction->income}} </td>
-                            <td>{{$getTransaction->expend}} </td>
-                            <?php
-                            $updated_at = explode(" ", $getTransaction->updated_at);
-                            ?>
-                            <td>{{$updated_at[0]}}</td>
-                          </tr>
+                            @if($getTransaction->is_edit == 1)
+                              <tr style="background-color: #e2695a;">
+                                <td>{{$getTransaction->id}}</td>
+                                <td>{{$getTransaction->account_head_type}}</td>
+                                <td>{{$getTransaction->description}}</td>
+                                <td>{{$getTransaction->payment_type}}</td>
+                                <td>{{$getTransaction->income}} </td>
+                                <td>{{$getTransaction->expend}} </td>
+                                  <?php
+                                  $updated_at = explode(" ", $getTransaction->updated_at);
+                                  ?>
+                                <td>{{$updated_at[0]}}</td>
+                              </tr>
+                            @else
+                              <tr>
+                                <td>{{$getTransaction->id}}</td>
+                                <td>{{$getTransaction->account_head_type}}</td>
+                                <td>{{$getTransaction->description}}</td>
+                                <td>{{$getTransaction->payment_type}}</td>
+                                <td>{{$getTransaction->income}} </td>
+                                <td>{{$getTransaction->expend}} </td>
+                                  <?php
+                                  $updated_at = explode(" ", $getTransaction->updated_at);
+                                  ?>
+                                <td>{{$updated_at[0]}}</td>
+                              </tr>
+                            @endif
+
                           @endforeach
                         </tbody>
                         <tfoot>
