@@ -26,7 +26,7 @@
                     <th>Payment Type</th>
                     <th>From</th>
                     <th>To</th>
-                    <th>Action</th>
+                    {{--<th>Action</th>--}}
                   </tr>
                 </thead>
                 <tbody>
@@ -46,7 +46,7 @@
                       <td>Bank</td>
                       <td>Cash</td>
                     @endif
-                    <td><a href="" class="btn btn-warning btn-sm">Edit</a></td>
+                    {{--<td><a href="/{{$getExchangeData->id}}/edit" class="btn btn-warning btn-sm">Edit</a></td>--}}
                   </tr>
                 @endforeach
                 </tbody>
@@ -58,7 +58,7 @@
                     <th>Payment Type</th>
                     <th>From</th>
                     <th>To</th>
-                    <th>Action</th>
+                    {{--<th>Action</th>--}}
                   </tr>
                 </tfoot>
               </table>

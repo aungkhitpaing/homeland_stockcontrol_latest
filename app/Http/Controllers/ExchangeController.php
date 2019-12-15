@@ -214,6 +214,4 @@ class ExchangeController extends Controller
         return DB::table('cash_book_tb')->select('balance')->where('deleted_flag',0)->latest('id')->first();
     
     }
-
-
 }

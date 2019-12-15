@@ -443,7 +443,7 @@ class HeadQuaterExpandController extends Controller
                 $tableName = 'project_expense_detail_tb';
                 $idAttrName = 'project_expense_detail_id';
                 $totalAmountFieldName = 'amount';
-                
+
             } elseif ($explodeUrl[1] == 'bank_expense_detail') {
 
                 $transactionOrginalAmount = DB::table('bank_expense_tb')->select('payback_amount')->where('id', $id)->first();
