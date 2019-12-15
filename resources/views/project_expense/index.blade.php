@@ -35,6 +35,10 @@
                             </div>
                         </div>
                         
+                        <div class="form-group supplier">
+                            
+                        </div>
+                        
                         <div class="form-group">
                             <label for="" class="col-sm-2 control-label">Project</label>
                             <div class="col-sm-10">
@@ -51,10 +55,10 @@
                                 @endif
                             </div>
                         </div>
-
+                        
                         <div class="form-group stock">
-                                
-                            </div>
+                            
+                        </div>
                         
                         <div class="form-group">
                             <label for="inputamount" class="col-sm-2 control-label">Amount</label>
@@ -155,81 +159,101 @@
                         </div>
                     </form>
                     @endif
-              
-            </div>
+                    
+                </div>
+                
+            </section>
             
-        </section>
+            
+            @endsection
+            @section('page_scripts')
+            <script>
+                
+                $(document).ready(function(){
+                    $('.site_accountHead').change(function(){
+                        $('.stock').html('');
+                        $('.supplier').html('');
 
-       
-        @endsection
-        @section('page_scripts')
-        <script>
-
-            $(document).ready(function(){
-                $('.site_accountHead').change(function(){
-                    $('.stock').html('');
-                    var val = $('.site_accountHead').val();
-                    $.ajax({
-                    type: "GET",
-                    url: "/check-account-head-stock/"+val,
-                    data: val,
-                    success: function(data){
-                        if(data == 1){
-                            $('.stock').append(
-
-                                `
-                                <label for="" class="col-sm-2 control-label">stock</label>
-                                <div class="col-sm-10">
-                                    <select class="form-control stock-form" name="stock_id" required>
-                                        <option disabled selected>--- Select Your Stock ---</option>
-                                        @foreach(\DB::table('stocks_tb')->get() as $data)
-                                        <option value="{{$data->id}}">{{$data->stock_name}}</option>
-                                        @endforeach
-                                    </select>
-                                
-                                    <input type='number' name='qty' class='stock-qty' placeholder='enter qty of stock'>
-                                </div>
-
-                                
-                                
-                                `
-                            )
-                        }
-                    }
+                        var val = $('.site_accountHead').val();
+                        $.ajax({
+                            type: "GET",
+                            url: "/check-account-head-stock/"+val,
+                            data: val,
+                            success: function(data){
+                                if(data == 1){
+                                    $('.supplier').append(
+                                    `
+                                    <label for="" class="col-sm-2 control-label">Supplier</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control" name="supplier_id">
+                                            <option disabled selected>--- Select Your Supplier ---</option>
+                                            @foreach(\DB::table('suppliers')->get() as $data)
+                                            <option value="{{$data->id}}">{{$data->supplier_name}}</option>
+                                            @endforeach
+                                        </select>
+                                        @if($errors->has('supplier_id'))
+                                        <small class="error" style="color:red;opacity:0.8;">
+                                            {{ $errors->first('supplier_id') }}
+                                        </small>
+                                        @endif
+                                    </div>`
+                                    
+                                    )
+                                    $('.stock').append(
+                                    
+                                    `
+                                    <label for="" class="col-sm-2 control-label">stock</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control stock-form" name="stock_id" required>
+                                            <option disabled selected>--- Select Your Stock ---</option>
+                                            @foreach(\DB::table('stocks_tb')->get() as $data)
+                                            <option value="{{$data->id}}">{{$data->stock_name}}</option>
+                                            @endforeach
+                                        </select>
+                                        
+                                        <input type='number' name='qty' class='stock-qty' placeholder='enter qty of stock'>
+                                    </div>
+                                    
+                                    
+                                    
+                                    `
+                                    )
+                                }
+                            }
+                        });
                     });
                 });
-            });
-
-            $(document).on('change', '.stock-form','.stock-qty', function() {
-                var val = $('.stock-form').val();
-                $.ajax({
-                    type: "GET",
-                    url: "/get-stock/"+val,
-                    data: val,
-                    success: function(data){
-                        var amount = data;
-                    }
+                
+                $(document).on('change', '.stock-form','.stock-qty', function() {
+                    var val = $('.stock-form').val();
+                    $.ajax({
+                        type: "GET",
+                        url: "/get-stock/"+val,
+                        data: val,
+                        success: function(data){
+                            var amount = data;
+                        }
                     });
-            });
-
-            $(document).on('keyup','.stock-qty', function() {
-                var val = $('.stock-form').val();
-                var qty = $('.stock-qty').val();
-                $.ajax({
-                    type: "GET",
-                    url: "/get-stock/"+val,
-                    data: val,
-                    success: function(data){
-                        var amount = data * qty;
-                        $('#inputamount').val(amount);
-                        
-                    }
+                });
+                
+                $(document).on('keyup','.stock-qty', function() {
+                    var val = $('.stock-form').val();
+                    var qty = $('.stock-qty').val();
+                    $.ajax({
+                        type: "GET",
+                        url: "/get-stock/"+val,
+                        data: val,
+                        success: function(data){
+                            var amount = data * qty;
+                            $('#inputamount').val(amount);
+                            
+                        }
                     });
-            });
-            
-
-            $(function () {
-                $('#example1').DataTable()
-            })
-        </script>
-        @endsection
+                });
+                
+                
+                $(function () {
+                    $('#example1').DataTable()
+                })
+            </script>
+            @endsection
