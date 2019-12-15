@@ -645,48 +645,53 @@ class HeadQuaterIncomeController extends Controller
                 ->where('delete_flag',0)->first();
 
             $getTotalIncomeamountById = DB::table('project_income_tb')->select('total_income_balance')->where('delete_flag',0)->where('project_id',$project_id)->first();
-
-            if($getTotalIncomeamountById->total_income_balance > 0)
-            {
-                $diff = $getUpdateAmount->amount - $project_detail->amount;
-
-                if($getUpdateAmount->amount > $project_detail->amount) { // eg. update amount = 7001 is greater than original amount 7000
-
-                    $updateTotalIncome = $getTotalIncomeamountById->total_income_balance + $diff;
-                    $change_status = "increase";
-
-                } else {
-                    $updateTotalIncome = $getTotalIncomeamountById->total_income_balance + $diff; //  Out put of $diff value come with "-" sign ( eg. -1)  that why we should add "+" operator
-                    $change_status = "decrease";
-                }
+            try {
                 DB::beginTransaction();
+                if ($getTotalIncomeamountById->total_income_balance > 0) {
+                    $diff = $getUpdateAmount->amount - $project_detail->amount;
 
-                $updateTotalIncomeResult = DB::table('project_income_tb')->where('project_id', $project_id)->update(['total_income_balance' => $updateTotalIncome]);
+                    if ($getUpdateAmount->amount > $project_detail->amount) { // eg. update amount = 7001 is greater than original amount 7000
 
-                if ($updateTotalIncomeResult == 1) {
-                    try {
-                        /* Income Update Amount In CashBook */
-                        $updateAmountInCashbook =  DB::table('cash_book_tb')->where('deleted_flag',0)
-                            ->where('project_income_detail_id', $project_detail_id)
-                            ->update(['income' => $getUpdateAmount->amount ]);
+                        $updateTotalIncome = $getTotalIncomeamountById->total_income_balance + $diff;
+                        $change_status = "increase";
 
-                        if ($updateAmountInCashbook) {
-                            /* Add Record Histories into record table*/
-                            DB::table('record_histroies_tb')->insert(['project_detail_id' => $project_detail_id,
-                                'account_head_type' => $project_detail->account_head_id,
-                                'transaction_update_amount' => $getUpdateAmount->amount,
-                                'transaction_original_amount' => $project_detail->amount,
-                                'change_status' => $change_status,
-                                'diff_amount' => $diff,
-                                'remark' => "I have to changed transaction from ".$project_detail->amount." Kyats to ".$getUpdateAmount->amount." Kyats for  ".$project_name." . Because I have to wrong filling into project income",
-                            ]);
+                    } else {
+                        $updateTotalIncome = $getTotalIncomeamountById->total_income_balance + $diff; //  Out put of $diff value come with "-" sign ( eg. -1)  that why we should add "+" operator
+                        $change_status = "decrease";
+                    }
+                    DB::beginTransaction();
+
+                    $updateTotalIncomeResult = DB::table('project_income_tb')->where('project_id', $project_id)->update(['total_income_balance' => $updateTotalIncome]);
+
+                    if ($updateTotalIncomeResult == 1) {
+                        try {
+                            /* Income Update Amount In CashBook */
+                            $updateAmountInCashbook = DB::table('cash_book_tb')->where('deleted_flag', 0)
+                                ->where('project_income_detail_id', $project_detail_id)
+                                ->update(['income' => $getUpdateAmount->amount , 'is_edit' => 1]);
+
+                            if ($updateAmountInCashbook) {
+                                /* Add Record Histories into record table*/
+                                DB::table('record_histroies_tb')->insert(['project_detail_id' => $project_detail_id,
+                                    'account_head_type' => $project_detail->account_head_id,
+                                    'transaction_update_amount' => $getUpdateAmount->amount,
+                                    'transaction_original_amount' => $project_detail->amount,
+                                    'change_status' => $change_status,
+                                    'diff_amount' => $diff,
+                                    'remark' => "I have to changed transaction from " . $project_detail->amount . " Kyats to " . $getUpdateAmount->amount . " Kyats for  " . $project_name . " . Because I have to wrong filling into project income",
+                                ]);
+                            }
+                            DB::commit();
+                        } catch (Exception $e) {
+                            DB::rollBack();
+                            return $e->getMessage();
                         }
-                        DB::commit();
-                    }catch (Exception $e) {
-                        DB::rollBack();
-                        return $e->getMessage();
                     }
                 }
+                DB::commit();
+            } catch (\Exception $exception) {
+                DB::rollBack();
+                return $exception->getMessage();
             }
         }
         return redirect("/head_quater/project_detail/$project_id");

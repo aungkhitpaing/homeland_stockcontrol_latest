@@ -156,14 +156,18 @@
         {{-- for stock --}}
 
         <div class="row">
-            <div class="col-lg-3 col-xs-6">
-                <h3>Warehouse Overview </h3>
+            <div class="col-lg-12 col-xs-6">
+                <h3 class="pull-left">Warehouse</h3>
+                <h3 class="pull-right"> Exchange Transfer</h3>
             </div>
         </div>
+
         <div class="row">
             <div class="col-lg-6 col-xs-12">
-                <div class="box" style="border: none;">
-                    <div class="box-header">
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Warehouse Overview</h3>
+                        <a href="/warehouse" class="btn btn-info btn-sm pull-right"><b>Show Lists</b></a>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
@@ -208,6 +212,7 @@
                     <div class="box box-info">
                         <div class="box-header with-border">
                             <h3 class="box-title">Exchange Transfer</h3>
+                            <a href="/exchange_transfer" class="btn btn-info btn-sm pull-right"><b>Show Lists</b></a>
                         </div>
                         <!-- /.box-header -->
                         <!-- form start -->

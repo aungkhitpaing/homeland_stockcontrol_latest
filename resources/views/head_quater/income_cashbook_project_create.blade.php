@@ -46,7 +46,7 @@
                                             <label for="" class="col-sm-2 control-label">Account Head</label>
                                             <div class="col-sm-10">
                                                 <select class="form-control" name="accountHead" required>
-                                                    <option disabled selected>--- Select your option ---</option>
+                                                    <option disabled selected value=""> Select your account head </option>
                                                     @foreach($accountHead as $data)
                                                         <option value="{{$data->id}}">{{$data->account_head_type}}</option>
                                                     @endforeach
@@ -58,7 +58,7 @@
                                                   <label for="investor_name" class="col-sm-2 control-label">Project Name</label>
                                                   <div class="col-sm-10">
                                                       <select class="form-control" name="project" required>
-                                                        <option>-----select project-----</option>
+                                                        <option disabled selected value="">Select Project</option>
                                                       @foreach($projects as $project)
                                                           <option value="{{$project->id}}">{{$project->name}}</option>
                                                       @endforeach
