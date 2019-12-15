@@ -21,9 +21,13 @@ class DashBoardController extends Controller
     	$getTotalExpendCash = $this->getTotalExpendCash();
     	$getTotalExpendBank = $this->getTotalExpendBank();
     	$balance = $this->getTotalBalance();
+        $getWarehouseData = $this->getWarehouseData();
+        $headQuaterInfos = $this->getHQInfos();
+        $accountHeads = DB::table('account_head_tb')->select('*')->where('delete_flag',0)->get();
+
 //    	$balance = $getTotalBalance->balance;
         return view('main.index',compact('getAlltransactions','getTotalIncomeCash','getTotalIncomeBank',
-        	'getTotalExpendCash','getTotalExpendBank','balance'));
+        	'getTotalExpendCash','getTotalExpendBank','balance','getWarehouseData','headQuaterInfos','accountHeads'));
     }
 
     public function getAlltransaction(){
@@ -125,6 +129,24 @@ class DashBoardController extends Controller
             return $balance;
         }
 
+    }
+
+    public  function getWarehouseData(){
+        $getAllData = DB::table('warehouse_tb as w')
+            ->join('stocks_tb as s','s.stock_id','=','w.stock_id')
+            ->join('project_tb as p','p.id','=','w.project_id')
+            ->select('w.id','w.total_quantity','w.created_at','w.used_quantity','s.stock_name','s.unit','p.name')
+            ->where('w.delete_flag',0)->get();
+        return $getAllData;
+    }
+
+    public function getHQInfos() {
+        $headQuatorInfo = [];
+        $headQuatorInfo['investor'] = DB::table("invester_tb")->select("*")->where('delete_flag',0)->get()->count();
+        $headQuatorInfo['project'] = DB::table('project_tb')->select("*")->where('delete_flag',0)->get()->count();
+        $headQuatorInfo['bank_loan'] = DB::table('loan_detail_tb')->select("*")->where('delete_flag',0)->get()->count();
+        $headQuatorInfo['tinder'] = DB::table('popg_tb')->select("*")->where('delete_flag',0)->get()->count();
+        return $headQuatorInfo;
     }
     
     public function logout()

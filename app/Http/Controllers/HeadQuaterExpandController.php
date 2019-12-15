@@ -420,83 +420,92 @@ class HeadQuaterExpandController extends Controller
             'change_status' => null,
             'remark' => $request->description,
         ];
+        try {
+            DB::beginTransaction();
+            if ($explodeUrl[1] == 'office_expense_detail') {
 
-        if ($explodeUrl[1] == 'office_expense_detail') {
-            $transactionOrginalAmount = DB::table('office_expense_detail_tb')->select('amount')->where('office_expense_detail_id', $id)->first();
-            $originalAmount = $transactionOrginalAmount->amount;
-            $updateRecords['transaction_original_amount'] = $originalAmount;
-            $updateRecords['office_expend_detail_id'] = $id;
+                $transactionOrginalAmount = DB::table('office_expense_detail_tb')->select('amount')->where('office_expense_detail_id', $id)->first();
+                $originalAmount = $transactionOrginalAmount->amount;
+                $updateRecords['transaction_original_amount'] = $originalAmount;
+                $updateRecords['office_expend_detail_id'] = $id;
 
-            $tableName = 'office_expense_detail_tb';
-            $idAttrName = 'office_expense_detail_id';
-            $totalAmountFieldName = 'amount';
-        }
-        elseif ($explodeUrl[1] == 'project_expense_detail') {
+                $tableName = 'office_expense_detail_tb';
+                $idAttrName = 'office_expense_detail_id';
+                $totalAmountFieldName = 'amount';
 
-            $transactionOrginalAmount = DB::table('project_expense_detail_tb')->select('amount')->where('project_expense_detail_id', $id)->first();
-            $originalAmount = $transactionOrginalAmount->amount;
-            $updateRecords['transaction_original_amount'] = $originalAmount;
-            $updateRecords['office_expend_detail_id'] = $id;
+            } elseif ($explodeUrl[1] == 'project_expense_detail') {
 
-            $tableName = 'project_expense_detail_tb';
-            $idAttrName = 'project_expense_detail_id';
-            $totalAmountFieldName = 'amount';
-        }
-        elseif ($explodeUrl[1] == 'bank_expense_detail') {
-            $transactionOrginalAmount = DB::table('bank_expense_tb')->select('payback_amount')->where('id', $id)->first();
-            $originalAmount = $transactionOrginalAmount->payback_amount;
-            $updateRecords['transaction_original_amount'] = $originalAmount;
-            $updateRecords['bank_expend_detail_id'] = $id;
+                $transactionOrginalAmount = DB::table('project_expense_detail_tb')->select('amount')->where('project_expense_detail_id', $id)->first();
+                $originalAmount = $transactionOrginalAmount->amount;
+                $updateRecords['transaction_original_amount'] = $originalAmount;
+                $updateRecords['office_expend_detail_id'] = $id;
 
-            $tableName = 'bank_expense_tb';
-            $idAttrName = 'id';
-            $totalAmountFieldName = 'payback_amount';
+                $tableName = 'project_expense_detail_tb';
+                $idAttrName = 'project_expense_detail_id';
+                $totalAmountFieldName = 'amount';
+                
+            } elseif ($explodeUrl[1] == 'bank_expense_detail') {
 
-            //update into bank_detail_tb income
-            DB::update('update loan_detail_tb set payback_amount = ?  where id = ?',[$updateRecords['transaction_update_amount'],$request->loan_transfer_id]);
-        }
+                $transactionOrginalAmount = DB::table('bank_expense_tb')->select('payback_amount')->where('id', $id)->first();
+                $originalAmount = $transactionOrginalAmount->payback_amount;
+                $updateRecords['transaction_original_amount'] = $originalAmount;
+                $updateRecords['bank_expend_detail_id'] = $id;
+
+                $tableName = 'bank_expense_tb';
+                $idAttrName = 'id';
+                $totalAmountFieldName = 'payback_amount';
+
+                //update into bank_detail_tb income
+                DB::update('update loan_detail_tb set payback_amount = ?  where id = ?', [$updateRecords['transaction_update_amount'], $request->loan_transfer_id]);
+            }
 
 
-        // Calculate Different Amount and Define Change Status
-        $updateAmount = $request->amount;
-        $diffAmount = $this->calculateDiffAmount($originalAmount, $updateAmount);
-        $updateRecords['diff_amount'] = $diffAmount['diff_amount'];
-        $updateRecords['change_status'] = $diffAmount['change_status'];
+            // Calculate Different Amount and Define Change Status
+            $updateAmount = $request->amount;
+            $diffAmount = $this->calculateDiffAmount($originalAmount, $updateAmount);
+            $updateRecords['diff_amount'] = $diffAmount['diff_amount'];
+            $updateRecords['change_status'] = $diffAmount['change_status'];
 
-        // Updated data by detail Id
-        $updateDetail = DB::table($tableName)->where($idAttrName, $id)
-            ->where('delete_flag',0)
-            ->update([$totalAmountFieldName => $updateAmount, 'description' => $updateRecords['remark']]);
+            // Updated data by detail Id
+            $updateDetail = DB::table($tableName)->where($idAttrName, $id)
+                ->where('delete_flag', 0)
+                ->update([$totalAmountFieldName => $updateAmount, 'description' => $updateRecords['remark']]);
 
-        if($updateDetail == 1 ) {
+            if ($updateDetail == 1) {
                 // temporary code .... fixing soon in field "id" into bank_expense_tb
-                if($explodeUrl[1] == 'bank_expense_detail') {
+                if ($explodeUrl[1] == 'bank_expense_detail') {
                     $idAttrName = "bank_expense_detail_id";
                 }
                 // end
 
-            // Insert Into record histories
-            $insertRecord = DB::table('record_histroies_tb')->insert([$idAttrName => $id,
-                                'account_head_type' => $updateRecords['account_head_type'],
-                                'transaction_update_amount' => $updateAmount,
-                                'transaction_original_amount' => $originalAmount,
-                                'change_status' => $updateRecords['change_status'],
-                                'diff_amount' => $updateRecords['diff_amount'],
-                                'remark' => $updateRecords['remark']
-            ]);
+                // Insert Into record histories
+                $insertRecord = DB::table('record_histroies_tb')->insert([$idAttrName => $id,
+                    'account_head_type' => $updateRecords['account_head_type'],
+                    'transaction_update_amount' => $updateAmount,
+                    'transaction_original_amount' => $originalAmount,
+                    'change_status' => $updateRecords['change_status'],
+                    'diff_amount' => $updateRecords['diff_amount'],
+                    'remark' => $updateRecords['remark']
+                ]);
 
-            if ($insertRecord == 1) {
-                // Insert Into Cashbook
-                DB::table('cash_book_tb')->where('deleted_flag',0)
-                    ->where($idAttrName, $id)->where('deleted_flag',0)
-                    ->update(['expend' => $updateAmount, 'description' => $updateRecords['remark']]);
+                if ($insertRecord == 1) {
+                    // Insert Into Cashbook
+                    DB::table('cash_book_tb')->where('deleted_flag', 0)
+                        ->where($idAttrName, $id)->where('deleted_flag', 0)
+                        ->update(['expend' => $updateAmount,
+                            'description' => $updateRecords['remark'],
+                            'is_edit' => 1 ]);
+                }
             }
-        }
-        if(str_replace(url('/'), '', url()->previous()) == "/head_quater/office_expense_detail/$id/edit"){
-            return redirect("/head_quater/expend_cashbook");
-        }
-        else{
-            return redirect("/head_quater/project");
+            DB::commit();
+            if (str_replace(url('/'), '', url()->previous()) == "/head_quater/office_expense_detail/$id/edit") {
+                return redirect("/head_quater/expend_cashbook");
+            } else {
+                return redirect("/head_quater/project");
+            }
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            return $exception->getMessage();
         }
     }
 

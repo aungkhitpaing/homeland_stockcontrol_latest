@@ -590,7 +590,7 @@ class HeadQuaterIncomeController extends Controller
                         /* Income Update Amount In CashBook */
                         $updateAmountInCashbook =  DB::table('cash_book_tb')->where('deleted_flag',0)
                                                     ->where('investor_income_detail_id', $investor_detail_id)
-                                                    ->update(['income' => $getUpdateAmount->amount ]);
+                                                    ->update(['income' => $getUpdateAmount->amount,'is_edit' => 1 ]);
 
                         if ($updateAmountInCashbook) {
                             /* Add Record Histories into record table*/
@@ -604,7 +604,9 @@ class HeadQuaterIncomeController extends Controller
                                 'invester_detail_id' => $invester_detail->investor_detail_id ,
                             ]);
                         }
+                        DB::commit();
                     }catch (Exception $e) {
+                        DB::rollBack();
                         return $e->getMessage();
                     }
                 }
