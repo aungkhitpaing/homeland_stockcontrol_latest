@@ -40,6 +40,7 @@ class SiteAccountHeadController extends Controller
             $store = DB::table('site_account_head_tb')->insert([
                 'account_head_code' => $request->accounthead_code, 
                 'account_head_type' => $request->accounthead_name,
+                'is_stock' => $request->is_stock
             ]);
             return redirect('/site-accounthead');
         } catch (Exception $e) {
@@ -69,6 +70,7 @@ class SiteAccountHeadController extends Controller
         $updateBank = DB::table('site_account_head_tb')->where('id',$id)->update([
             'account_head_code' => $request->accounthead_code, 
             'account_head_type' => $request->accounthead_name,
+            'is_stock' => $request->is_stock
         ]);
         return redirect('/site-accounthead');
     }

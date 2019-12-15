@@ -31,7 +31,15 @@
                 <div class="col-sm-10">
                   <input type="text" class="form-control" id="investorcode" value="{{$data->account_head_code}}" name="accounthead_code" placeholder="Enter the account head code" required>
                 </div>
-              </div>
+			  </div>
+			  
+			  <div class="form-group">
+                <label for="is_stock" class="col-sm-2 control-label">Related with stock?</label>
+                <div class="col-sm-10">
+                  <input type="checkbox" class="" id="is_stock" name="is_stock" @if($data->is_stock==1) checked @endif value="1">
+                </div>
+			  </div>
+			  
 	          </div>
 	          <!-- /.box-body -->
 	          <div class="box-footer">

@@ -37,7 +37,7 @@ class ProjectExpenseController extends Controller
 
             $projectName = \DB::table('project_tb')->get();
                 
-            $datas = \DB::table('site_cashbook')->get();
+            $datas = \DB::table('site_cashbook')->paginate(15);
 
 
             return view('project_expense.main',compact('datas','projectName'));
@@ -150,6 +150,18 @@ class ProjectExpenseController extends Controller
             $project_id = request()->project;
 
             return Excel::download(new exportByAccoutHeadTotal($project_id), 'report.xlsx');
+        }
+
+        public function checkAccountHeadStock($id)
+        {
+            $data = \DB::table('site_account_head_tb')->where('id',$id)->first();
+            return $data->is_stock;
+        }
+
+        public function getStock($id)
+        {
+            $data = \DB::table('stocks_tb')->where('id',$id)->first();
+            return $data;
         }
 }
             

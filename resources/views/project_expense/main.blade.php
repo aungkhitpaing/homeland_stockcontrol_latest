@@ -47,11 +47,10 @@
                                 <td>{{ $data->created_at }}</td>
                                 <td>{{ $data->updated_at }}</td>
                             </tr>
-                            
                             @endforeach
-                            
                         </tbody>
                     </table>
+                    {{ $datas->links() }}
                 </div>
                 <div class="row">
                     <div class="col-md-8">

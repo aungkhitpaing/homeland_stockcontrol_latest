@@ -21,7 +21,7 @@
                         <div class="form-group">
                             <label for="" class="col-sm-2 control-label">Account Head</label>
                             <div class="col-sm-10">
-                                <select class="form-control" name="site_accountHead" required>
+                                <select class="site_accountHead form-control" name="site_accountHead" required>
                                     <option disabled selected>--- Select your option ---</option>
                                     @foreach(\DB::table('site_account_head_tb')->get() as $data)
                                     <option value="{{$data->id}}">{{$data->account_head_type}}</option>
@@ -41,6 +41,10 @@
                                 </select>
                             </div>
                         </div>
+
+                        <div class="form-group stock">
+                                
+                            </div>
                         
                         <div class="form-group">
                             <label for="inputamount" class="col-sm-2 control-label">Amount</label>
@@ -101,6 +105,7 @@
                                 <input type="text" class="form-control" value="{{$projectName->name}}" name="project_id" readonly>                                
                             </div>
                         </div>
+                        
                         <div class="form-group">
                             <label for="inputamount" class="col-sm-2 control-label">Amount</label>
                             <div class="col-sm-10">
@@ -143,30 +148,42 @@
                 </div>
                 <!-- /.box -->
             </div>
-            <!--/.col (right) -->
-            {{-- <div class="box box-body">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Project</th>
-                            <th>Description</th>
-                            <th>Income</th>
-                            <th>Expend</th>
-                            <th>Balance</th>
-                            <th>Created Date</th>
-                            <th>Option</th>
-                        </thead>
-                        <tbody>
-                            
-                        </tbody>
-                    </table>
-                </div>
-            </div> --}}
         </section>
         
         @endsection
         @section('page_scripts')
         <script>
+
+            $(document).ready(function(){
+                $('.site_accountHead').change(function(){
+                    $('.stock').html('');
+                    var val = $('.site_accountHead').val();
+                    $.ajax({
+                    type: "GET",
+                    url: "/check-account-head-stock/"+val,
+                    data: val,
+                    success: function(data){
+                        if(data == 1){
+                            $('.stock').append(
+
+                                `
+                                <label for="" class="col-sm-2 control-label">stock</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control stock-form" name="stock_id" required>
+                                        <option disabled selected>--- Select Your Stock ---</option>
+                                        @foreach(\DB::table('stocks_tb')->get() as $data)
+                                        <option value="{{$data->stock_name}}">{{$data->stock_name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                `
+                            )
+                        }
+                    }
+                    });
+                });
+            });
+
             $(function () {
                 $('#example1').DataTable()
             })

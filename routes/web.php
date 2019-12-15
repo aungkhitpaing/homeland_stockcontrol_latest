@@ -324,8 +324,9 @@ Route::post('/supplier/{id}/delete','SupplierController@destroy');
 
 
 Route::get('custom-logout','HomeController@logout');
-
+Route::get('/check-account-head-stock/{id}','ProjectExpenseController@checkAccountHeadStock');
 Route::get('have-not-permission','HomeController@haveNotPermission');
+Route::get('/get-stock','ProjectExpenseController@getStock');
 
 Route::get('stock_payable','PayableController@index');
 Route::get('/stock_payable/create','PayableController@create');
@@ -341,3 +342,4 @@ Route::get('/warehouse/{id}/instock_detail','WarehouseController@show');
 Route::get('/warehouse/{id}/outstock_detail','WarehouseController@show');
 Route::get('/warehouse/{id}/add_outstock','WarehouseController@add_outstock');
 Route::post('/warehouse/{id}/create_outstock','WarehouseController@create_outstock');
+

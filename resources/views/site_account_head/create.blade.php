@@ -30,6 +30,13 @@
                   <input type="text" class="form-control" id="accounthead_code" name="accounthead_code" placeholder="Enter the account head code" required>
                 </div>
               </div>
+
+              <div class="form-group">
+                <label for="is_stock" class="col-sm-2 control-label">Related with stock?</label>
+                <div class="col-sm-10">
+                  <input type="checkbox" class="" id="is_stock" name="is_stock" value="1">
+                </div>
+              </div>
             </div>
 
             <!-- /.box-body -->
