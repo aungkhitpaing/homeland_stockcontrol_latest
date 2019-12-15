@@ -20,15 +20,16 @@ class PayableController extends Controller
         return view('stock_payable.payable',compact("getAllData"));
     }
 
-    public function store(Request $request) {
-        $inputs = [
-            "stock_id" => $request->stock,
-            "supplier_id" => $request->supplier,
-            "project_id" => $request->project,
-            "quantity" => $request->quantity,
-            "account_head_id" => $request->account_head,
-            "description" => $request->description,
-        ];
+    public function store($inputs) {
+
+//        $inputs = [
+//            "stock_id" => $request->stock,
+//            "supplier_id" => $request->supplier,
+//            "project_id" => $request->project,
+//            "quantity" => $request->quantity,
+//            "account_head_id" => $request->account_head,
+//            "description" => $request->description,
+//        ];
         $getStockPrice = DB::table('stocks_tb')->select('amount')->where('stock_id',$inputs['stock_id'])->first();
 
         $getStockPrice = $getStockPrice->amount;
@@ -51,16 +52,16 @@ class PayableController extends Controller
                     $warehouseId = $getId->id;
                 } else {
                     DB::table('warehouse_tb')->insert([
-                        "project_id" => $request->project,
-                        "stock_id" => $request->stock,
-                        "total_quantity" => $request->quantity,
+                        "project_id" => $inputs['project_id'],
+                        "stock_id" => $inputs['stock_id'],
+                        "total_quantity" => $inputs['quantity'],
                     ]);
                     $warehouseId = DB::getPdo()->lastInsertId();
                 }
                 DB::table('stock_warehouse_detail')->insert([
                     "warehouse_id" => $warehouseId,
-                    "stock_id" => $request->stock,
-                    "instock_amount" => $request->quantity,
+                    "stock_id" => $inputs['stock_id'],
+                    "instock_amount" => $inputs['quantity'],
                 ]);
             DB::commit();
             return redirect('/stock_payable/');

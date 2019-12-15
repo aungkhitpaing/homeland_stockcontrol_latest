@@ -186,12 +186,12 @@
                                         <option value="{{$data->id}}">{{$data->stock_name}}</option>
                                         @endforeach
                                     </select>
-                                
+
                                     <input type='number' name='qty' class='stock-qty' placeholder='enter qty of stock'>
                                 </div>
 
-                                
-                                
+
+
                                 `
                             )
                         }
@@ -201,6 +201,8 @@
             });
 
             $(document).on('change', '.stock-form','.stock-qty', function() {
+                $('.stock-qty').val('');
+                $('#inputamount').val('');
                 var val = $('.stock-form').val();
                 $.ajax({
                     type: "GET",
@@ -222,11 +224,11 @@
                     success: function(data){
                         var amount = data * qty;
                         $('#inputamount').val(amount);
-                        
+
                     }
                     });
             });
-            
+
 
             $(function () {
                 $('#example1').DataTable()

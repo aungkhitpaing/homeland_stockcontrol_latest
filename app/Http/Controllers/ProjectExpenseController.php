@@ -49,7 +49,6 @@ class ProjectExpenseController extends Controller
         if(auth()->user()->name == 'admin')
         {
             $projectNames = \DB::table('project_tb')->get();
-            
             return view('project_expense.index',compact('datas','projectNames'));
         }
         else{
@@ -60,7 +59,7 @@ class ProjectExpenseController extends Controller
             $userRelatedProjectId = \DB::table('project_user')->where('user_id',\Auth::user()->id)->first()->project_id;
             
             $datas = \DB::table('site_cashbook')->where('project_id',$userRelatedProjectId)->orderBy('id','asc')->paginate(15);
-            
+
             foreach($datas as $data){
                 $data->project_name = \DB::table('project_tb')->where('id',$data->project_id)->first('name');
             }
@@ -76,8 +75,32 @@ class ProjectExpenseController extends Controller
             'site_accountHead_id' => 'required',
             'project_id' => 'required',
         ]);
-
         $projecId = \DB::table('project_tb')->where('name',request()->project_id)->first()->id;
+
+
+        // Akp fixed for ( connect with payable and ware house tb )
+
+            $payable_inputs = \request()->only([
+                "stock_id",
+                "project_id",
+                "supplier_id",
+                "site_accountHead_id",
+                "qty",
+                "amount",
+                "description",
+            ]);
+            $convert_inputs = [
+                "stock_id" => $payable_inputs['stock_id'],
+                "supplier_id" => 1,
+                "project_id" => $projecId,
+                "quantity" => $payable_inputs['qty'],
+                "account_head_id" => $payable_inputs['site_accountHead_id'],
+                "description" => $payable_inputs['description'],
+            ];
+            $callPayable = new PayableController();
+            $callPayable->store($convert_inputs);
+
+         // end
 
         $data = \DB::table('site_cashbook')->where('project_id',$projecId)
                             ->where('income','!=',NULL)

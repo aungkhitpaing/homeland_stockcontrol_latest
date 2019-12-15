@@ -5,7 +5,7 @@
         @if(auth()->user()->name == 'admin')
         <section class="content">
             <a href="/project-expense/create" class="btn btn-primary">create expense for project</a>
-            
+
             <div class="box box-body"  style="margin-top:15px;">
                 <table class="table table-bordered">
                     <thead>
@@ -31,7 +31,7 @@
                                 @endif
                                 @if($data->site_account_head_id)
                                 <td>{{ DB::table('site_account_head_tb')->where('id',$data->site_account_head_id)->first()->account_head_type }}</td>
-                                @else   
+                                @else
                                 <td></td>
                                 @endif
                                 <td>{{ DB::table('project_tb')->where('id',$data->project_id)->first()->name }}</td>
@@ -123,7 +123,7 @@
         @else
         <section class="content">
             <a href="/project-expense/create" class="btn btn-primary">create expense for project</a>
-            
+
             <div class="box box-body" style="margin-top:15px;">
                 <table class="table table-bordered">
                     <thead>
@@ -138,7 +138,7 @@
                             <th>Option</th>
                         </thead>
                         <tbody>
-                            
+
                             @php $balance = 0 @endphp
                             @foreach($datas as $data)
                             @if($data->edit_status)
@@ -148,15 +148,15 @@
                                 <td>{{ $data->description }}</td>
                                 @if($data->income > 0)
                                 <td>{{ $data->income }}</td>
-                                @else 
+                                @else
                                 <td>0</td>
                                 @endif
                                 <td>{{ $data->expend }}</td>
-                                
+
                                 @if($data->income)
-                                
+
                                 <td>{{$balance = $balance + $data->income }}</td>
-                                
+
                                 @else
                                 <td>{{ $balance = $balance - $data->expend }}</td>
                                 @endif
@@ -166,18 +166,18 @@
                                     <a href="/project-expense/{{$data->id}}/edit" class="btn btn-warning">Edit</a>
                                 </td>
                             </tr>
-                            @else 
+                            @else
                             <tr>
                                 <td>{{ $data->site_account_head_id }}</td>
                                 <td>{{ $data->project_name->name }}</td>
                                 <td>{{ $data->description }}</td>
                                 @if($data->income > 0)
                                 <td>{{ $data->income }}</td>
-                                @else 
+                                @else
                                 <td>0</td>
                                 @endif
                                 <td>{{ $data->expend }}</td>
-                                
+
                                 @if($data->income)
                                 <td>{{$balance = $balance + $data->income }}</td>
                                 @else
@@ -197,7 +197,7 @@
                     {{ $datas->links() }}
                 </div>
             </div>
-            
+
         </section>
         
         
