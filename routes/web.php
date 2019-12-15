@@ -258,7 +258,13 @@ Route::prefix('expense_category')->group(function () {
 Route::prefix('stock')->group(function () {
 	Route::get('/', 'StockController@index');
 	Route::get('/create', 'StockController@create');
-	Route::get('/edit', 'StockController@edit');
+	Route::post('/store', 'StockController@store');
+
+	Route::get('/edit/{id}', 'StockController@edit');
+	Route::post('/update/{id}', 'StockController@update');
+	Route::post('/delete/{id}', 'StockController@destroy');
+
+
 });
 
 

@@ -15,7 +15,7 @@ class StockController extends Controller
     
     public function index()
     {
-        $stocks = Stock::paginate(15);
+        $stocks = \DB::table('stocks_tb')->paginate(15);
         return view('stock.index', compact('stocks'));
     }
 
@@ -24,8 +24,40 @@ class StockController extends Controller
         return view('stock.create');
     }
 
-    public function edit()
+    public function edit($id)
     {
-        return view('stock.edit');
+        $stock = \DB::table('stocks_tb')->where('id',$id)->first();
+        return view('stock.edit',compact('stock'));
     }
+
+    public function store()
+    {
+        \DB::table('stocks_tb')->insert([
+            'stock_name' => request()->stock_name,
+            'unit' => request()->unit,
+            'project_id' => request()->project_id,
+            'amount' => request()->amount
+        ]);
+        return redirect('/stock');
+    }
+
+    public function update($id)
+    {
+        \DB::table('stocks_tb')->where('id',$id)->update([
+            'stock_name' => request()->stock_name,
+            'unit' => request()->unit,
+            'project_id' => request()->project_id,
+            'amount' => request()->amount
+        ]);
+        return redirect('/stock');
+
+    }
+
+    public function destroy($id)
+    {
+        \DB::table('stocks_tb')->where('id',$id)->delete();
+        return redirect('/stock');
+
+    }
+
 }
