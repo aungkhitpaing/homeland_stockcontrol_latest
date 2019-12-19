@@ -16,16 +16,18 @@ class ProjectExpenseController extends Controller
     
     public function index()
     {
+
         if(auth()->user()->name != 'admin')
         {
+
             $projectForLoginUser = \DB::table('project_user')->where('user_id', \Auth::user()->id)->first();
 
             $projectName = \DB::table('project_tb')->where('id', $projectForLoginUser->project_id)->first();
                 
+
             $userRelatedProjectId = \DB::table('project_user')->where('user_id',\Auth::user()->id)->first()->project_id;
             
             $datas = \DB::table('site_cashbook')->where('is_check',NULL)->where('project_id',$userRelatedProjectId)->orderBy('id','asc')->paginate(15);
-
             foreach($datas as $data){
                 $data->project_name = \DB::table('project_tb')->where('id',$data->project_id)->first('name');
             }
@@ -72,37 +74,63 @@ class ProjectExpenseController extends Controller
     public function store()
     {
 
-        request()->validate([
-            'site_accountHead_id' => 'required',
-            'project_id' => 'required',
-        ]);
+        if(request()->optionsRadios == 'Cash'){
+            $projecId = \DB::table('project_tb')->where('name',request()->project_id)->first()->id;
 
-        $projecId = \DB::table('project_tb')->where('name',request()->project_id)->first()->id;
+            $data = \DB::table('site_cashbook')->where('project_id',$projecId)
+                                ->where('income','!=',NULL)
+                                ->get();
 
-        $data = \DB::table('site_cashbook')->where('project_id',$projecId)
-                            ->where('income','!=',NULL)
-                            ->get();
-
-        if(count($data) > 0 || \Auth::user()->name == 'admin'){
-            \DB::table('site_cashbook')->insert([
-                'site_account_head_id' =>   request()->site_accountHead_id,
-                'project_id' => $projecId,
-                'expend' =>       request()->amount,
-                'payment_type' => request()->optionsRadios,
-                'is_check' => request()->check,
-                'stock_id' => request()->stock_id,
-                'qty' => request()->qty,
-                'description' =>  request()->description,
-                'user_id'   => auth()->id(),
-                'created_at' =>  \Carbon\Carbon::now(),
-                'updated_at' => \Carbon\Carbon::now()
-                ]);
-                
-                return redirect('/project-expense');
+            if(count($data) > 0 || \Auth::user()->name == 'admin'){
+                \DB::table('site_cashbook')->insert([
+                    'account_head_id' =>   request()->accountHead_id,
+                    'project_id' => $projecId,
+                    'expend' =>       request()->amount,
+                    'cash' => request()->optionsRadios,
+                    'is_check' => request()->check,
+                    'stock_id' => request()->stock_id,
+                    'qty' => request()->qty,
+                    'description' =>  request()->description,
+                    'user_id'   => auth()->id(),
+                    'created_at' =>  \Carbon\Carbon::now(),
+                    'updated_at' => \Carbon\Carbon::now()
+                    ]);
+                    
+                    return redirect('/project-expense');
+            }
+            else{
+                dd('Fail!This project have not any income');
+            }
         }
-        else{
-            dd('Fail!This project have not any income');
+        if(request()->optionsRadios == 'Bank'){
+            $projecId = \DB::table('project_tb')->where('name',request()->project_id)->first()->id;
+
+            $data = \DB::table('site_cashbook')->where('project_id',$projecId)
+                                ->where('income','!=',NULL)
+                                ->get();
+
+            if(count($data) > 0 || \Auth::user()->name == 'admin'){
+                \DB::table('site_cashbook')->insert([
+                    'account_head_id' =>   request()->accountHead_id,
+                    'project_id' => $projecId,
+                    'expend' =>       request()->amount,
+                    'bank' => request()->optionsRadios,
+                    'is_check' => request()->check,
+                    'stock_id' => request()->stock_id,
+                    'qty' => request()->qty,
+                    'description' =>  request()->description,
+                    'user_id'   => auth()->id(),
+                    'created_at' =>  \Carbon\Carbon::now(),
+                    'updated_at' => \Carbon\Carbon::now()
+                    ]);
+                    
+                    return redirect('/project-expense');
+            }
+            else{
+                dd('Fail!This project have not any income');
+            }
         }
+        
         
     }
         
@@ -141,7 +169,7 @@ class ProjectExpenseController extends Controller
 
         public function exportByAccoutHead()
         {
-            $account_head_id = \DB::table('site_account_head_tb')->where('account_head_type',request()->account_head_type)
+            $account_head_id = \DB::table('account_head_tb')->where('account_head_type',request()->account_head_type)
                             ->first()->id;
 
             $project_id = request()->project;
@@ -161,7 +189,7 @@ class ProjectExpenseController extends Controller
 
         public function checkAccountHeadStock($id)
         {
-            $data = \DB::table('site_account_head_tb')->where('id',$id)->first();
+            $data = \DB::table('account_head_tb')->where('id',$id)->first();
             return $data->is_stock;
         }
 

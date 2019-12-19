@@ -14,7 +14,8 @@
                             <th>Project</th>
                             <th>Site Manager</th>
                             <th>Description</th>
-                            <th>Payment Type</th>
+                            <th>Cash</th>
+                            <th>Bank</th>
                             <th>Income</th>
                             <th>Expend</th>
                             <th>Balance</th>
@@ -29,8 +30,8 @@
                             @else
                             <tr>
                                 @endif
-                                @if($data->site_account_head_id)
-                                <td>{{ DB::table('site_account_head_tb')->where('id',$data->site_account_head_id)->first()->account_head_type }}</td>
+                                @if($data->account_head_id)
+                                <td>{{ DB::table('account_head_tb')->where('id',$data->account_head_id)->first()->account_head_type }}</td>
                                 @else   
                                 <td></td>
                                 @endif
@@ -40,7 +41,8 @@
                                     {{ DB::table('users')->where('id',$user_id)->first()->name }}
                                 </td>
                                 <td>{{ $data->description }}</td>
-                                <td>{{ $data->payment_type }}</td>
+                                <td>{{ $data->cash }}</td>
+                                <td>{{ $data->bank }}</td>
                                 <td>{{ $data->income }}</td>
                                 <td>{{ $data->expend }}</td>
                                 <td> ---- </td>
@@ -62,7 +64,7 @@
                                         <label for="exampleFormControlSelect1">Select Account Head</label>
                                         <select required class="form-control" id="exampleFormControlSelect1" name="account_head_type">
                                             <option value="">--- Select your option ---</option>
-                                            @foreach(\DB::table('site_account_head_tb')->get() as $account_head)
+                                            @foreach(\DB::table('account_head_tb')->get() as $account_head)
                                             <option value="{{ $account_head->account_head_type }}">{{ $account_head->account_head_type }}</option>
                                             @endforeach
                                         </select>
@@ -143,7 +145,7 @@
                             @foreach($datas as $data)
                             @if($data->edit_status)
                             <tr style="font-weight:bold">
-                                <td>{{ $data->site_account_head_id }}</td>
+                                <td>{{ $data->account_head_id }}</td>
                                 <td>{{ $data->project_name->name }}</td>
                                 <td>{{ $data->description }}</td>
                                 @if($data->income > 0)
@@ -168,7 +170,7 @@
                             </tr>
                             @else 
                             <tr>
-                                <td>{{ $data->site_account_head_id }}</td>
+                                <td>{{ $data->account_head_id }}</td>
                                 <td>{{ $data->project_name->name }}</td>
                                 <td>{{ $data->description }}</td>
                                 @if($data->income > 0)

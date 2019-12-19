@@ -21,15 +21,15 @@
                         <div class="form-group">
                             <label for="" class="col-sm-2 control-label">Account Head</label>
                             <div class="col-sm-10">
-                                <select class="site_accountHead form-control" name="site_accountHead_id" required>
+                                <select class="site_accountHead form-control" name="accountHead_id" required>
                                     <option disabled selected>--- Select your option ---</option>
-                                    @foreach(\DB::table('site_account_head_tb')->get() as $data)
+                                    @foreach(\DB::table('account_head_tb')->get() as $data)
                                     <option value="{{$data->id}}">{{$data->account_head_type}}</option>
                                     @endforeach
                                 </select>
-                                @if($errors->has('site_accountHead_id'))
+                                @if($errors->has('accountHead_id'))
                                 <small class="error" style="color:red;opacity:0.8;">
-                                    {{ $errors->first('site_accountHead_id') }}
+                                    {{ $errors->first('accountHead_id') }}
                                 </small>
                                 @endif
                             </div>
