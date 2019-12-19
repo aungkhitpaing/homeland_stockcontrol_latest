@@ -28,7 +28,8 @@
                             <section class="content">
                                 <div class="row">
                                     <div class="col-md-2 pull-right">
-                                        <a href="/stock_payable/create" class="btn btn-block btn-primary btn-sm">Add</a>
+                                        <a href="/project-expense/create" class="btn btn-block btn-primary btn-sm">Add</a>
+                                        {{--<a href="/stock_payable/create" class="btn btn-block btn-primary btn-sm">Add</a>--}}
                                     </div>
                                     <div class="col-md-12">
                                         <div class="box" style="border: none;">
@@ -124,6 +125,53 @@
                     </div>
                 </div>
             </div>
+        </div>
+        {{-- new fixed --}}
+        <div class="row">
+            <form method="POST" action="/stock_payable/export">
+                {{ csrf_field() }}
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="">Project</label>
+                        <select class="form-control" id="" name="project" required>
+                            <option selected disabled="disabled">Choose Project</option>
+                            @foreach($projects as $project)
+                                <option value="{{$project->id}}">{{$project->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="">Stock</label>
+                        <select class="form-control" id="" name="stock">
+                            <option selected="true" disabled="disabled">Choose Stock Type</option>
+                            @foreach($stocks as $stock)
+                                <option value="{{$stock->stock_id}}">{{$stock->stock_name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="">From Date</label>
+                        <input type="date" class="form-control datepicker" id="payable_datepicker" name="from_date" required>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="">To Date</label>
+                        <input type="date" class="form-control datepicker" id="payable_datepicker" name="to_date" required>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="">Export</label>
+                        <br>
+                        <button type="submit" class="btn btn-success" >Excel Export</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </section>
 @endsection

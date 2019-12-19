@@ -917,6 +917,11 @@ class HeadQuaterIncomeController extends Controller
         return view('tinder.edit_payback_tinder_detail',compact('getData'));
     }
 
+    public function deleteTinderRegisterById($id) {
+        DB::update('update popg_tb set delete_flag = ?  where id = ?',[1,$id]);
+        return redirect('/head_quater/income_cashbook/po_pg');
+    }
+
     /**
      * @param Request $request
      * @param $id

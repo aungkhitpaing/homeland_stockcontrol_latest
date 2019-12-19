@@ -37,8 +37,9 @@
                                                 <div class="form-group">
                                                     <label for="exampleInputEmail1" class="col-sm-2 control-label">Stock Name</label>
                                                     <div class="col-sm-10">
+                                                        <input type="hidden" name="account_head" value="{{$data->account_head_id}}" />
                                                         <select class="form-control" name="stock" required>
-                                                            <option disabled selected>{{$data->stock_name}}</option>
+                                                            <option  selected>{{$data->stock_name}}</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -46,7 +47,7 @@
                                                     <label for="exampleInputEmail1" class="col-sm-2 control-label">Project Name</label>
                                                     <div class="col-sm-10">
                                                         <select class="form-control" name="project" required>
-                                                            <option disabled selected>{{$data->name}}</option>
+                                                            <option selected>{{$data->name}}</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -54,7 +55,7 @@
                                                     <label for="exampleInputEmail1" class="col-sm-2 control-label">Supplier Name</label>
                                                     <div class="col-sm-10">
                                                         <select class="form-control" name="supplier" required>
-                                                            <option disabled selected>{{$data->supplier_name}}</option>
+                                                            <option selected>{{$data->supplier_name}}</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -100,6 +101,14 @@
                                                             {{--<span class="input-group-addon">$</span>--}}
                                                             <input type="number" id="payback_amount" class="form-control" name="payback_amount">
                                                             <span class="input-group-addon">Kyats</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="inputamount" class="col-sm-2 control-label">Description</label>
+                                                    <div class="col-sm-10">
+                                                        <div class="input-group">
+                                                            <textarea class="form-control" name="description" id="exampleFormControlTextarea5" rows="3" cols="200"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>

@@ -36,7 +36,9 @@
                                 @endif
                                 <td>{{ DB::table('project_tb')->where('id',$data->project_id)->first()->name }}</td>
                                 <td>
-                                    @php $user_id =  DB::table('project_user')->where('project_id',$data->project_id)->first()->user_id @endphp
+                                    @php
+                                        $user_id =  DB::table('project_user')->where('project_id',$data->project_id)->first()->user_id;
+                                    @endphp
                                     {{ DB::table('users')->where('id',$user_id)->first()->name }}
                                 </td>
                                 <td>{{ $data->description }}</td>
@@ -103,7 +105,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="exampleFormControlSelect1">Select Project</label>
-                                        <select required class="form-control" id="exampleFormControlSelect1" name="project">
+                                        <select  required class="form-control" id="exampleFormControlSelect1" name="project">
                                             <option value="">--- Select your option ---</option>
                                             @foreach(\DB::table('project_tb')->get() as $project)
                                             <option value="{{ $project->id }}">{{ $project->name }}</option>

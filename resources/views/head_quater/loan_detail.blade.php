@@ -32,6 +32,7 @@
                     <th>Payment Type</th>
                     <th>Payback Amount</th>
                     <th>Payback Date</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -44,6 +45,7 @@
                         $paybackDate = explode(' ',$loanDetailById->created_at);
                       ?>
                     <td>{{$paybackDate[0]}}</td>
+                    <td><a href="/head_quater/loan_detail/{{$loanDetailById->loan_transfer_id}}/show/{{$loanDetailById->id}}/edit" class="btn btn-warning btn-sm">Edit</a></td>
                   </tr>
                 @endforeach
                 </tbody>
@@ -53,6 +55,7 @@
                     <th>Payment Type</th>
                     <th>Payback Amount</th>
                     <th>Payback Date</th>
+                    <th>Action</th>
                   </tr>
                 </tfoot>
               </table>

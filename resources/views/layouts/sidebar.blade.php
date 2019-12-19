@@ -138,6 +138,17 @@
         </li>
 
         <li class="treeview">
+          <a href="">
+            <i class="fa fa-sticky-note"></i> <span>Project Expense</span><span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="/project-expense"><i class="fa fa-circle-o"></i> <span>Lists</span></a></li>
+          </ul>
+        </li>
+
+        <li class="treeview">
           <a href="#">
             <i class="fa fa-sticky-note"></i> <span>Bank</span>
             <span class="pull-right-container">
@@ -168,6 +179,7 @@
           </a>
           <ul class="treeview-menu">
             <li><a href="/stock_payable"><i class="fa fa-circle-o"></i> <span>Show Lists</span></a></li>
+            {{--<li><a href="/stock_payable"><i class="fa fa-circle-o"></i> <span>Show Lists</span></a></li>--}}
           </ul>
         </li>
 

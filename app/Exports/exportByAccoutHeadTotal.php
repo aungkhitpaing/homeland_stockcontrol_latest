@@ -3,6 +3,7 @@
 namespace App\Exports;
 
 
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
@@ -17,11 +18,7 @@ class exportByAccoutHeadTotal implements FromCollection, WithHeadings, ShouldAut
     
     public function collection()
     {
-        $datas = \DB::table('site_cashbook')
-        ->where('project_id',$this->project_id)
-        ->where('is_check',1)
-        ->get();
-        
+
         $datas = \DB::table('site_cashbook')
                 ->where('is_check',1)
                 ->where('project_id',$this->project_id)
@@ -34,6 +31,15 @@ class exportByAccoutHeadTotal implements FromCollection, WithHeadings, ShouldAut
             ->first()->account_head_type;
             $data->total_expend_amount = $data->total_amount;
         }
+//
+//        // Akp fixed
+//        $total = DB::table('site_cashbook')
+//            ->select('site_account_head_id','project_id', \DB::raw('SUM(expend) as total_amount'))
+//            ->where('project_id',$this->project_id)
+//            ->groupBy('site_account_head_id','project_id')
+//            ->get()->toArray();
+//        dd($total);
+//        // end
 
         return $this->selectCustomColumns($datas);
     }
@@ -46,12 +52,11 @@ class exportByAccoutHeadTotal implements FromCollection, WithHeadings, ShouldAut
     {
         
         $datas = collect($datas);
-        
         $dump = $datas->map(function ($data) {
             return collect($data)
             ->only([
                 'account_head_id',
-                'total_expend_amount'
+                'total_expend_amount',
                 ])
                 ->all();
             });

@@ -29,7 +29,6 @@ class CashBookController extends Controller
             ->join('account_head_tb', 'account_head_tb.id', '=', 'cash_book_tb.account_head_id')
             ->select('cash_book_tb.*', 'account_head_tb.account_head_type')
             ->where('deleted_flag', 0)->paginate(15);
-
         return view('head_quater.cashBook', compact('account_head_types', 'getTransactions'));
     }
 

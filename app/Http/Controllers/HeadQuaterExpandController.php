@@ -402,6 +402,74 @@ class HeadQuaterExpandController extends Controller
     }
 
     /**
+     * @param $loan_transfer_id
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function EditLoantransferDetail($loan_transfer_id,$id){
+        $editLoanInfos = DB::table('bank_expense_tb')->where('id',$id)->first();
+        return view('head_quater.loan_payback_detail_edit',compact('editLoanInfos'));
+    }
+
+    /**
+     * @param Request $request
+     * @param $loan_transfer_id
+     * @param $id
+     * @return string
+     */
+    public function UpdateLoantransferDetail(Request $request, $loan_transfer_id,$id){
+
+        $inputs = $request->only(['amount','description']);
+        $getLoanDetailInfoById= DB::table('loan_detail_tb')->select("*")->where('id',$loan_transfer_id)->where('delete_flag',0)->get()->toArray();
+        $orginal_amount = DB::table('bank_expense_tb')->select('*')->where('id',$id)->first()->payback_amount;
+
+        try {
+            DB::beginTransaction();
+            $updated = DB::table('bank_expense_tb')->where('id',$id)->update(['payback_amount' => $inputs['amount'] , 'description' => $inputs['description']]);
+            if($updated) {
+                $sumOfPayback = \DB::table('bank_expense_tb')
+                ->where('loan_transfer_id',$loan_transfer_id)
+                ->select('loan_transfer_id', \DB::raw('SUM(payback_amount) as total_payback'))
+                ->groupBy('loan_transfer_id')
+                ->get()->toArray();
+
+                if(!empty($sumOfPayback)) {
+
+                    // update payback_amount in loan detail
+                    DB::update('update loan_detail_tb set payback_amount = ?  where id = ?', [$sumOfPayback[0]->total_payback, $loan_transfer_id]);
+
+                    // update into cashbook
+                    DB::update('update cash_book_tb set expend = ?,is_edit=?  where bank_expense_detail_id = ?', [$inputs['amount'],1, $id]);
+
+                    if($inputs['amount'] > $orginal_amount ) {
+                        $change_status = "increase";
+                        $diff_amount = $inputs['amount'] - $orginal_amount;
+                    } else  {
+                        $change_status = "decrease";
+                        $diff_amount = "-".$orginal_amount - $inputs['amount'];
+                    }
+
+                    if(!empty($getLoanDetailInfoById)) {
+                        DB::table('record_histroies_tb')->insert(['bank_expense_detail_id' => $id,
+                            'account_head_type' => \DB::table('account_head_tb')->where('id',$getLoanDetailInfoById[0]->account_head_id)->first()->id,
+                            'transaction_update_amount' => $inputs['amount'],
+                            'transaction_original_amount' => $orginal_amount,
+                            'change_status' => $change_status,
+                            'diff_amount' => $diff_amount,
+                            'remark' => "I have to changed transaction from " . $orginal_amount . " Kyats to " . $inputs['amount'] . " Kyats. Because I have to wrong filling into project income",
+                        ]);
+                    }
+                }
+                DB::commit();
+            }
+            return redirect('/head_quater/loan_detail/'.$loan_transfer_id.'/show');
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            return $exception->getMessage();
+        }
+    }
+
+    /**
      * Common updated for expense
      *
      * @param Request $request

@@ -32,6 +32,7 @@ class TransactionExport implements FromCollection, WithHeadings, ShouldAutoSize
                 ->where('deleted_flag', 0)
                 ->whereBetween('cash_book_tb.created_at', [request()->from_date, request()->to_date])
                 ->get()
+//                ->toSql();
                 ->toArray();
 
             $open_amount = $datas[0]->income;

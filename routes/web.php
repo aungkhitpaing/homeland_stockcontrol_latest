@@ -65,7 +65,10 @@ Route::prefix('head_quater')->group(function () {
     Route::patch('/loan_detail/{loan_id}', 'HeadQuaterIncomeController@UpdateBankIncomeById');
 //    Route::get('{bank_detail_id}/loan_detail/{loan_id}/edit', 'HeadQuaterIncomeController@EditBankIncomeById');
 //    Route::patch('{bank_detail_id}/loan_detail/{loan_id}', 'HeadQuaterIncomeController@UpdateBankIncomeById');
-
+    // new feature
+    Route::get('/loan_detail/{load_transfer_id}/show/{id}/edit','HeadQuaterExpandController@EditLoantransferDetail');
+    Route::patch('/loan_detail/{load_transfer_id}/show/{id}/update','HeadQuaterExpandController@UpdateLoantransferDetail');
+    // end
     /**
      * purchase order
      */
@@ -83,9 +86,6 @@ Route::prefix('head_quater')->group(function () {
     Route::patch('{purchase_guarantee_id}/purchase_guarantee_detail/{id}', 'HeadQuaterIncomeController@UpdateExpendById');
 
 
-    /**
-     * Update and Edit Expense for all
-     */
 
 
     /**
@@ -127,6 +127,7 @@ Route::prefix('head_quater')->group(function () {
 	Route::post('tinder_registeration','HeadQuaterIncomeController@storeTinderRegister');
 	Route::get('tinder_registeration/{id}','HeadQuaterIncomeController@getTinderRegisterById');
     Route::get('tinder_registeration/{id}/edit','HeadQuaterIncomeController@editTinderRegisterById');
+    Route::get('tinder_registeration/{id}/delete','HeadQuaterIncomeController@deleteTinderRegisterById');
     Route::patch('tinder_registeration/payback/{id}/update','HeadQuaterIncomeController@updateTinderRegisterById');
 	Route::Post('tinder_registeration/payback/{id}','HeadQuaterIncomeController@paybackTinder');
     Route::get('tinder_registeration/payback/{id}','HeadQuaterIncomeController@getAllDetailPaybackTinder');
@@ -148,6 +149,9 @@ Route::prefix('head_quater')->group(function () {
 	Route::get('/add_expend', 'HeadQuaterExpandController@create');
 	Route::get('/add_expend/bank/{id}','HeadQuaterExpandController@createBankLoan');
     Route::get('/loan_detail/{loan_id}/show', 'HeadQuaterExpandController@getBankExpenseById');
+
+
+
 
 	Route::get('/expend_cashbook/office_expense', 'HeadQuaterExpandController@officeExpense');
 	Route::get('/add_expend/project','HeadQuaterExpandController@addExpendProject');
@@ -336,6 +340,7 @@ Route::get('/stock_payable/{id}/show','PayableController@show');
 Route::post('/stock_payable/{id}/payback','PayableController@payback');
 Route::get('/stock_payable/{id}/payback_detail','PayableController@payback_detail');
 Route::get('/stock_payable/{id}/delete','PayableController@delete');
+Route::post('/stock_payable/export','PayableController@exportPayable');
 
 Route::get('/warehouse','WarehouseController@index');
 Route::get('/warehouse/{id}/instock_detail','WarehouseController@show');

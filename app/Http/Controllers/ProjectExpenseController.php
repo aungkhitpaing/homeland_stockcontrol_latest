@@ -21,7 +21,7 @@ class ProjectExpenseController extends Controller
             $projectForLoginUser = \DB::table('project_user')->where('user_id', \Auth::user()->id)->first();
 
             $projectName = \DB::table('project_tb')->where('id', $projectForLoginUser->project_id)->first();
-                
+
             $userRelatedProjectId = \DB::table('project_user')->where('user_id',\Auth::user()->id)->first()->project_id;
             
             $datas = \DB::table('site_cashbook')->where('is_check',NULL)->where('project_id',$userRelatedProjectId)->orderBy('id','asc')->paginate(15);
@@ -89,6 +89,11 @@ class ProjectExpenseController extends Controller
                 "amount",
                 "description",
             ]);
+            if(empty(\request()->only('stock_id'))) {
+                $payable_inputs['stock_id'] = "";
+                $payable_inputs['qty'] = "";
+            }
+
             $convert_inputs = [
                 "stock_id" => $payable_inputs['stock_id'],
                 "supplier_id" => 1,
@@ -97,6 +102,11 @@ class ProjectExpenseController extends Controller
                 "account_head_id" => $payable_inputs['site_accountHead_id'],
                 "description" => $payable_inputs['description'],
             ];
+            if (empty($convert_inputs['stock_id'])) {
+               unset($convert_inputs['stock_id']);
+               unset($convert_inputs['quantity']);
+               $convert_inputs['total_amount'] = $payable_inputs['amount'];
+            }
             $callPayable = new PayableController();
             $callPayable->store($convert_inputs);
 

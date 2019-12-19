@@ -43,7 +43,7 @@
 									                  		<div class="col-sm-10">
 										                  		<!-- select -->
 										                  		<select class="form-control" name="accountHead" required>
-										                  			<option>Select AccountHead</option>
+										                  			<option selected disabled value="">Select AccountHead</option>
 										                  			@foreach($accountHeads as $accountHead)
 										                  				<option value="{{$accountHead->id}}" required>{{$accountHead->account_head_type}}</option>
 											                  		@endforeach
@@ -55,7 +55,8 @@
 										                  		<label for="investor_name" class="col-sm-2 control-label">Project Name</label>
 										                  		<div class="col-sm-10">
 											                  		<!-- select -->
-											                  		<select class="form-control" name="project">
+											                  		<select required class="form-control" name="project">
+																		<option disabled selected value="">Select project</option>
 											                  		@foreach($getAllProjects as $getAllProject)
 											                  			<option value="{{$getAllProject->id}}">{{$getAllProject->name}}</option>
 											                  		@endforeach

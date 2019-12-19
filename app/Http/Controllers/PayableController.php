@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Payable;
+use App\Exports\exportByPayable;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PayableController extends Controller
 {
@@ -17,7 +19,9 @@ class PayableController extends Controller
             ->select('payable_tb.*','stocks_tb.unit','stocks_tb.stock_name','stocks_tb.amount','project_tb.name','suppliers.supplier_name')
             ->where('payable_tb.delete_flag',0)
             ->get();
-        return view('stock_payable.payable',compact("getAllData"));
+        $projects = DB::table('project_tb')->where('delete_flag',0)->get();
+        $stocks = DB::table('stocks_tb')->where('delete_flag',0)->get();
+        return view('stock_payable.payable',compact("getAllData","projects","stocks"));
     }
 
     public function store($inputs) {
@@ -30,25 +34,29 @@ class PayableController extends Controller
 //            "account_head_id" => $request->account_head,
 //            "description" => $request->description,
 //        ];
-        $getStockPrice = DB::table('stocks_tb')->select('amount')->where('stock_id',$inputs['stock_id'])->first();
 
-        $getStockPrice = $getStockPrice->amount;
-        $inputs['total_amount'] = $getStockPrice * $inputs['quantity'];
+        if(!empty($inputs['stock_id'])) {
+            $getStockPrice = DB::table('stocks_tb')->select('amount')->where('stock_id', $inputs['stock_id'])->first();
+
+            $getStockPrice = $getStockPrice->amount;
+            $inputs['total_amount'] = $getStockPrice * $inputs['quantity'];
+        }
 
         try {
             DB::begintransaction();
                 DB::table('payable_tb')->insert([$inputs]);
+            if(!empty($inputs['stock_id'])) {
                 $checkRow = DB::table('warehouse_tb')
-                    ->where('project_id','=',$inputs['project_id'])
-                    ->where('stock_id','=',$inputs['stock_id'])
+                    ->where('project_id', '=', $inputs['project_id'])
+                    ->where('stock_id', '=', $inputs['stock_id'])
                     ->exists();
                 $getId = DB::table('warehouse_tb')->select('*')
-                    ->where('project_id','=',$inputs['project_id'])
-                    ->where('stock_id','=',$inputs['stock_id'])
+                    ->where('project_id', '=', $inputs['project_id'])
+                    ->where('stock_id', '=', $inputs['stock_id'])
                     ->first();
-                if ($checkRow == true ) {
+                if ($checkRow == true) {
                     $total_quantity = $getId->total_quantity + $inputs['quantity'];
-                    DB::update('update warehouse_tb set total_quantity = ?  where id = ?',[$total_quantity,$getId->id]);
+                    DB::update('update warehouse_tb set total_quantity = ?  where id = ?', [$total_quantity, $getId->id]);
                     $warehouseId = $getId->id;
                 } else {
                     DB::table('warehouse_tb')->insert([
@@ -63,6 +71,7 @@ class PayableController extends Controller
                     "stock_id" => $inputs['stock_id'],
                     "instock_amount" => $inputs['quantity'],
                 ]);
+            }
             DB::commit();
             return redirect('/stock_payable/');
         } catch (\Exception $exception) {
@@ -141,7 +150,19 @@ class PayableController extends Controller
                     'payable_amount' => $inputs['payback_amount'],
                     'payment_type' => $inputs['payment_type'],
                 ]);
-                // to continues to keep all transaction cashbook
+                $payable_detail_id = DB::getPdo()->lastInsertId();;
+
+            // to continues to keep all transaction cashbook
+
+                DB::table('cash_book_tb')->insert([
+                    'specification_id' => $id,
+                    'account_head_id' => $request->account_head,
+                    'payable_detail_id' =>$payable_detail_id,
+                    'payment_type'=> $inputs['payment_type'],
+                    'expend' => $inputs['payback_amount'],
+                    'description' => $request->description,
+                ]);
+
             DB::commit();
             return redirect('/stock_payable');
         } catch (\Exception $exception) {
@@ -157,5 +178,9 @@ class PayableController extends Controller
     public function delete($id) {
         DB::update('update payable_tb set delete_flag = ?  where id = ?',[1,$id]);
         return redirect('/stock_payable/');
+    }
+
+    public function exportPayable() {
+        return Excel::download(new exportByPayable, 'payableByProject.xlsx');
     }
 }
