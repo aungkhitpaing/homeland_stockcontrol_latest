@@ -20,15 +20,11 @@ class ProjectUserController extends Controller
 
     public function store(Request $request)
     {
-        $checkProject = \DB::table('project_user')->where('project_id',$request->project_id)->first();
+        $checkProject = \DB::table('project_user')->where('project_id',$request->project_id)
+                    ->where('user_id',$request->user_id)
+                    ->first();
         if($checkProject){
-            \Session::flash('message', 'This project have already assigned !'); 
-            return back();
-        }
-
-        $checkUser = \DB::table('project_user')->where('user_id',$request->user_id)->first();
-        if($checkUser){
-            \Session::flash('message', 'This user have already assigned !');             
+            \Session::flash('message', 'This record alreay exist !'); 
             return back();
         }
 

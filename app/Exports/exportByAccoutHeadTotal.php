@@ -22,24 +22,15 @@ class exportByAccoutHeadTotal implements FromCollection, WithHeadings, ShouldAut
         $datas = \DB::table('site_cashbook')
                 ->where('is_check',1)
                 ->where('project_id',$this->project_id)
-                ->select('site_account_head_id', \DB::raw('SUM(expend) as total_amount'))
-                ->groupBy('site_account_head_id')
+                ->select('account_head_id', \DB::raw('SUM(expend) as total_amount'))
+                ->groupBy('account_head_id')
                 ->get();
 
         foreach($datas as $data){
-            $data->account_head_id =  \DB::table('site_account_head_tb')->where('id',$data->site_account_head_id)
+            $data->account_head_id =  \DB::table('account_head_tb')->where('id',$data->account_head_id)
             ->first()->account_head_type;
             $data->total_expend_amount = $data->total_amount;
         }
-//
-//        // Akp fixed
-//        $total = DB::table('site_cashbook')
-//            ->select('site_account_head_id','project_id', \DB::raw('SUM(expend) as total_amount'))
-//            ->where('project_id',$this->project_id)
-//            ->groupBy('site_account_head_id','project_id')
-//            ->get()->toArray();
-//        dd($total);
-//        // end
 
         return $this->selectCustomColumns($datas);
     }

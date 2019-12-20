@@ -18,6 +18,7 @@ class ProjectExpenseController extends Controller
     {
         if(auth()->user()->name != 'admin')
         {
+
             $projectForLoginUser = \DB::table('project_user')->where('user_id', \Auth::user()->id)->first();
 
             $projectName = \DB::table('project_tb')->where('id', $projectForLoginUser->project_id)->first();
@@ -25,7 +26,6 @@ class ProjectExpenseController extends Controller
             $userRelatedProjectId = \DB::table('project_user')->where('user_id',\Auth::user()->id)->first()->project_id;
             
             $datas = \DB::table('site_cashbook')->where('is_check',NULL)->where('project_id',$userRelatedProjectId)->orderBy('id','asc')->paginate(15);
-
             foreach($datas as $data){
                 $data->project_name = \DB::table('project_tb')->where('id',$data->project_id)->first('name');
             }
@@ -70,21 +70,13 @@ class ProjectExpenseController extends Controller
     
     public function store()
     {
-
-        request()->validate([
-            'site_accountHead_id' => 'required',
-            'project_id' => 'required',
-        ]);
         $projecId = \DB::table('project_tb')->where('name',request()->project_id)->first()->id;
-
-
-        // Akp fixed for ( connect with payable and ware house tb )
 
             $payable_inputs = \request()->only([
                 "stock_id",
                 "project_id",
                 "supplier_id",
-                "site_accountHead_id",
+                "account_head_id",
                 "qty",
                 "amount",
                 "description",
@@ -99,7 +91,7 @@ class ProjectExpenseController extends Controller
                 "supplier_id" => 1,
                 "project_id" => $projecId,
                 "quantity" => $payable_inputs['qty'],
-                "account_head_id" => $payable_inputs['site_accountHead_id'],
+                "account_head_id" => $payable_inputs['account_head_id'],
                 "description" => $payable_inputs['description'],
             ];
             if (empty($convert_inputs['stock_id'])) {
@@ -117,11 +109,14 @@ class ProjectExpenseController extends Controller
                             ->get();
 
         if(count($data) > 0 || \Auth::user()->name == 'admin'){
+
+
+            if(request()->optionsRadios == 'Cash'){
             \DB::table('site_cashbook')->insert([
-                'site_account_head_id' =>   request()->site_accountHead_id,
+                'account_head_id' =>   request()->account_head_id,
                 'project_id' => $projecId,
                 'expend' =>       request()->amount,
-                'payment_type' => request()->optionsRadios,
+                'cash' => request()->optionsRadios,
                 'is_check' => request()->check,
                 'stock_id' => request()->stock_id,
                 'qty' => request()->qty,
@@ -129,79 +124,148 @@ class ProjectExpenseController extends Controller
                 'user_id'   => auth()->id(),
                 'created_at' =>  \Carbon\Carbon::now(),
                 'updated_at' => \Carbon\Carbon::now()
+            ]);
+            }
+            if(request()->optionsRadios == 'Bank'){
+                \DB::table('site_cashbook')->insert([
+                    'account_head_id' =>   request()->account_head_id,
+                    'project_id' => $projecId,
+                    'expend' =>       request()->amount,
+                    'bank' => request()->optionsRadios,
+                    'is_check' => request()->check,
+                    'stock_id' => request()->stock_id,
+                    'qty' => request()->qty,
+                    'description' =>  request()->description,
+                    'user_id'   => auth()->id(),
+                    'created_at' =>  \Carbon\Carbon::now(),
+                    'updated_at' => \Carbon\Carbon::now()
                 ]);
-                
-                return redirect('/project-expense');
-        }
-        else{
-            dd('Fail!This project have not any income');
-        }
-        
-    }
-        
-        public function edit($id)
-        {
-            $projectExpense = \DB::table('site_cashbook')->where('id',$id)->first();
-            $projectName = \DB::table('project_tb')->where('id', $projectExpense->project_id)->first();
-            return view('project_expense.edit',compact('projectExpense','projectName'));
-        }
-        
-        public function update(Request $request,$id)
-        {
-            $site_cashbook = \DB::table('site_cashbook')->where('id',$id)->first();
-            
-            \DB::table('site_cashbook')->where('id',$id)->update([
-                'expend' =>       request()->amount,
-                'description' =>  request()->description,
-                'edit_status' => 1
-                ]);
-                
-                
-                \DB::table('site_cashbook_edit_record')->insert([
-                    'site_cashbook_id' => $site_cashbook->id,
-                    'original_expend' => $site_cashbook->expend,
-                    'update_expend' => request()->amount
+            }
+            return redirect('/project-expense');
+
+        if(request()->optionsRadios == 'Cash'){
+            $projecId = \DB::table('project_tb')->where('name',request()->project_id)->first()->id;
+
+            $data = \DB::table('site_cashbook')->where('project_id',$projecId)
+                                ->where('income','!=',NULL)
+                                ->get();
+
+            if(count($data) > 0 || \Auth::user()->name == 'admin'){
+                \DB::table('site_cashbook')->insert([
+                    'account_head_id' =>   request()->accountHead_id,
+                    'project_id' => $projecId,
+                    'expend' =>       request()->amount,
+                    'cash' => request()->optionsRadios,
+                    'is_check' => request()->check,
+                    'stock_id' => request()->stock_id,
+                    'qty' => request()->qty,
+                    'description' =>  request()->description,
+                    'user_id'   => auth()->id(),
+                    'created_at' =>  \Carbon\Carbon::now(),
+                    'updated_at' => \Carbon\Carbon::now()
                     ]);
                     
                     return redirect('/project-expense');
+            }
+            else{
+                dd('Fail!This project have not any income');
+            }
+
         }
+        if(request()->optionsRadios == 'Bank'){
+            $projecId = \DB::table('project_tb')->where('name',request()->project_id)->first()->id;
+
+            $data = \DB::table('site_cashbook')->where('project_id',$projecId)
+                                ->where('income','!=',NULL)
+                                ->get();
+
+            if(count($data) > 0 || \Auth::user()->name == 'admin'){
+                \DB::table('site_cashbook')->insert([
+                    'account_head_id' =>   request()->accountHead_id,
+                    'project_id' => $projecId,
+                    'expend' =>       request()->amount,
+                    'bank' => request()->optionsRadios,
+                    'is_check' => request()->check,
+                    'stock_id' => request()->stock_id,
+                    'qty' => request()->qty,
+                    'description' =>  request()->description,
+                    'user_id'   => auth()->id(),
+                    'created_at' =>  \Carbon\Carbon::now(),
+                    'updated_at' => \Carbon\Carbon::now()
+                    ]);
+                    
+                    return redirect('/project-expense');
+            }
+            else{
+                dd('Fail!This project have not any income');
+            }
+        }   
+    }
+    }
+        
+    public function edit($id)
+    {
+        $projectExpense = \DB::table('site_cashbook')->where('id',$id)->first();
+        $projectName = \DB::table('project_tb')->where('id', $projectExpense->project_id)->first();
+        return view('project_expense.edit',compact('projectExpense','projectName'));
+    }
+    
+    public function update(Request $request,$id)
+    {
+        $site_cashbook = \DB::table('site_cashbook')->where('id',$id)->first();
+        
+        \DB::table('site_cashbook')->where('id',$id)->update([
+            'expend' =>       request()->amount,
+            'description' =>  request()->description,
+            'edit_status' => 1
+            ]);
+            
+            
+            \DB::table('site_cashbook_edit_record')->insert([
+                'site_cashbook_id' => $site_cashbook->id,
+                'original_expend' => $site_cashbook->expend,
+                'update_expend' => request()->amount
+                ]);
                 
-        public function record($id)
-        {
-            $site_cashbook = \DB::table('site_cashbook_edit_record')->where('site_cashbook_id',$id)->get();
-            return view('project_expense.record',compact('site_cashbook'));
-        }
+                return redirect('/project-expense');
+    }
+            
+    public function record($id)
+    {
+        $site_cashbook = \DB::table('site_cashbook_edit_record')->where('site_cashbook_id',$id)->get();
+        return view('project_expense.record',compact('site_cashbook'));
+    }
 
-        public function exportByAccoutHead()
-        {
-            $account_head_id = \DB::table('site_account_head_tb')->where('account_head_type',request()->account_head_type)
-                            ->first()->id;
+    public function exportByAccoutHead()
+    {
+        $account_head_id = \DB::table('account_head_tb')->where('account_head_type',request()->account_head_type)
+                        ->first()->id;
 
-            $project_id = request()->project;
+        $project_id = request()->project;
 
-            $payment_type = request()->payment_type;
+        $payment_type = request()->payment_type;
 
-            return Excel::download(new exportByAccoutHead($account_head_id,$project_id,$payment_type), 'report.xlsx');
+        return Excel::download(new exportByAccoutHead($account_head_id,$project_id,$payment_type), 'report.xlsx');
 
-        }
+    }
 
-        public function exportByAccoutHeadTotal()
-        {
-            $project_id = request()->project;
+    public function exportByAccoutHeadTotal()
+    {
+        $project_id = request()->project;
 
-            return Excel::download(new exportByAccoutHeadTotal($project_id), 'report.xlsx');
-        }
+        return Excel::download(new exportByAccoutHeadTotal($project_id), 'report.xlsx');
+    }
 
-        public function checkAccountHeadStock($id)
-        {
-            $data = \DB::table('site_account_head_tb')->where('id',$id)->first();
-            return $data->is_stock;
-        }
+    public function checkAccountHeadStock($id)
+    {
+        $data = \DB::table('account_head_tb')->where('id',$id)->first();
+        return $data->is_stock;
+    }
 
-        public function getStock($id)
-        {
-            $data = \DB::table('stocks_tb')->where('id',$id)->first();
-            return $data->amount;
-        }
+    public function getStock($id)
+    {
+        $data = \DB::table('stocks_tb')->where('id',$id)->first();
+        return $data->amount;
+    }
 }
             

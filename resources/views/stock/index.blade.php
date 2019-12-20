@@ -14,27 +14,25 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th>Code No</th>
                                     <th>Stock Name</th>
                                     <th>Price</th>
-                                    <th>Avaliable</th>
+                                    <th>Unit</th>
+                                    <th>Project </th>
                                     <th colspan="2">Option</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($stocks as $stock)
                                 <tr>
-                                    <td>{{$stock->code_no}}</td>
                                     <td>{{$stock->stock_name}}</td>
-                                    <td>{{$stock->price }}</td>
-                                    @if($stock->is_avaliable == 1)
-                                    <td>Yes</td>
-                                    @else 
-                                    <td>No</td>
-                                    @endif
-                                    <td><a href="/stock/edit" class="btn btn-success btn-sm">edit</a></td>
-                                    <td><button type="button" class="btn btn-danger btn-sm">delete</button></td>
-                                    
+                                    <td>{{$stock->amount }}</td>
+                                    <td>{{ $stock->unit }}</td>
+                                    <td><a href="/stock/edit/{{$stock->id}}" class="btn btn-success btn-sm">edit</a></td>
+
+                                    <form action="/stock/delete/{{$stock->id}}" method="post">
+                                        {{ csrf_field() }}
+                                    <td><button type="submit" class="btn btn-danger btn-sm">delete</button></td>
+                                    </form>
                                 </tr>
                                 @endforeach
                             </tbody>

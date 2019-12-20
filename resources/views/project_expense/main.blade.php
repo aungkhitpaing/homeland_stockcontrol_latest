@@ -14,7 +14,8 @@
                             <th>Project</th>
                             <th>Site Manager</th>
                             <th>Description</th>
-                            <th>Payment Type</th>
+                            <th>Cash</th>
+                            <th>Bank</th>
                             <th>Income</th>
                             <th>Expend</th>
                             <th>Balance</th>
@@ -29,20 +30,18 @@
                             @else
                             <tr>
                                 @endif
-                                @if($data->site_account_head_id)
-                                <td>{{ DB::table('site_account_head_tb')->where('id',$data->site_account_head_id)->first()->account_head_type }}</td>
-                                @else
+                                @if($data->account_head_id)
+                                <td>{{ DB::table('account_head_tb')->where('id',$data->account_head_id)->first()->account_head_type }}</td>
+                                @else   
                                 <td></td>
                                 @endif
                                 <td>{{ DB::table('project_tb')->where('id',$data->project_id)->first()->name }}</td>
                                 <td>
-                                    @php
-                                        $user_id =  DB::table('project_user')->where('project_id',$data->project_id)->first()->user_id;
-                                    @endphp
-                                    {{ DB::table('users')->where('id',$user_id)->first()->name }}
+                                    {{ DB::table('users')->where('id',$data->user_id)->first()->name }}
                                 </td>
                                 <td>{{ $data->description }}</td>
-                                <td>{{ $data->payment_type }}</td>
+                                <td>{{ $data->cash }}</td>
+                                <td>{{ $data->bank }}</td>
                                 <td>{{ $data->income }}</td>
                                 <td>{{ $data->expend }}</td>
                                 <td> ---- </td>
@@ -64,7 +63,7 @@
                                         <label for="exampleFormControlSelect1">Select Account Head</label>
                                         <select required class="form-control" id="exampleFormControlSelect1" name="account_head_type">
                                             <option value="">--- Select your option ---</option>
-                                            @foreach(\DB::table('site_account_head_tb')->get() as $account_head)
+                                            @foreach(\DB::table('account_head_tb')->get() as $account_head)
                                             <option value="{{ $account_head->account_head_type }}">{{ $account_head->account_head_type }}</option>
                                             @endforeach
                                         </select>
@@ -142,57 +141,57 @@
                         <tbody>
 
                             @php $balance = 0 @endphp
+
                             @foreach($datas as $data)
-                            @if($data->edit_status)
-                            <tr style="font-weight:bold">
-                                <td>{{ $data->site_account_head_id }}</td>
-                                <td>{{ $data->project_name->name }}</td>
-                                <td>{{ $data->description }}</td>
-                                @if($data->income > 0)
-                                <td>{{ $data->income }}</td>
-                                @else
-                                <td>0</td>
-                                @endif
-                                <td>{{ $data->expend }}</td>
-
-                                @if($data->income)
-
-                                <td>{{$balance = $balance + $data->income }}</td>
-
-                                @else
-                                <td>{{ $balance = $balance - $data->expend }}</td>
-                                @endif
-                                <td>{{ $data->created_at }}</td>
-                                <td>
-                                    {{-- <a href="/project-expense/{{$data->id}}/record" class="btn btn-danger">Edit History</a> --}}
-                                    <a href="/project-expense/{{$data->id}}/edit" class="btn btn-warning">Edit</a>
-                                </td>
-                            </tr>
-                            @else
-                            <tr>
-                                <td>{{ $data->site_account_head_id }}</td>
-                                <td>{{ $data->project_name->name }}</td>
-                                <td>{{ $data->description }}</td>
-                                @if($data->income > 0)
-                                <td>{{ $data->income }}</td>
-                                @else
-                                <td>0</td>
-                                @endif
-                                <td>{{ $data->expend }}</td>
-
-                                @if($data->income)
-                                <td>{{$balance = $balance + $data->income }}</td>
-                                @else
-                                <td>{{ $balance = $balance - $data->expend }}</td>
-                                @endif
-                                <td>{{ $data->created_at }}</td>
-                                <td>
-                                    @if(!$data->income)
-                                    <a href="/project-expense/{{$data->id}}/edit" class="btn btn-warning">Edit</a>
+                                @if($data->edit_status)
+                                <tr style="font-weight:bold">
+                                    <td>{{ $data->account_head_id }}</td>
+                                    <td>{{ $data->project_name->name }}</td>
+                                    <td>{{ $data->description }}</td>
+                                    @if($data->income > 0)
+                                    <td>{{ $data->income }}</td>
+                                    @else
+                                    <td>0</td>
                                     @endif
-                                </td>
-                            </tr>
-                            @endif
+                                    <td>{{ $data->expend }}</td>
+
+                                    @if($data->income)
+
+                                    <td>{{$balance = $balance + $data->income }}</td>
+
+                                    @else
+                                    <td>{{ $balance = $balance - $data->expend }}</td>
+                                    @endif
+                                    <td>{{ $data->created_at }}</td>
+                                    <td>
+                                        <a href="/project-expense/{{$data->id}}/edit" class="btn btn-warning">Edit</a>
+                                    </td>
+                                </tr>
+                                @else
+                                <tr>
+                                    <td>{{ $data->account_head_id }}</td>
+                                    <td>{{ $data->project_name->name }}</td>
+                                    <td>{{ $data->description }}</td>
+                                    @if($data->income > 0)
+                                    <td>{{ $data->income }}</td>
+                                    @else
+                                    <td>0</td>
+                                    @endif
+                                    <td>{{ $data->expend }}</td>
+
+                                    @if($data->income)
+                                    <td>{{$balance = $balance + $data->income }}</td>
+                                    @else
+                                    <td>{{ $balance = $balance - $data->expend }}</td>
+                                    @endif
+                                    <td>{{ $data->created_at }}</td>
+                                    <td>
+                                        @if(!$data->income)
+                                        <a href="/project-expense/{{$data->id}}/edit" class="btn btn-warning">Edit</a>
+                                        @endif
+                                    </td>
+                                </tr>
+                                @endif
                             @endforeach
                         </tbody>
                     </table>
